@@ -44,7 +44,7 @@ class Widget {
 
 		self::$name = $name;
 		self::$boxClass = $boxClass;
-		self::$boxId = $name.'**'.$boxId;
+		self::$boxId = $name.'__'.$boxId;
 		
 		$args = func_get_args();
 		$this->load->model('../widgets/' . self::$name . '/model');

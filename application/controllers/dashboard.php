@@ -40,7 +40,10 @@ class dashboard extends CI_Controller {
 		$data['containerClassContent'] = '-fluid';
 		$data['customernumber'] = $this->uri->segment(3);
 		$data['form_attributes'] = array('class' => 'form-horizontal');
-		$data['widgets'] = $this->siebel->getWidgets();
+		$widgetsModifications = array(
+			'comments__0' => $this->siebel->getCategoriesAsWidgetsArray()
+		);
+		$data['widgets'] = $this->siebel->getWidgets($widgetsModifications);
 		$data['userDashboard'] = $this->siebel->getUserDashboard();
 		$data['pageclass'] = 'bg-graybright';
 		

@@ -360,6 +360,18 @@ class Siebel {
 
 		return $return;
 	}
+	
+	public function getCategoriesAsWidgetsArray()
+	{
+		$comments = $this->getCommentsCategories();
+		$array = array();
+		foreach ($comments as $comment)
+		{
+			$array['comments__'.$comment->id] = Array('comment', $comment->id);
+		}
+		
+		return $array;
+	}
 
 	public function getCommentsCategoriesLang($slug) {
 		$ci = get_instance();
@@ -524,36 +536,49 @@ class Siebel {
 
 					foreach(explode(',', $value) as $item)
 					{
-						$itemSet = explode('**', $item);
+						$itemSet = explode('__', $item);
 						$newValues[$itemSet[0]] = array($itemSet[0], $itemSet[1]);
 					}
-					$userDashboard[$key + 1] = $newValues;
+					$newUserDashboard[$key + 1] = $newValues;
 					$newValues = '';
 
 				}
 			}
-			unset($userDashboard[0]);
 		}
 		else 
 		{
-			$userDashboard = array(
+			$newUserDashboard = array(
 				'1' => array(),
 				'2' => array(),
 				'3' => array(),
 			);
 		}
 
-		return $userDashboard;
+		return $newUserDashboard;
 	}
 
-	public function getWidgets() {
+	public function getWidgets($widgetsModification = FALSE) {
 		foreach (glob(APPPATH . 'widgets/*') as $folder)
 		{
 			$folder = explode('/', $folder);
-			$folders[$folder[2]] = array($folder[2], '0');
+			$folders[$folder[2].'__0'] = array($folder[2], '0');
 		}
 		
-		return $folders;
+		$widgets = $folders;
+		
+		if($widgetsModification)
+		{
+			foreach($widgetsModification as $key => $value)
+			{
+				if(array_key_exists($key, $folders))
+				{
+					unset($folders[$key]);
+					$widgets = array_merge($widgets, $value);
+				}
+			}
+		}
+		
+		return $widgets;
 	}
 
 }
