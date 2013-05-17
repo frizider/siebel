@@ -12,10 +12,10 @@ echo $this->bootstrap->heading(1, 'Dashboard', $customerName. ' | '. $customernu
 			{
 				foreach ($userDashboard[1] as $widget)
 				{
-					if(array_key_exists($widget[0], $widgets))
+					if(array_key_exists($widget[0].'__'.$widget[1], $widgets))
 					{
 						widget::run($widget[0], $widget[1], 'row-fluid'); 
-						unset($widgets[$widget[0]]);
+						unset($widgets[$widget[0].'__'.$widget[1]]);
 					}
 				}
 			}
@@ -31,10 +31,10 @@ echo $this->bootstrap->heading(1, 'Dashboard', $customerName. ' | '. $customernu
 			{
 				foreach ($userDashboard[2] as $widget)
 				{
-					if(array_key_exists($widget[0], $widgets))
+					if(array_key_exists($widget[0].'__'.$widget[1], $widgets))
 					{
 						widget::run($widget[0], $widget[1], 'row-fluid'); 
-						unset($widgets[$widget[0]]);
+						unset($widgets[$widget[0].'__'.$widget[1]]);
 					}
 				}
 			}
@@ -50,10 +50,10 @@ echo $this->bootstrap->heading(1, 'Dashboard', $customerName. ' | '. $customernu
 			{
 				foreach ($userDashboard[3] as $widget)
 				{
-					if(array_key_exists($widget[0], $widgets))
+					if(array_key_exists($widget[0].'__'.$widget[1], $widgets))
 					{
 						widget::run($widget[0], $widget[1], 'row-fluid'); 
-						unset($widgets[$widget[0]]);
+						unset($widgets[$widget[0].'__'.$widget[1]]);
 					}
 				}
 			}
@@ -98,23 +98,9 @@ $(function() {
 	
 	var newSorting = '';
 	
-	/*
-	$( "#dashboard, #dashboard2" ).on( "sortstop", function( event, ui ) {
-		var item = ui.item[0];
-		if ($(item).parent().parent().hasClass('span4') || $(item).parent().hasClass('span4'))
-		{
-			$(item).removeClass('span8').addClass('span4');
-		}
-		else if ($(item).parent().parent().hasClass('span8') || $(item).parent().hasClass('span8'))
-		{
-			$(item).removeClass('span4').addClass('span8');
-		}
-	});
-	*/
-	
 	$( "#dashboard, #dashboard2" ).on( "sortstop", function( event, ui ) {
 		$(".column > .sortrow").each(function() {
-			newSorting += $(this).sortable("toArray")+'||';
+			newSorting += $(this).sortable("toArray", { attribute: 'data-id' })+'||';
 		});
 		console.log(newSorting);
 		$.post('<?php echo site_url() ?>/dashboard/saveUserDashboard', {sort:newSorting}, function() {

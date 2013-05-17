@@ -35,7 +35,7 @@ $(document).ready(function() {
 	});
 	
 	// Comment list colapse
-	$(document).delegate('.commentlist > .row', 'click', function() {
+	$(document).delegate('.commentlist > .row, .commentlist .list > div', 'click', function() {
 		$(this).find('.comment-description').slideToggle();
 	})
 	

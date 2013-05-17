@@ -13,8 +13,15 @@ class Comments_model extends CI_Model
 	 * Other function below this section
 	 */
 	
-	public function getComments($custNo) {
-		$categories = $this->siebel->getCommentsCategories();
+	public function getComments($custNo, $id = FALSE) {
+		if($id)
+		{
+			$categories = (object) array((object)array('id' => $id));
+		}
+		else
+		{
+			$categories = $this->siebel->getCommentsCategories();
+		}
 		$return = array();
 		
 		foreach($categories as $category)

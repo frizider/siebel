@@ -39,15 +39,18 @@ class Widget {
 	private static $name;
 	private static $boxClass;
 	private static $boxId;
+	private static $dataId;
 
-	function run($name, $boxId, $boxClass) {
+	function run($name, $dataId, $boxClass) {
 
 		self::$name = $name;
 		self::$boxClass = $boxClass;
-		self::$boxId = $name.'__'.$boxId;
+		self::$boxId = $name;
+		self::$dataId = $name.'__'.$dataId;
 		
 		$args = func_get_args();
 		$this->load->model('../widgets/' . self::$name . '/model');
+		$_GET['dataId'] = $dataId;
 		require_once APPPATH . 'widgets/' . $name . '/controller' . EXT;
 		$name = ucfirst($name);
 		
@@ -58,6 +61,7 @@ class Widget {
 	function render($data = array()) {
 		
 		$data['boxId'] = self::$boxId;
+		$data['dataId'] = self::$dataId;
 		$data['boxClass'] = self::$boxClass;
 		extract($data);
 		include APPPATH . 'widgets/' . self::$name . '/view' . EXT;

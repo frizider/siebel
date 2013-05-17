@@ -367,7 +367,7 @@ class Siebel {
 		$array = array();
 		foreach ($comments as $comment)
 		{
-			$array['comments__'.$comment->id] = Array('comment', $comment->id);
+			$array['comments__'.$comment->id] = Array('comments', $comment->id);
 		}
 		
 		return $array;
@@ -537,7 +537,7 @@ class Siebel {
 					foreach(explode(',', $value) as $item)
 					{
 						$itemSet = explode('__', $item);
-						$newValues[$itemSet[0]] = array($itemSet[0], $itemSet[1]);
+						$newValues[$itemSet[0].'__'.$itemSet[1]] = array($itemSet[0], $itemSet[1]);
 					}
 					$newUserDashboard[$key + 1] = $newValues;
 					$newValues = '';
@@ -572,7 +572,7 @@ class Siebel {
 			{
 				if(array_key_exists($key, $folders))
 				{
-					unset($folders[$key]);
+					unset($widgets[$key]);
 					$widgets = array_merge($widgets, $value);
 				}
 			}

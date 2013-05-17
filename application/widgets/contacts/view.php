@@ -1,4 +1,4 @@
-<div class="<?php echo $boxClass; ?> widget" id="<?php echo $boxId; ?>">
+<div class="<?php echo $boxClass; ?> widget" id="<?php echo $boxId; ?>" data-id="<?php echo $dataId; ?>">
 	<div class="header">
 		<h3>
 			<?php echo $title; ?>
