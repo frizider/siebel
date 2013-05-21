@@ -24,6 +24,31 @@ class Lme_model extends CI_Model
 		return $results;
 	}
 	
+	public function save($id) 
+	{
+		$dbDefault = $this->load->database('default', TRUE);
+		
+		$data = $_POST;
+		$data['date'] = $this->siebel->date_to_mysql_human($data['date']);
+		
+		if($id == 'new')
+		{
+			if($dbDefault->insert('lme', $data))
+			{
+				return $dbDefault->insert_id();
+			}
+		}
+		else
+		{
+			$dbDefault->where('id', $id);
+			if($dbDefault->update('lme', $data))
+			{
+				return $id;
+			}
+
+		}
+	}
+	
 	public function getLmeByDate($date)
 	{
 		$dbDefault = $this->load->database('default', TRUE);
