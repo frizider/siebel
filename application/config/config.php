@@ -17,7 +17,7 @@
 
 $config['base_url'] = BASE_URL;
 
-$config['appversion'] = 'Alpha 0.3';
+$config['appversion'] = 'Beta 1.0';
 $config['devmode'] = 1;
 
 
