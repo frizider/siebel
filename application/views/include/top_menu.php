@@ -10,23 +10,25 @@
 			<a class="brand" href="<?= base_url() ?>" rel="tooltip" title="Version <?= $this->config->item('appversion'); ?>"><?= param('param_pagetitle'); ?></a>
 			<div class="nav-collapse">
 				<ul class="nav">
+					<?php if(perm('View globals')) { ?>
 					<li class="dropdown">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown"> <?php echo ucfirst($this->siebel->getLang('contacts')) ?> <b class="caret"></b></a>
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown"> <?php echo ucfirst($this->siebel->getLang('globals')) ?> <b class="caret"></b></a>
 						<ul class="dropdown-menu">
 							<?php
-							echo $this->bootstrap->navItem('View contacts', 'contacts', '/contacts', 'contacts');
+							echo $this->bootstrap->navItem('View formulas', 'formulas', '/formulas', 'formulas');
+							echo $this->bootstrap->navItem('View LME', 'lme', '/lme', 'lme');
+							echo '<li class="divider"></li>';
+							echo $this->bootstrap->navItem('View Global Comments', 'comments/globalcomments', '/comments/globalcomments', 'global_comments');
 							echo $this->bootstrap->navItem('View comments categories', 'categories', '/comments/categories', 'categories');
+							echo '<li class="divider"></li>';
 							echo $this->bootstrap->navItem('View deliverydays', 'deliverydays/filter', '/deliverydays/filter', 'filter_deliverydays');
+							echo '<li class="divider"></li>';
+							echo $this->bootstrap->navItem('messenger', 'messenger', '/messenger', 'messenger');
 							?>
 						</ul>
 					</li>
-					<?php
-					echo $this->bootstrap->navItem('messenger', 'messenger', '/messenger', 'messenger');
-					echo $this->bootstrap->navItem('View Global Comments', 'comments/globalcomments', '/comments/globalcomments', 'global_comments');
-					
-					if(perm('View users'))
-					{
-					?>
+					<?php } ?>
+					<?php if(perm('View users')) { ?>
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown"> <?php echo ucfirst($this->siebel->getLang('users')) ?> <b class="caret"></b></a>
 						<ul class="dropdown-menu">
