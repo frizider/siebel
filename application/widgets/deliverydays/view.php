@@ -13,9 +13,7 @@
 		<div>
 			<div class="row-fluid">
 				<ul class="nav nav-pills">
-					<li class="span2"><a></a></li>
-					<li class="span3"><a><?php echo ucfirst($this->siebel->getLang('morning')); ?></a></li>
-					<li class="span3"><a><?php echo ucfirst($this->siebel->getLang('afternoon')); ?></a></li>
+					<li class="span7"><a><?php echo ucfirst($this->siebel->getLang('address')); ?></a></li>
 					<li class="span2"><a><?php echo ucfirst($this->siebel->getLang('closeday')); ?></a></li>
 					<li class="span2"><a><?php echo ucfirst($this->siebel->getLang('deliveryday')); ?></a></li>
 				</ul>
@@ -24,10 +22,26 @@
 			<div class="list list-striped">
 
 			<?php foreach($deliverydays as $deliveryday) { 
+				$day_close = '';
+				$day_delivery = '';
+				if($deliveryday['id'])
+				{
+					foreach ($days as $day)
+					{
+						$day_close .= ($deliveryday[$day.'_close'] == 1) ? $this->siebel->getLang($day) : '';
+						$day_delivery .= ($deliveryday[$day.'_delivery'] == 1) ? $this->siebel->getLang($day) : '';
+					};
+				};
 			?>
 				<div class="row-fluid">
-					<div class="span11">
+					<div class="span7">
 						<p><?php echo $deliveryday['addressSet'] ?></p>
+					</div>
+					<div class="span2">
+						<p><?php echo $day_close ?></p>
+					</div>
+					<div class="span2">
+						<p><?php echo $day_delivery ?></p>
 					</div>
 					<div class="align-right tools">
 						<p>
@@ -35,40 +49,7 @@
 						</p>
 					</div>
 				</div>
-				<?php 
-				if($deliveryday['id'])
-				{
-					foreach ($days as $day)
-					{
-					?>
-					<div class="row-fluid">
-						<div class="line">
-							<div class="row-fluid">
-								<div class="span2">
-									<p><?php echo ucfirst($this->siebel->getLang($day)); ?></p>
-								</div>
-								<div class="span3">
-									<p><?php echo $deliveryday[$day.'_am_from']. ' - ' .$deliveryday[$day.'_am_to']; ?></p>
-								</div>
-								<div class="span3">
-									<p><?php echo $deliveryday[$day.'_pm_from']. ' - ' .$deliveryday[$day.'_pm_to']; ?></p>
-								</div>
-								<div class="span2">
-									<p><?php echo ($deliveryday[$day.'_close'] == 1) ? '<i class="icon-check"></i>' : ''; ?></p>
-								</div>
-								<div class="span2">
-									<p><?php echo ($deliveryday[$day.'_delivery'] == 1) ? '<i class="icon-check"></i>' : ''; ?></p>
-								</div>
-							</div>
-						</div>
-					</div>
-
-				<?php 
-					}
-				}
-					echo '<hr/>';
-			} 
-			?>
+				<?php } ?>
 			</div>
 		</div>
 	</div>
