@@ -30,7 +30,7 @@
 											<?php } ?>
 										</p>
 									</div>
-									<div class="span9">
+									<div class="span8">
 										<p><b><?php echo $item->title ?></b></p>
 									</div>
 									<div class="span1 align-right">
