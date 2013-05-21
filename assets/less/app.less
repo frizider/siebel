@@ -1006,7 +1006,19 @@ background: lighten(@grayLighter, 5%);
 }
 
 #dashboard .list > .row-fluid {
-	margin-bottom: 8px;
+	padding: 8px 0;
+}
+
+#dashboard .commentlist .list > .row-fluid {
+	padding: 0;
+}
+
+#dashboard .list > .row-fluid:nth-child(odd) {
+	background-color: lighten(@grayLighter, 2%);
+}
+
+#dashboard .list > .row-fluid:hover {
+	background-color: @tableBackgroundHover;
 }
 
 #dashboard .list .line {
