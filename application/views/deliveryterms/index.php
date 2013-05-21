@@ -3,7 +3,7 @@ $customerName = trim($this->siebel->getCustomerdata($customernumber, param('para
 
 if(isset($id) && !empty($id))
 {
-	dev($term);
+	//dev($term);
 	echo $this->bootstrap->heading(1, $this->siebel->getLang('edit_deliveryterms'), $customerName. ' | '. $customernumber, '<a class="backbutton" title="Go back" href="'.site_url('deliveryterms/customer/'.$customernumber).'"><span><i class="icon-chevron-left"></i></span></a> '); 
 ?>
 
@@ -67,7 +67,7 @@ if(isset($id) && !empty($id))
 else 
 {
 
-	dev($terms);
+	//dev($terms);
 
 	echo $this->bootstrap->heading(1, $this->siebel->getLang('deliveryterms'), $customerName. ' | '. $customernumber, '<a class="backbutton" title="Go back" href="'.site_url('contacts/').'"><span><i class="icon-chevron-left"></i></span></a> '); 
 ?>
