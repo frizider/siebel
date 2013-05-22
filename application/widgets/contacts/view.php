@@ -51,7 +51,7 @@
 					<div class="align-right tools">
 						<p>
 							<a href="mailto:<?php echo trim($contact[param('param_asw_database_column_contact_email')]) ?>" class="email"><i class="icon-envelope"></i></a>
-							<a href="<?php echo site_url("contacts/customer/".$customernumber.'/'.trim($contact[param('param_asw_database_column_contact_id')])); ?>" class="edit"><i class="icon-pencil"></i></a>
+							<a href="<?php echo site_url($boxId."/customer/".$customernumber.'/'.trim($contact[param('param_asw_database_column_contact_id')])); ?>" class="edit"><i class="icon-pencil"></i></a>
 						</p>
 					</div>
 				</div>
