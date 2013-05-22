@@ -30,9 +30,11 @@ class Deliveryterms_model extends CI_Model
 	{
 		$dbDefault = $this->load->database('default', TRUE);
 		
+		$data = $_POST;
+		$data['date'] = $this->siebel->date_to_mysql_human($data['date']);
+		
 		if($id == 'new')
 		{
-			$data = $_POST;
 			$data['customernumber'] = $cuno;
 			if($dbDefault->insert('deliveryterms', $data))
 			{
@@ -42,7 +44,7 @@ class Deliveryterms_model extends CI_Model
 		else
 		{
 			$dbDefault->where('id', $id);
-			if($dbDefault->update('deliveryterms', $_POST))
+			if($dbDefault->update('deliveryterms', $data))
 			{
 				return $id;
 			}
