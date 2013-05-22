@@ -39,7 +39,7 @@
 					</div>
 					<div class="align-right tools">
 						<p>
-							<a href="<?php echo site_url().'/prices/customer/'.$customernumber.'/'. $price->id; ?>" class="edit"><i class="icon-pencil"></i></a>
+							<a href="<?php echo site_url($boxId.'/customer/'.$customernumber.'/'. $price->id); ?>" class="edit"><i class="icon-pencil"></i></a>
 						</p>
 					</div>
 				</div>
