@@ -40,7 +40,7 @@
 										</p>
 									</div>
 									<div class="float-right align-right tools">
-										<p><a href="<?php echo site_url().'/deliveryterms/customer/'.$customernumber.'/'. $item->id; ?>" class="edit"><i class="icon-pencil"></i></a></p>
+										<p><a href="<?php echo site_url($boxId.'/customer/'.$customernumber.'/'. $item->id); ?>" class="edit"><i class="icon-pencil"></i></a></p>
 									</div>
 								</div>
 							</div>
