@@ -32,7 +32,7 @@
 					<div class="align-right tools">
 						<p>
 							<a href="#" class="comment" rel="tooltip" title="<?php echo $item->comment ?>"><i class="icon-comment"></i></a>
-							<a href="<?php echo site_url().'/deliveryterms/customer/'.$customernumber.'/'. $item->id; ?>" class="edit"><i class="icon-pencil"></i></a>
+							<a href="<?php echo site_url($boxId.'/customer/'.$customernumber.'/'. $item->id); ?>" class="edit"><i class="icon-pencil"></i></a>
 						</p>
 					</div>
 				</div>
