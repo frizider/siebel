@@ -16,26 +16,39 @@ if(isset($id) && !empty($id))
 
 			<div class="well">
 				<div class="row">
-					<div class="span3">
+					<div class="span6">
 						<?php 
 						$field = 'term';
 						$value = array(
 							'name' => $field,
 							'id' => $field,
-							'class' => $field.' span1',
+							'class' => $field.' span3',
 							'type' => 'text',
 							'value' => $term->$field,
 						);
 						echo $this->bootstrap->formControlGroup(array($this->siebel->getLang($field), $field, array('class' => 'control-label')), array($value));
 						?>
 					</div>
-					<div class="span8">
+					<div class="span5">
+						<div class="control-group">
+							<label for="date" class="control-label"><?php echo $this->siebel->getLang('date') ?></label>
+							<div class="controls">
+								<div class="input-append date" id="datepicker2" data-date="<?php echo date('d/m/Y',  mysql_to_unix($term->date)); ?>" data-date-format="dd/mm/yyyy" data-date-weekstart="1">
+									<input type="text" name="date" value="<?php echo date('d/m/Y',  mysql_to_unix($term->date)); ?>" id="date" class="date span2">
+									<span class="add-on"><i class="icon-calendar"></i></span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="span11">
 						<?php 
 						$field = 'comment';
 						$value = array(
 							'name' => $field,
 							'id' => $field,
-							'class' => $field.' span6',
+							'class' => $field.' span9',
 							'type' => 'text',
 							'value' => $term->$field,
 						);
