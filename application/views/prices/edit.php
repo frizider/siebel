@@ -1,7 +1,7 @@
 <?php
 //dev($price);
 $customerName = trim($this->siebel->getCustomerdata($customernumber, param('param_asw_database_column_customername')));
-echo $this->bootstrap->heading(1, $this->siebel->getLang('edit_price'), $customerName. ' | '. $customernumber, '<a class="backbutton" title="Go back" href="'.site_url('prices/customer/'.$customernumber).'"><span><i class="icon-chevron-left"></i></span></a> '); 
+echo $this->bootstrap->heading(1, $this->siebel->getLang('edit_price'), $customerName. ' | '. $customernumber, '<a class="backbutton" title="Go back" href="'.site_url('dashboard/customer/'.$customernumber).'"><span><i class="icon-chevron-left"></i></span></a> '); 
 ?>
 
 <div class="row">

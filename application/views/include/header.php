@@ -2,7 +2,7 @@
 <!-- Development and design by Jens De Schrijver -->
 <html>
 	<head>
-		<meta http-equiv="Content-Type" content="text/html" charset="utf-8" />
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		
 		<!-- Apple webapp icon setting -->
 		<link rel="apple-touch-icon" href="<?= base_url(); ?>public/img/apple-touch-icon-precomposed-57.png" /> <!-- Default size = 57x57 -->

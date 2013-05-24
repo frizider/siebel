@@ -1,7 +1,7 @@
 <?php 
 $customerName = trim($this->siebel->getCustomerdata($customernumber, param('param_asw_database_column_customername')));
 $customerLang = trim($this->siebel->getCustomerdata($customernumber, param('param_asw_database_column_customerlang')));
-echo $this->bootstrap->heading(1, $this->siebel->getLang('contactslist'), utf8_encode($customerName).' | '.$customernumber.' | '.$customerLang, '<a class="backbutton" title="Go back" href="'.site_url('contacts/').'"><span><i class="icon-chevron-left"></i></span></a> '); 
+echo $this->bootstrap->heading(1, $this->siebel->getLang('contactslist'), utf8_encode($customerName).' | '.$customernumber.' | '.$customerLang, '<a class="backbutton" title="Go back" href="'.site_url('dashboard/customer/'.$customernumber).'"><span><i class="icon-chevron-left"></i></span></a> '); 
 
 if(empty($contacts))
 {

@@ -1,5 +1,5 @@
 <?php 
-echo $this->bootstrap->heading(1, $this->siebel->getLang('edit_contact'), $contact[param('param_asw_database_column_contact_name')], '<a class="backbutton" title="Go back" href="'.site_url('contacts/customer/'.$customernumber).'"><span><i class="icon-chevron-left"></i></span></a> '); 
+echo $this->bootstrap->heading(1, $this->siebel->getLang('edit_contact'), $contact[param('param_asw_database_column_contact_name')], '<a class="backbutton" title="Go back" href="'.site_url('dashboard/customer/'.$customernumber).'"><span><i class="icon-chevron-left"></i></span></a> '); 
 echo form_open(current_url(), $form_attributes);
 echo form_input($REIDNO);
 echo form_input($RECUID);

@@ -45,7 +45,7 @@ class dashboard extends CI_Controller {
 		);
 		$data['widgets'] = $this->siebel->getWidgets($widgetsModifications);
 		$data['userDashboard'] = $this->siebel->getUserDashboard();
-		$data['pageclass'] = 'bg-graybright';
+		$data['pageclass'] = 'bg-graybright dashboard';
 		
 		// Load the general view
 		$data['view'] = 'dashboard/index';
