@@ -45,45 +45,45 @@ $config['param_default_database_dbdriver'] = 'mysql';
 $config['param_default_database_dbprefix'] = '';
 
 // Contact database parameters 
-$config['param_contact_database_host'] = 'remotehost';
+$config['param_contact_database_host'] = 'localhost';
 $config['param_contact_database_username'] = 'root';
 $config['param_contact_database_password'] = '';
-$config['param_contact_database_database'] = 'remoteDb';
-$config['param_contact_database_dbdriver'] = 'odbc';
+$config['param_contact_database_database'] = 'siebel';
+$config['param_contact_database_dbdriver'] = 'mysql';
 $config['param_contact_database_dbprefix'] = '';
 
 // ASW database parameters 
-$config['param_asw_database_host'] = 'remotehost';
+$config['param_asw_database_host'] = 'localhost';
 $config['param_asw_database_username'] = 'root';
 $config['param_asw_database_password'] = '';
-$config['param_asw_database_database'] = 'remoteDb';
-$config['param_asw_database_dbdriver'] = 'odbc';
+$config['param_asw_database_database'] = 'siebel';
+$config['param_asw_database_dbdriver'] = 'mysql';
 $config['param_asw_database_dbprefix'] = '';
 
-$config['param_asw_database_table_customer'] = '';
-	$config['param_asw_database_column_customername'] = '';
-	$config['param_asw_database_column_customerinternalname'] = '';
-	$config['param_asw_database_column_customernumber'] = '';
-	$config['param_asw_database_column_customernumber_prefix'] = '';
-	$config['param_asw_database_column_customerlang'] = '';
-	$config['param_asw_database_column_customer_adress1'] = '';
-	$config['param_asw_database_column_customer_adress2'] = '';
-	$config['param_asw_database_column_customer_adress3'] = '';
-	$config['param_asw_database_column_customer_postalcode'] = '';
-	$config['param_asw_database_column_customer_city'] = '';
-	$config['param_asw_database_column_customer_state'] = '';
-	$config['param_asw_database_column_customer_state_active'] = '';
+$config['param_asw_database_table_customer'] = 'customers';
+	$config['param_asw_database_column_customername'] = 'customername';
+	$config['param_asw_database_column_customerinternalname'] = 'customerinternalname';
+	$config['param_asw_database_column_customernumber'] = 'customernumber';
+	$config['param_asw_database_column_customernumber_prefix'] = 'mb';
+	$config['param_asw_database_column_customerlang'] = 'customerlang';
+	$config['param_asw_database_column_customer_adress1'] = 'adress1';
+	$config['param_asw_database_column_customer_adress2'] = 'adress2';
+	$config['param_asw_database_column_customer_adress3'] = 'adress3';
+	$config['param_asw_database_column_customer_postalcode'] = 'postalcode';
+	$config['param_asw_database_column_customer_city'] = 'city';
+	$config['param_asw_database_column_customer_state'] = 'state';
+	$config['param_asw_database_column_customer_state_active'] = 'D';
 
-$config['param_asw_database_table_deliveryaddress'] = '';
-	$config['param_asw_database_column_deliveryaddress_cuno'] = '';
-	$config['param_asw_database_column_deliveryaddress_id'] = '';
-	$config['param_asw_database_column_deliveryaddress_name'] = '';
-	$config['param_asw_database_column_deliveryaddress_ad1'] = '';
-	$config['param_asw_database_column_deliveryaddress_ad2'] = '';
-	$config['param_asw_database_column_deliveryaddress_ad3'] = '';
-	$config['param_asw_database_column_deliveryaddress_pc'] = '';
-	$config['param_asw_database_column_deliveryaddress_city'] = '';
-	$config['param_asw_database_column_deliveryaddress_country'] = '';
+$config['param_asw_database_table_deliveryaddress'] = 'deliveryaddresses';
+	$config['param_asw_database_column_deliveryaddress_cuno'] = 'customernumber';
+	$config['param_asw_database_column_deliveryaddress_id'] = 'id';
+	$config['param_asw_database_column_deliveryaddress_name'] = 'name';
+	$config['param_asw_database_column_deliveryaddress_ad1'] = 'adress1';
+	$config['param_asw_database_column_deliveryaddress_ad2'] = 'adress2';
+	$config['param_asw_database_column_deliveryaddress_ad3'] = 'adress3';
+	$config['param_asw_database_column_deliveryaddress_pc'] = 'postalcode';
+	$config['param_asw_database_column_deliveryaddress_city'] = 'city';
+	$config['param_asw_database_column_deliveryaddress_country'] = 'country';
 	
 $config['param_asw_database_table_salesorderheader'] = '';
 	$config['param_asw_database_column_soh_salesordernumber'] = '';
@@ -134,22 +134,22 @@ $config['param_asw_database_table_transporttime'] = '';
 	$config['param_asw_database_column_trt_date'] = '';
 
 /* Contact database */
-$config['param_asw_database_table_contact'] = '';
-	$config['param_asw_database_column_contact_id'] = '';
-	$config['param_asw_database_column_contact_customernumber'] = '';
-	$config['param_asw_database_column_contact_name'] = '';
-	$config['param_asw_database_column_contact_email'] = '';
-	$config['param_asw_database_column_contact_fax'] = '';
-	$config['param_asw_database_column_contact_phone'] = '';
-	$config['param_asw_database_column_contact_customerid'] = '';
-	$config['param_asw_database_column_contact_general'] = '';
-	$config['param_asw_database_column_contact_billing'] = '';
-	$config['param_asw_database_column_contact_order'] = '';
-	$config['param_asw_database_column_contact_purchase'] = '';
-	$config['param_asw_database_column_contact_transport'] = '';
-	$config['param_asw_database_column_contact_packing'] = '';
-	$config['param_asw_database_column_contact_quality'] = '';
-	$config['param_asw_database_column_contact_state'] = '';
+$config['param_asw_database_table_contact'] = 'contacts';
+	$config['param_asw_database_column_contact_id'] = 'id';
+	$config['param_asw_database_column_contact_customernumber'] = 'customernumber';
+	$config['param_asw_database_column_contact_name'] = 'name';
+	$config['param_asw_database_column_contact_email'] = 'email';
+	$config['param_asw_database_column_contact_fax'] = 'fax';
+	$config['param_asw_database_column_contact_phone'] = 'phone';
+	$config['param_asw_database_column_contact_customerid'] = 'customerid';
+	$config['param_asw_database_column_contact_general'] = 'general';
+	$config['param_asw_database_column_contact_billing'] = 'billing';
+	$config['param_asw_database_column_contact_order'] = 'order';
+	$config['param_asw_database_column_contact_purchase'] = 'purchase';
+	$config['param_asw_database_column_contact_transport'] = 'transport';
+	$config['param_asw_database_column_contact_packing'] = 'packing';
+	$config['param_asw_database_column_contact_quality'] = 'quality';
+	$config['param_asw_database_column_contact_state'] = 'state';
 	
 	
 	

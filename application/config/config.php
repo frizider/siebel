@@ -15,7 +15,9 @@
 |
 */
 
-$config['base_url'] = BASE_URL;
+//$config['base_url'] = BASE_URL;
+$config['base_url'] = (isset($_SERVER['HTTPS']) ? "https://" : "http://") . $_SERVER['HTTP_HOST'] . '/' . ROOT . '/';
+
 
 $config['appversion'] = 'Beta 1.0';
 $config['devmode'] = 1;
