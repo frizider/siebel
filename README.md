@@ -1,6 +1,6 @@
 #Siebel
 
-An intuitive CRM application based on CodeIgniter PHP framework.
+A CRM application based on CodeIgniter PHP framework.
 
 ## Install
 
