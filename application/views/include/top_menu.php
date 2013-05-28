@@ -50,7 +50,7 @@
 					?>
 				</ul>
 				<form class="navbar-search pull-right" action="<?php echo base_url() ?>" method="post">
-					<input type="text" name="search_customer" class="search-query span2 search_customer" placeholder="Klant...">
+					<input type="text" name="search_customer" id="search" class="search-query span2 search_customer" placeholder="Klant...">
 				</form>				
 				<?php if($this->config->item('devmode') != 0 && $this->ion_auth->is_admin()) { ?>
 				

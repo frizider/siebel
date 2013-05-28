@@ -1,30 +1,6 @@
 
 <?php echo $this->bootstrap->heading(1, $this->siebel->getLang('contactslist')); ?>
 
-<div class="row">
-	
-	<div class="span12">
-		
-			<?= form_open(current_url(), array('class' => 'subnav')); ?>
-
-				<ul class="nav nav-pills">
-
-					<li class="span6">
-						<p><input name="search_customer" class="span5 search_customer" placeholder="Klant..."></p>
-					</li>
-
-					<li class="float-right align-right">
-						<p><span class="btn btn-small btn-primary search submit"><i class="icon-search icon-white"></i> <?php echo $this->siebel->getLang('search') ?></span></p>
-					</li>
-
-				</ul>
-
-			</form>
-	
-	</div> <!-- End span12 -->
-	
-</div> <!-- end row -->
-
 <div class="container list list-striped">
 
 <?php foreach($customers as $customer) { 

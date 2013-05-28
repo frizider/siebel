@@ -43,7 +43,6 @@ define('FOPEN_READ_WRITE_CREATE_STRICT',		'x+b');
 |--------------------------------------------------------------------------
 */
 
-/*
 if(isset($_SERVER['HTTP_HOST']))
   {
     $site_url = isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) == 'on' ? 'https' : 'http';
@@ -68,8 +67,6 @@ define('APPPATH_URI', BASE_URI.APPPATH);
  
   // We dont need these variables any more
 unset($site_uri, $site_url);
- * 
- */
 
 /* End of file constants.php */
 /* Location: ./application/config/constants.php */
