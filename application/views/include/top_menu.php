@@ -52,28 +52,33 @@
 				<form class="navbar-search pull-right" action="<?php echo base_url() ?>" method="post">
 					<input type="text" name="search_customer" id="search" class="search-query span2 search_customer" placeholder="Klant...">
 				</form>				
+
 				<?php if($this->config->item('devmode') != 0 && $this->ion_auth->is_admin()) { ?>
-				
 				<ul class="nav pull-right">
 					<li class="dropdown">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown"> Bootstrap <b class="caret"></b></a>
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown"> Diamond <b class="caret"></b></a>
 						<ul class="dropdown-menu">
 							<li <?php if($current_page=="index"){echo'class="active"';} ?>>
-								<?php echo anchor('twitterbootstrap/scaffolding', 'Scaffolding', 'title="Go to Scaffolding"'); ?>
+								<?php echo anchor('diamond/grid', 'Grid', 'title="Go to Scaffolding"'); ?>
 							</li>
 							<li <?php if($current_page=="base_css"){echo'class="active"';} ?>>
-								<?php echo anchor('twitterbootstrap/base', 'Base CSS', 'title="Go to Base CSS"'); ?>
+								<?php echo anchor('diamond/base', 'Base CSS', 'title="Go to Base CSS"'); ?>
 							</li>
 							<li <?php if($current_page=="components"){echo'class="active"';} ?>>
-								<?php echo anchor('twitterbootstrap/components', 'Components', 'title="Go to Components"'); ?>
+								<?php echo anchor('diamond/components', 'Components', 'title="Go to Components"'); ?>
+							</li>
+							<li <?php if($current_page=="components"){echo'class="active"';} ?>>
+								<?php echo anchor('diamond/buttons', 'Buttons', 'title="Go to Components"'); ?>
+							</li>
+							<li <?php if($current_page=="components"){echo'class="active"';} ?>>
+								<?php echo anchor('diamond/icons', 'Icons', 'title="Go to Components"'); ?>
 							</li>
 							<li <?php if($current_page=="javascript"){echo'class="active"';} ?>>
-								<?php echo anchor('twitterbootstrap/javascript', 'Javascript', 'title="Go to Javascript"'); ?>
+								<?php echo anchor('diamond/javascript', 'Javascript', 'title="Go to Javascript"'); ?>
 							</li>
 						</ul>
 					</li>
 				</ul>
-				
 				<?php } ?>
 				
 			</div>

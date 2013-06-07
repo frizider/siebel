@@ -1,0 +1,91 @@
+/*
+ * Thanks to HUGO GIRAUDEL http://hugogiraudel.com
+*/
+
+/* Stylesheet for loading */
+
+.loading {
+	position: fixed;
+	display: block;
+	height: 100%;
+	width: 100%;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: @loadingZindex;
+	background: @loadingBackground;
+}
+
+.loading .bokeh {
+	font-size: 100px;
+    width: 1em;
+    height: 1em;
+    position: relative;
+    margin: 100px auto;
+    .border-radius(50%);
+    list-style: none;
+}
+
+.loading .bokeh li {
+    position: absolute;
+    width: .2em;
+    height: .2em;
+    .border-radius(50%);
+}
+
+.loading .bokeh li:nth-child(1) {
+    left: 50%;
+    top: 0;
+    margin: 0 0 0 -.1em;
+    background: @loadingBulletColor_1;
+	.origin(50%, 250%);
+    .animation(rota 1.13s linear infinite);
+}
+
+.loading .bokeh li:nth-child(2) {
+    top: 50%; 
+    right: 0;
+    margin: -.1em 0 0 0;
+    background: @loadingBulletColor_2;
+	.origin(-150%, 50%);
+    .animation(rota 1.86s linear infinite);
+}
+
+.loading .bokeh li:nth-child(3) {
+    left: 50%; 
+    bottom: 0;
+    margin: 0 0 0 -.1em;
+    background: @loadingBulletColor_3;
+	.origin(50%, -150%);
+    .animation(rota 1.45s linear infinite);
+}
+
+.loading .bokeh li:nth-child(4) {
+    top: 50%; 
+    left: 0;
+    margin: -.1em 0 0 0;
+    background: @loadingBulletColor_4;
+	.origin(250%, 50%);
+    .animation(rota 1.72s linear infinite);
+}
+
+@-webkit-keyframes rota {
+    to { -webkit-transform: rotate(360deg); }
+}
+
+@-moz-keyframes rota {
+    to { -moz-transform: rotate(360deg); }
+}
+
+@-ms-keyframes rota {
+    to { -ms-transform: rotate(360deg); }
+}
+
+@-o-keyframes rota {
+    to { -o-transform: rotate(360deg); }
+}
+
+@keyframes rota {
+    to { transform: rotate(360deg); }
+}

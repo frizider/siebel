@@ -43,7 +43,7 @@
 					<div class="span2">
 						<p><?php echo $day_delivery ?></p>
 					</div>
-					<div class="align-right tools">
+					<div class="text-right tools">
 						<p>
 							<a href="<?php echo site_url($boxId.'/edit/'. $customernumber .'/' .$deliveryday['address_id']); ?>" class="edit"><i class="icon-pencil"></i></a>
 						</p>

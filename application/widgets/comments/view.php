@@ -39,7 +39,7 @@
 											<?php if(!empty($item->global)) { echo '<i class="icon-random icon-white"></i>'; } ?>
 										</p>
 									</div>
-									<div class="float-right align-right tools">
+									<div class="pull-right text-right tools">
 										<p><a href="<?php echo site_url($boxId.'/customer/'.$customernumber.'/'. $item->id); ?>" class="edit"><i class="icon-pencil"></i></a></p>
 									</div>
 								</div>

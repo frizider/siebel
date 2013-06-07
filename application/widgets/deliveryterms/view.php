@@ -38,7 +38,7 @@
 							?>
 						</p>
 					</div>
-					<div class="align-right tools">
+					<div class="text-right tools">
 						<p>
 							<a href="<?php echo site_url($boxId.'/customer/'.$customernumber.'/'. $item->id); ?>" class="edit"><i class="icon-pencil"></i></a>
 						</p>

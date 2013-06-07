@@ -29,8 +29,8 @@
 					</div>
 					<div class="span3">
 					<p>
-						T: <?php echo trim($contact[param('param_asw_database_column_contact_phone')]) ?><br/>
-						F: <?php echo trim($contact[param('param_asw_database_column_contact_fax')]) ?>
+						<i class="icon-phone" title="<?php echo ucfirst($this->siebel->getLang('phone')); ?>"></i> <?php echo trim($contact[param('param_asw_database_column_contact_phone')]) ?><br/>
+						<i class="icon-print" title="<?php echo ucfirst($this->siebel->getLang('fax')); ?>"></i> <?php echo trim($contact[param('param_asw_database_column_contact_fax')]) ?>
 					</p>
 					</div>
 					<div class="span3">
@@ -48,7 +48,7 @@
 
 						?></ul> <br/></p>
 					</div>
-					<div class="align-right tools">
+					<div class="text-right tools">
 						<p>
 							<a href="mailto:<?php echo trim($contact[param('param_asw_database_column_contact_email')]) ?>" class="email"><i class="icon-envelope"></i></a>
 							<a href="<?php echo site_url($boxId."/customer/".$customernumber.'/'.trim($contact[param('param_asw_database_column_contact_id')])); ?>" class="edit"><i class="icon-pencil"></i></a>

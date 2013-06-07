@@ -1,0 +1,115 @@
+.avatar {
+	.box-sizing(border-box);
+	display: block;
+	background-color: @btnPrimaryBackground;
+	border: 1px solid @btnPrimaryBackgroundHighlight;
+	.box-shadow(0 0 0 1px @grayLight);
+	color: @white;
+	text-align: center;
+	vertical-align: middle;
+	font-size: 1.4em;
+
+	&.avatar-primary {
+		background-color: @btnPrimaryBackground;
+		border-color: @btnPrimaryBackgroundHighlight;
+	}
+	&.avatar-info {
+		background-color: @btnInfoBackground;
+		border-color: @btnInfoBackgroundHighlight;
+	}
+	&.avatar-success {
+		background-color: @btnSuccessBackground;
+		border-color: @btnSuccessBackgroundHighlight;
+	}
+	&.avatar-warning {
+		background-color: @btnWarningBackground;
+		border-color: @btnWarningBackgroundHighlight;
+	}
+	&.avatar-danger {
+		background-color: @btnDangerBackground;
+		border-color: @btnDangerBackgroundHighlight;
+	}
+	&.avatar-inverse {
+		background-color: @btnInverseBackground;
+		border-color: @btnInverseBackgroundHighlight;
+	}
+
+	&.inline {
+		display: inline-block;
+		*display: inline;
+	}
+}
+
+.avatar-inner {
+	display: table-cell;
+	vertical-align: middle;
+}
+
+.avatar-inner, 
+.avatar, 
+.avatar img {
+	.border-radius(3px);
+}
+
+.avatar img {
+	display: block;
+	margin: 0 auto;
+	height: 100%;
+	width: 100%;
+}
+
+
+
+/* Sizes */
+.avatar-xsmall, 
+.avatar-xsmall .avatar-inner, 
+.avatar-xsmall .avatar-inner img {
+	height: 16px;
+	width: 16px;
+	font-size: 0.8em;
+	line-height: 1em;
+}
+.avatar-small, 
+.avatar-small .avatar-inner, 
+.avatar-small .avatar-inner img {
+	height: 24px;
+	width: 24px;
+	font-size: 1.1em;
+	line-height: 1em;
+}
+.avatar-medium, 
+.avatar-medium .avatar-inner, 
+.avatar-medium .avatar-inner img {
+	height: 32px;
+	width: 32px;
+	font-size: 1.3em;
+	line-height: 1em;
+}
+.avatar-large, 
+.avatar-large .avatar-inner, 
+.avatar-large .avatar-inner img {
+	height: 48px;
+	width: 48px;
+	font-size: 1.65em;
+	line-height: 1em;
+}
+.avatar-xlarge, 
+.avatar-xlarge .avatar-inner, 
+.avatar-xlarge .avatar-inner img {
+	height: 96px;
+	width: 96px;
+	.border-radius(5px);
+	font-size: 2.4em;
+	line-height: 1em;
+}
+
+.avatar.avatar-rounded, 
+.avatar.avatar-rounded .avatar-inner, 
+.avatar.avatar-rounded img, 
+.avatar-xlarge.avatar-rounded, 
+.avatar-xlarge.avatar-rounded .avatar-inner, 
+.avatar-xlarge.avatar-rounded img, 
+.avatar-xlarge.avatar-rounded i {
+	.border-radius(100%);
+}
+

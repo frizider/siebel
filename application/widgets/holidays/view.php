@@ -33,12 +33,12 @@
 						<p>
 							<?php if(!empty($holiday->comment) || $holiday->comment != '')
 							{
-								echo '<a href="#" class="comment" rel="tooltip" title="'.$holiday->comment.'"><i class="icon-comment"></i></a>';
+								echo ucfirst($holiday->comment);
 							};
 							?>
 						</p>
 					</div>
-					<div class="align-right tools">
+					<div class="text-right tools">
 						<p>
 							<a href="<?php echo site_url($boxId.'/customer/'.$customernumber.'/'. $holiday->id); ?>" class="edit"><i class="icon-pencil"></i></a>
 						</p>

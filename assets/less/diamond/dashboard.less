@@ -1,0 +1,106 @@
+/* Dashboard styling
+-------------------------------------------------- */
+// boxes, widgets and sorting
+.column > .row-fluid, 
+.fluid .column > .row {
+	min-height:50px;
+}
+
+.ui-placeholder {
+	background: lighten(@yellow, 22%);
+	border: 1px dashed lighten(@yellow, 5%);
+	.box-shadow(2px 2px 5px #eee);
+	min-height:40px;
+	margin-top:40px;
+	margin-bottom:10px;
+	margin-left:12px;
+	//width:100%;
+}
+
+.widget {
+	.transition(opacity 0.5s ease-out);
+	margin-bottom:10px;
+}
+
+.widget h3 {
+	color: darken(@grayLight, 10%);
+}
+
+.widget .header .tools a, 
+.widget .list .row-fluid .tools a, 
+.fluid .widget .list .row .tools a {
+	.transition(all 0.3s ease-out);
+	.opacity(0);
+	font-size: @baseFontSize;
+	color: @black;
+	text-decoration: none;
+}
+
+.widget .header:hover .tools a, 
+.widget .list .row-fluid:hover .tools a, 
+.fluid .widget .list .row:hover .tools a {
+	.opacity(20);
+}
+
+.widget .header .tools a:hover, 
+.widget .list .row-fluid .tools a:hover, 
+.fluid .widget .list .row .tools a:hover {
+	.opacity(65);
+}
+
+.widget .content {
+	padding:12px;
+	background:@white;
+	border-top-width: 2px;
+	border-top-style: solid;
+}
+
+.widget.ui-sortable-helper .content {
+	.transition(all 0.25s ease-out);
+	.box-shadow(2px 2px 5px #ccc);
+}
+
+#dashboard .nav {
+	margin-bottom: 0;
+}
+
+#dashboard .nav > li > a, 
+#dashboard .nav > li > a:hover, 
+#dashboard .nav > li > a:focus {
+	color: darken(@grayLight, 10%);
+	font-weight: bold;
+	background: transparent;
+}
+
+#dashboard .list > .row-fluid, 
+.fluid #dashboard .list > .row, 
+#dashboard.fluid .list > .row {
+	padding: 8px 0;
+}
+
+#dashboard .commentlist .list > .row-fluid, 
+.fluid #dashboard .commentlist .list > .row, 
+#dashboard.fluid .commentlist .list > .row {
+	padding: 0;
+}
+
+#dashboard .list > .row-fluid:nth-child(odd), 
+.fluid #dashboard .list > .row:nth-child(odd), 
+#dashboard.fluid .list > .row:nth-child(odd) {
+	background-color: lighten(@grayLighter, 2%);
+}
+
+#dashboard .list > .row-fluid:hover, 
+.fluid #dashboard .list > .row:hover, 
+#dashboard.fluid .list > .row:hover {
+	background-color: @tableBackgroundHover;
+}
+
+#dashboard .list .line {
+	border-bottom: 1px dotted @grayLight;
+}
+
+#dashboard .list .line:hover {
+	.transition(all 0.5s ease-out);
+	background: @grayLighter;
+}

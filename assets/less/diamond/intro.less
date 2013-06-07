@@ -1,0 +1,190 @@
+.introjs-overlay {
+	position: absolute;
+	z-index: 999999;
+	background-color: @introOverlayBackgroundColor;
+	opacity: 0;
+	.transition(all 0.3s ease-out);
+}
+
+.introjs-fixParent {
+	z-index: auto !important;
+}
+
+.introjs-showElement {
+	z-index: 9999999 !important;
+}
+
+.introjs-relativePosition {
+	position: relative;
+}
+
+.introjs-helperLayer {
+	position: absolute;
+	z-index: 9999998;
+	background-color: @introHelperBackgroundColor;
+	border: 1px solid @introHelperBorderColor;
+	border-radius: 4px;
+	.box-shadow(0 2px 15px @introHelperShadow);
+.transition(all 0.3s ease-out);
+}
+
+.introjs-helperNumberLayer {
+	position: absolute;
+	top: -16px;
+	left: -16px;
+	z-index: 9999999999 !important;
+	padding: 2px;
+	font-family: @introHelperFontFamily;
+	font-size: 13px;
+	font-weight: bold;
+	color: @introHelperColor;
+	text-align: center;
+	text-shadow: 1px 1px 1px rgba(0,0,0,.3);
+	#gradient > .vertical(@introHelperPrimaryColor, @introHelperSecondaryColor);
+	width: 20px;
+	height:20px;
+	line-height: 20px;
+	border: 3px solid white;
+	.border-radius(50%);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='@introHelperPrimaryColor', endColorstr='@introHelperSecondaryColor', GradientType=0); /* IE6-9 */ 
+	filter: progid:DXImageTransform.Microsoft.Shadow(direction=135, strength=2, color=@introHelperSecondaryColor); /* IE10 text shadows */
+	.box-shadow(0 2px 5px @introHelperShadow);
+}
+
+.introjs-arrow {
+	border: 5px solid @introArrowColor;
+	content:'';
+	position: absolute;
+}
+.introjs-arrow.top {
+	top: -10px;
+	border-top-color:transparent;
+	border-right-color:transparent;
+	border-bottom-color:@introArrowColor;
+	border-left-color:transparent;
+}
+.introjs-arrow.right {
+	right: -10px;
+	top: 10px;
+	border-top-color:transparent;
+	border-right-color:transparent;
+	border-bottom-color:transparent;
+	border-left-color:@introArrowColor;
+}
+.introjs-arrow.bottom {
+	bottom: -10px;
+	border-top-color:@introArrowColor;
+	border-right-color:transparent;
+	border-bottom-color:transparent;
+	border-left-color:transparent;
+}
+.introjs-arrow.left {
+	left: -10px;
+	top: 10px;
+	border-top-color:transparent;
+	border-right-color:@introArrowColor;
+	border-bottom-color:transparent;
+	border-left-color:transparent;
+}
+
+.introjs-tooltip {
+	position: absolute;
+	padding: 10px;
+	background-color: @introTooltipBackgroundColor;
+	min-width: 200px;
+	max-width: 300px;
+	.border-radius(@introTootltipRadius);
+	.box-shadow(0 1px 10px @introTootltipShadow);
+	.transition(opacity 0.1s ease-out);
+}
+
+.introjs-tooltipbuttons {
+	text-align: right;
+}
+
+/* 
+ Buttons style by http://nicolasgallagher.com/lab/css3-github-buttons/ 
+ Changed by Afshin Mehrabani
+*/
+.introjs-button {
+	display: inline-block;
+	.ie7-inline-block();
+	margin-bottom: 0; // For input.btn
+	font-size: @baseFontSize;
+	line-height: @baseLineHeight;
+	text-align: center;
+	vertical-align: middle;
+	cursor: pointer;
+	.buttonBackground(@btnBackground, @btnBackgroundHighlight, @grayDark, 0 1px 1px rgba(255,255,255,.75));
+	border: 1px solid @btnBorder;
+	*border: 0; // Remove the border to prevent IE7's black border on input:focus
+	border-bottom-color: darken(@btnBorder, 10%);
+	.border-radius(@baseBorderRadius);
+	.ie7-restore-left-whitespace(); // Give IE7 some love
+	.box-shadow(~"inset 0 1px 0 rgba(255,255,255,.2), 0 1px 2px rgba(0,0,0,.05)");
+	position: relative;
+	overflow: visible;
+	padding: 0.3em 0.8em;
+	text-decoration: none;
+	white-space: nowrap;
+	// Hover/focus state
+	&:hover,
+	&:focus {
+	  color: @grayDark;
+	  text-decoration: none;
+	  background-position: 0 -15px;
+
+	  // transition is only when going to hover/focus, otherwise the background
+	  // behind the gradient (there for IE<=9 fallback) gets mismatched
+	  .transition(background-position .1s linear);
+	}
+
+	// Focus state for keyboard and accessibility
+	&:focus {
+	  .tab-focus();
+	}
+
+	// Active state
+	&.active,
+	&:active {
+	  background-image: none;
+	  outline: 0;
+	  .box-shadow(~"inset 0 2px 4px rgba(0,0,0,.15), 0 1px 2px rgba(0,0,0,.05)");
+	}
+
+	// Disabled state
+	&.disabled,
+	&[disabled] {
+	  cursor: default;
+	  background-image: none;
+	  .opacity(65);
+	  .box-shadow(none);
+	}
+
+	  /* overrides extra padding on button elements in Firefox */
+	  &:-moz-focus-inner {
+		padding: 0;
+		border: 0;
+	  }
+
+}
+
+.introjs-skipbutton {
+	margin-right: 5px;
+}
+
+.introjs-prevbutton {
+	.border-radius(0.2em 0 0 0.2em);
+	border-right: none;
+}
+
+.introjs-nextbutton {
+	.border-radius(0 0.2em 0.2em 0);
+}
+
+.introjs-disabled, .introjs-disabled:hover, .introjs-disabled:focus {
+    cursor: default;
+    background-image: none;
+    .opacity(65);
+    .box-shadow(none);
+}

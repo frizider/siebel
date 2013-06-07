@@ -1,0 +1,59 @@
+/* Drag and Drop Sortabel Formulas */
+#draggable, #sortable { 
+	list-style-type: none; 
+	margin: 0 0 20px; 
+	padding: 20px; 
+}
+#sortable { 
+	height: 100px;
+	background: lighten(@grayLighter, 5%);
+}
+#sortable.ui-state-hover { 
+	background: lighten(@yellow, 20%);
+}
+#sortable li { 
+	margin: 3px;
+	padding: 0.4em;
+	font-size: 1.4em;
+	height: 18px;
+	float: left;
+	background: @grayLighter;
+	border: 2px dashed @grayLight;
+	text-align: center;
+	min-width: 50px;
+  }
+#sortable li.ui-state-highlight {
+	background: lighten(@yellow, 20%);
+	border: 2px dashed @yellow;
+}
+
+#trash {
+	.opacity(0);
+	background: @grayLighter;
+	border: 2px dashed @grayLight;
+	color: lighten(@gray, 20%);
+	cursor: default;
+	display: inline-block;
+	padding: 4px 12px;
+	margin-bottom: 0;
+	font-size: 13px;
+	line-height: 20px;
+	text-align: center;
+	vertical-align: middle;
+	.border-radius(3px);
+	.transition(all 0.3s ease-out);
+}
+
+#trash.trash-active {
+	.opacity(100);
+}
+
+#trash.trash-hover {
+	background: lighten(@red, 20%);
+	border: 2px dashed @red;
+	color: @white;
+}
+
+.formula-box {
+	margin-right: 12px;
+}

@@ -1,3 +1,6 @@
+> #### LOOK OUT
+> This project is "work in progress"!
+
 #Siebel
 
 A CRM application based on CodeIgniter PHP framework.

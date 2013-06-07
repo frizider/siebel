@@ -40,7 +40,7 @@
 
 $route['default_controller'] = "contactcontroller";
 $route['404_override'] = '';
-$route['twitterbootstrap/:any'] = "twitterbootstrap";
+$route['diamond/:any'] = "diamond";
 $route['contacts'] = "contactcontroller";
 $route['contacts/edit/:any'] = "contactcontroller/edit";
 $route['contacts/customer'] = "contactcontroller/customer";

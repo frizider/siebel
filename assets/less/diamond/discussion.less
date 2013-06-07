@@ -1,0 +1,85 @@
+.discussion-bubble {
+	margin: 20px 0;
+}
+
+.discussion-bubble .avatar {
+	position: relative;
+	float: left;
+	margin-top:8px;
+}
+
+.discussion-bubble.mini-discussion .avatar {
+	margin-top:0;
+	margin-left: 8px;
+}
+
+.discussion-header {
+	position: relative;
+	margin-left: 50px;
+	height: 32px;
+	line-height: 32px;
+}
+
+.discussion-bubble .discussion-content .discussion-header {
+	position: relative;
+	margin-left: 0;
+	height: 32px;
+	line-height: 32px;
+
+	padding: 0 10px 0 6px;
+
+	.gradientBar(@discussionHeaderStartColor, @discussionHeaderEndColor, @discussionHeaderTextColor, @discussionHeaderTextShadow);
+	*background-color: @discussionHeaderEndColor;
+	.reset-filter();
+	
+	&:before {
+		font-family: "FontAwesome";
+		content: "\f075";
+		color: @discussionTimeColor;
+		margin-right: 7px;
+	}
+}
+
+.discussion-bubble .discussion-content {
+	position: relative;
+	margin-left: 50px;
+	padding: 3px;
+	background: @discussionBubbleBackgroundColor;
+	.border-radius(@discussionBubbleBorderRadius);
+	&:before {
+		content: "";
+		display: block;
+		height: 0;
+		width: 0;
+		border: 10px solid @discussionBubbleBorderColor;
+		border-width: 10px 10px 10px 0;
+		border-color: fade(@white, 0%) @discussionBubbleBorderColor fade(@white, 0%) fade(@white, 0%);
+		position: absolute;
+		left: -10px;
+		top: 15px;
+	}
+}
+
+.discussion-bubble.mini-discussion .discussion-content {
+	clear: both;
+	margin-left: 0;
+	top: 15px;
+	&:before {
+		border-width: 0 10px 10px 10px;
+		border-color: fade(@white, 0%) fade(@white, 0%) @discussionBubbleBorderColor fade(@white, 0%);
+		position: absolute;
+		top: -10px;
+		left: 15px;
+	}
+}
+
+.discussion-inner {
+	min-height: 32px;
+	border: 1px solid @discussionInnerBorderColor;
+	background-color: @discussionInnerBackgroundColor;
+	padding: 10px;
+}
+
+.discussion-bubble time {
+	color: @discussionTimeColor;
+}

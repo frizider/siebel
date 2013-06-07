@@ -1,0 +1,982 @@
+@import "bootstrap/bootstrap.less";
+@import "docs.less";
+@import "datepicker.less";
+
+/* General */
+body.dashboard {
+	background: url('../img/master_bg.png') 0 0 repeat lighten(@grayLighter, 2%);
+}
+.first {
+	margin-left: 0;
+}
+
+.last {
+	margin-right: 0;
+}
+
+.align-right {
+	text-align:right !important;
+}
+
+.float-right {
+	float:right !important;
+}
+
+.align-left {
+	text-align:left !important;
+}
+
+.float-left {
+	float:left !important;
+}
+
+.inline {
+	display: inline-block;
+}
+
+.separator > div {
+	border-bottom: 1px solid @grayLight;
+}
+
+
+/* Backbutton in heading */
+h1 a.backbutton {
+	float:left;
+}
+
+h1 a.backbutton span {
+	display: block;
+	height: 43px;
+	width: 20px;
+	line-height: 66px;
+	padding: 0 0 0 5px;
+	background: @white;
+	margin: 0 5px 0 0;
+}
+
+h1 a.backbutton:hover span {
+	background: @red;
+}
+
+h1 a.backbutton:hover span i {
+	background-image: url(@iconWhiteSpritePath);
+}
+
+/* Welcome */
+.welcome {
+	position: fixed;
+	top: 0;
+	width: 100%;
+}
+
+.welcome .row > div {
+	border-bottom: 1px solid @grayLight;
+}
+
+.welcome .logo span {
+	text-indent: -9999px;
+	display: block;
+	width: 300px;
+	height: 50px;
+	background: url(../img/logo_login.png) 50% 50% no-repeat;
+}
+
+.welcome .logo small {
+	line-height: 2.5em;
+}
+
+.navbar .brand {
+	background:  url(../img/logo_small.png) 20px 40% no-repeat;
+	width: 150px;
+	text-indent: -9999px;
+}
+
+
+/* Alert */
+.alert p {
+	margin: 0;
+}
+
+/* rows as list */
+.list > .row > .span12 {
+	padding: 8px 0;
+	border-bottom: 1px solid @btnBorder;
+}
+
+.list-striped > .row:nth-child(odd) > .span12 {
+	background-color: @tableBackgroundAccent;
+}
+
+.list-striped > .row > .span12:hover {
+	background-color: @tableBackgroundHover;
+}
+
+.list p, .subnav p {
+	padding: 0 10px;
+	margin: 0;
+}
+
+/* Rows as boxes */
+.boxes .box .inner {
+	position: relative;
+	padding: 20px;
+	height: 100px;
+	border: 1px solid @grayLight;
+	.box-shadow(1px 2px 2px rgba(0, 0, 0, 0.3));
+	margin-bottom: 20px;
+}
+.boxes .box .inner a.edit {
+	position: absolute;
+	bottom: 20px;
+}
+
+
+/* Login */
+a.login-logo {
+	text-indent: -9999px;
+	display: block;
+	height: 112px;
+	width: 275px;
+	background: url(../img/logo-login.png) 0 0 no-repeat;
+	margin: 0 auto;
+}
+
+.bodyGradient(@startColor, @endColor) {
+  #gradient > .vertical(@startColor, @endColor);
+  *background-color: @endColor; /* Darken IE7 buttons by default so they stand out more given they won't have borders */
+  .reset-filter();
+}
+
+body.login .body > .container {
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	padding: 0;
+	margin: 0;
+	height: 100%;
+	width: 100%;
+	.bodyGradient(@bodyBackground, #D9DFE4);
+}
+
+.loginbox {
+	display: block;
+	margin: 100px auto 20px;
+	width: 365px;
+}
+
+.loginbox form {
+	display: block;
+	margin: 20px auto;
+	background: @bodyBackground;
+	border: 1px solid @btnBorder;
+	.box-shadow(0px 2px 7px 0px rgba(0, 0, 0, 0.27));
+	padding: 30px;
+	.border-radius(@baseBorderRadius);
+}
+
+/* Subnav */
+.subnav li:first-child {
+	margin-left: 0;
+}
+
+.subnav input {
+	margin-top: 3px;
+	padding: 4px 6px;
+
+  display: inline-block;
+  height: @baseLineHeight;
+  padding: 4px 6px;
+  margin-bottom: @baseLineHeight / 2;
+  font-size: @baseFontSize;
+  line-height: @baseLineHeight;
+  color: @blue;
+  .border-radius(@inputBorderRadius);
+  vertical-align: middle;
+
+
+  background-color: transparent;
+  border: 1px solid @grayLighter;
+  .box-shadow(inset 0 1px 1px rgba(0,0,0,.075));
+  .transition(~"border linear .2s, box-shadow linear .2s");
+
+  // Focus state
+  &:focus {
+	color: @gray;
+	background-color: @inputBackground;
+    border-color: rgba(82,168,236,.8);
+    outline: 0;
+    outline: thin dotted \9; /* IE6-9 */
+    .box-shadow(~"inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(82,168,236,.6)");
+  }
+}
+
+.subnav .btn {
+	margin-top: 4px;
+}
+
+
+/* Checkbox */
+.radio-wrapper, 
+.checkbox-wrapper {
+	float: left;
+	margin-right: 5px;
+}
+
+.radio-wrapper .cb-inner, 
+.checkbox-wrapper .cb-inner {
+	display: block;
+	width: 14px;
+	heigth: 14px;
+	border: 1px solid @btnBorder;
+	background: @white;
+	padding: 0 3px;
+    .border-radius(@inputBorderRadius);
+
+	// Focus state
+	&:focus {
+		border-color: rgba(82,168,236,.8);
+		outline: 0;
+		outline: thin dotted \9; /* IE6-9 */
+		.box-shadow(~"inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(82,168,236,.6)");
+	}
+}
+
+.radio-wrapper .cb-inner {
+    .border-radius(50%);
+}
+
+.checked .radio-wrapper .cb-inner, 
+.checked .checkbox-wrapper .cb-inner {
+	background: @blue;
+}
+
+
+/*
+
+.checkbox-wrapper .cb-inner span {
+	display: block; 
+	width: 10px;
+	height: 10px;
+	margin: 0;
+    .border-radius(@inputBorderRadius);
+	background: @white;
+}
+
+.checkbox-wrapper.checked .cb-inner span, 
+.checkbox-wrapper.checked:hover .cb-inner span {
+	background: @blue;
+}
+
+.checkbox-wrapper:hover .cb-inner span {
+	background: @grayLighter;
+}
+*/
+
+
+.radio-wrapper input, 
+.checkbox-wrapper input {
+	display: none;
+}
+
+/* Form Dropdown */
+#dropdown.normal {
+	#gradient > .vertical(darken(@inputBackground, 3%), @inputBackground);
+	display: inline-block;
+	height: @baseLineHeight;
+	padding: 4px 6px;
+	margin-bottom: @baseLineHeight / 2;
+	font-size: @baseFontSize;
+	line-height: @baseLineHeight;
+	color: @gray;
+	.border-radius(@inputBorderRadius);
+	vertical-align: middle;
+	border: 1px solid @inputBorder;
+	.box-shadow(inset 0 1px 1px rgba(0,0,0,.075));
+	.transition(~"border linear .2s, box-shadow linear .2s");
+	width: 100%;
+
+	// Focus state
+	&:focus {
+		border-color: rgba(82,168,236,.8);
+		outline: 0;
+		outline: thin dotted \9; /* IE6-9 */
+		.box-shadow(~"inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(82,168,236,.6)");
+	}
+
+	@media (min-width: 1200px) {
+		margin-left: 0;
+	}
+	
+	a.dropdown-toggle {
+		display: block;
+		width: 100%;
+		text-decoration: none;
+		color: @gray;
+		.caret {
+			float:right;
+		}
+		&:hover {
+			color: @blue;
+			text-decoration: none;
+			.caret {
+				border-top-color: @blue;
+			}
+		}
+	}
+	&.open {
+		a.dropdown-toggle {
+			color: @blue;
+			.caret {
+				border-top-color: @blue;
+			}
+		}
+	}
+}
+
+ul.dropdown-menu {
+	max-height: 150px;
+	overflow-x: auto;
+}
+
+
+
+/* Autocomplete */
+ul.ui-autocomplete {
+
+}
+
+
+// The dropdown menu (ul)
+// ----------------------
+.ui-autocomplete {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: @zindexDropdown;
+  display: none; // none by default, but block on "open" of the menu
+  float: left;
+  min-width: 160px;
+  padding: 5px 0;
+  margin: 2px 0 0; // override default ul
+  list-style: none;
+  background-color: @dropdownBackground;
+  border: 1px solid #ccc; // Fallback for IE7-8
+  border: 1px solid @dropdownBorder;
+  *border-right-width: 2px;
+  *border-bottom-width: 2px;
+  .border-radius(6px);
+  .box-shadow(0 5px 10px rgba(0,0,0,.2));
+  -webkit-background-clip: padding-box;
+     -moz-background-clip: padding;
+          background-clip: padding-box;
+
+  // Aligns the dropdown menu to right
+  &.pull-right {
+    right: 0;
+    left: auto;
+  }
+
+  // Dividers (basically an hr) within the dropdown
+  .divider {
+    .nav-divider(@dropdownDividerTop, @dropdownDividerBottom);
+  }
+
+  // Links within the dropdown menu
+  > li > a {
+    display: block;
+    padding: 3px 20px;
+    clear: both;
+    font-weight: normal;
+    line-height: @baseLineHeight;
+    color: @dropdownLinkColor;
+    white-space: nowrap;
+	border-bottom: 1px solid @grayLighter;
+  }
+}
+
+// Hover/Focus state
+// -----------
+.ui-autocomplete > li > a.ui-state-hover,
+.ui-autocomplete > li > a:hover,
+.ui-autocomplete > li > a:focus {
+  text-decoration: none;
+  color: @dropdownLinkColorHover;
+  #gradient > .vertical(@dropdownLinkBackgroundHover, darken(@dropdownLinkBackgroundHover, 5%));
+}
+
+// Active state
+// ------------
+.ui-autocomplete > .active > a,
+.ui-autocomplete > .active > a:hover,
+.ui-autocomplete > .active > a:focus {
+  color: @dropdownLinkColorActive;
+  text-decoration: none;
+  outline: 0;
+  #gradient > .vertical(@dropdownLinkBackgroundActive, darken(@dropdownLinkBackgroundActive, 5%));
+}
+
+// Disabled state
+// --------------
+// Gray out text and ensure the hover/focus state remains gray
+.ui-autocomplete > .disabled > a,
+.ui-autocomplete > .disabled > a:hover,
+.ui-autocomplete > .disabled > a:focus {
+  color: @grayLight;
+}
+// Nuke hover/focus effects
+.ui-autocomplete > .disabled > a:hover,
+.ui-autocomplete > .disabled > a:focus {
+  text-decoration: none;
+  background-color: transparent;
+  background-image: none; // Remove CSS gradient
+  .reset-filter();
+  cursor: default;
+}
+
+/* Empty State */
+.empty-state .empty-img{
+	display: block;
+	width: 300px;
+	height: 130px;
+	margin: 0 auto;
+	background: url(../img/empty_state.png) 50% 50% no-repeat;
+}
+
+.empty-state .empty-txt{
+	display: block;
+	text-align: center;
+}
+
+/* New contact */
+.contactlist {
+	position: relative;
+}
+
+.remove {
+	background: @grayDark;
+	position: absolute;
+	right: -13px;
+	top: -13px;
+	.border-radius(50%);
+	display: block;
+	width: 22px;
+	height: 22px;
+	padding: 0;
+	margin: 0;
+	text-align: center;
+	line-height: 24px;
+	border: 4px solid @white;
+}
+.remove:hover{
+	background:	@red;
+}
+
+
+/* Intro JS */
+.introjs-overlay {
+  position: absolute;
+  z-index: 999999;
+  background-color: @black;
+  .opacity(0);
+  -webkit-transition: all 0.3s ease-out;
+     -moz-transition: all 0.3s ease-out;
+      -ms-transition: all 0.3s ease-out;
+       -o-transition: all 0.3s ease-out;
+          transition: all 0.3s ease-out;
+}
+
+.introjs-showElement {
+  z-index: 9999999;
+}
+
+.introjs-relativePosition {
+  position: relative;
+}
+
+.introjs-helperLayer {
+  position: absolute;
+  z-index: 9999998;
+  background-color: rgba(255,255,255,.9);
+  border: 1px solid rgba(0,0,0,.5);
+  border-radius: 4px;
+  .border-radius(@baseBorderRadius);
+  .box-shadow(0 2px 15px rgba(0,0,0,.4));
+  .transition(all 0.3s ease-out);
+}
+
+.introjs-helperNumberLayer {
+  position: absolute;
+  top: -16px;
+  left: -16px;
+  z-index: 9999999999 !important;
+  padding: 2px;
+  font-family: @baseFontFamily;
+  font-size: @baseFontSize;
+  font-weight: bold;
+  color: @white;
+  text-align: center;
+  text-shadow: 1px 1px 1px rgba(0,0,0,.3);
+  background: @orange;
+  width: 20px;
+  height:20px;
+  line-height: 20px;
+  border: 3px solid @white;
+  .border-radius(50%);
+  .box-shadow(0 2px 5px rgba(0,0,0,.4));
+}
+
+.introjs-arrow {
+  border: 5px solid @white;
+  content:'';
+  position: absolute;
+}
+.introjs-arrow.top {
+  top: -10px;
+  border-top-color:transparent;
+  border-right-color:transparent;
+  border-bottom-color:white;
+  border-left-color:transparent;
+}
+.introjs-arrow.right {
+  right: -10px;
+  top: 10px;
+  border-top-color:transparent;
+  border-right-color:transparent;
+  border-bottom-color:transparent;
+  border-left-color:white;
+}
+.introjs-arrow.bottom {
+  bottom: -10px;
+  border-top-color:white;
+  border-right-color:transparent;
+  border-bottom-color:transparent;
+  border-left-color:transparent;
+}
+.introjs-arrow.left {
+  left: -10px;
+  top: 10px;
+  border-top-color:transparent;
+  border-right-color:white;
+  border-bottom-color:transparent;
+  border-left-color:transparent;
+}
+
+.introjs-tooltip {
+  min-width: 200px;
+  position: absolute;
+  padding: 10px;
+  background-color: @white;
+  .border-radius(@baseBorderRadius);
+  .box-shadow(0 1px 10px rgba(0,0,0,.4));
+  .transition(opacity 0.1s ease-out);
+}
+
+.introjs-tooltipbuttons {
+  text-align: right;
+}
+
+/* 
+ Buttons style by http://nicolasgallagher.com/lab/css3-github-buttons/ 
+ Changed by Afshin Mehrabani
+*/
+.introjs-button {
+  position: relative;
+  overflow: visible;
+  display: inline-block;
+  padding: 0.3em 0.8em;
+  border: 1px solid @grayLight;
+  margin: 0;
+  text-decoration: none;
+  text-shadow: 1px 1px 0 @white;
+  font: 11px/normal sans-serif;
+  color: @grayDark;
+  white-space: nowrap;
+  cursor: pointer;
+  outline: none;
+  background-color: #ececec;
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#f4f4f4), to(#ececec));
+  background-image: -moz-linear-gradient(#f4f4f4, #ececec);
+  background-image: -o-linear-gradient(#f4f4f4, #ececec);
+  background-image: linear-gradient(#f4f4f4, #ececec);
+  -webkit-background-clip: padding;
+  -moz-background-clip: padding;
+  -o-background-clip: padding-box;
+  /*background-clip: padding-box;*/ /* commented out due to Opera 11.10 bug */
+  .border-radius(0.2em);
+  /* IE hacks */
+  zoom: 1;
+  *display: inline;
+  margin-top: 10px;
+}
+
+.introjs-button:hover {
+  border-color: #bcbcbc;
+  text-decoration: none; 
+  .box-shadow(0px 1px 1px #e3e3e3);
+}
+
+.introjs-button:focus,
+.introjs-button:active {
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ececec), to(#f4f4f4));
+  background-image: -moz-linear-gradient(#ececec, #f4f4f4);
+  background-image: -o-linear-gradient(#ececec, #f4f4f4);
+  background-image: linear-gradient(#ececec, #f4f4f4);
+}
+
+/* overrides extra padding on button elements in Firefox */
+.introjs-button::-moz-focus-inner {
+  padding: 0;
+  border: 0;
+}
+
+.introjs-skipbutton {
+  margin-right: 5px;
+  color: #7a7a7a;
+}
+
+.introjs-prevbutton {
+  .border-radius(0.2em 0 0 0.2em);
+  border-right: none;
+}
+
+.introjs-nextbutton {
+  .border-radius(0 0.2em 0.2em 0);
+}
+
+/* Label Generate Random Password */
+.labelRandomPassword {
+	margin-left: 10px;
+}
+
+/* Comment list */
+.commentlist p {
+	padding: 5px;
+	margin: 0;
+}
+.commentlist .priority {
+	float:left;
+	width: 36px;
+	height: 36px;
+	line-height: 36px;
+	text-align:center;
+}
+.commentlist .priority p {
+	padding: 0;
+}
+.commentlist .priority-2 {
+	background:@red;
+}
+.commentlist .priority-1 {
+	background:@orange;
+}
+
+.comment-description .inner {
+	padding: 5px 36px;
+}
+
+.comment-description p {
+	padding: 0;
+	margin: 0 0 10px;
+}
+
+/*
+@blue
+@blueDark
+@green
+@greenDark
+@yellow
+@pink
+@purple
+@fuschia
+@lila
+@gray
+*/
+
+/* Comment list colors */ 
+.commentlist.gray .comment-head {
+	background-color:@gray;
+	border-top: 1px solid darken(@gray, 5%);
+	border-bottom: 1px solid lighten(@gray, 5%);
+	color:@white;
+}
+.commentlist.gray .comment-head:hover {
+	background-color:darken(@gray, 5%);
+}
+.commentlist.gray .comment-description {
+	background-color:lighten(@gray, 20%);
+}
+
+.commentlist.lila .comment-head {
+	background-color:@lila;
+	border-top: 1px solid darken(@lila, 5%);
+	border-bottom: 1px solid lighten(@lila, 5%);
+	color:@white;
+}
+.commentlist.lila .comment-head:hover {
+	background-color:darken(@lila, 5%);
+}
+.commentlist.lila .comment-description {
+	background-color:lighten(@lila, 20%);
+}
+
+.commentlist.fuschia .comment-head {
+	background-color:@fuschia;
+	border-top: 1px solid darken(@fuschia, 5%);
+	border-bottom: 1px solid lighten(@fuschia, 5%);
+	color:@white;
+}
+.commentlist.fuschia .comment-head:hover {
+	background-color:darken(@fuschia, 5%);
+}
+.commentlist.fuschia .comment-description {
+	background-color:lighten(@fuschia, 20%);
+}
+
+.commentlist.purple .comment-head {
+	background-color:@purple;
+	border-top: 1px solid darken(@purple, 5%);
+	border-bottom: 1px solid lighten(@purple, 5%);
+	color:@white;
+}
+.commentlist.purple .comment-head:hover {
+	background-color:darken(@purple, 5%);
+}
+.commentlist.purple .comment-description {
+	background-color:lighten(@purple, 20%);
+}
+
+.commentlist.yellow .comment-head {
+	background-color:@yellow;
+	border-top: 1px solid darken(@yellow, 5%);
+	border-bottom: 1px solid lighten(@yellow, 5%);
+	color:@white;
+}
+.commentlist.yellow .comment-head:hover {
+	background-color:darken(@yellow, 5%);
+}
+.commentlist.yellow .comment-description {
+	background-color:lighten(@yellow, 20%);
+}
+
+.commentlist.greendark .comment-head {
+	background-color:@greenDark;
+	border-top: 1px solid darken(@greenDark, 5%);
+	border-bottom: 1px solid lighten(@greenDark, 5%);
+	color:@white;
+}
+.commentlist.greendark .comment-head:hover {
+	background-color:darken(@greenDark, 5%);
+}
+.commentlist.greendark .comment-description {
+	background-color:lighten(@greenDark, 20%);
+}
+
+.commentlist.green .comment-head {
+	background-color:@green;
+	border-top: 1px solid darken(@green, 5%);
+	border-bottom: 1px solid lighten(@green, 5%);
+	color:@white;
+}
+.commentlist.green .comment-head:hover {
+	background-color:darken(@green, 5%);
+}
+.commentlist.green .comment-description {
+	background-color:lighten(@green, 20%);
+}
+
+.commentlist.bluedark .comment-head {
+	background-color:@blueDark;
+	border-top: 1px solid darken(@blueDark, 5%);
+	border-bottom: 1px solid lighten(@blueDark, 5%);
+	color:@white;
+}
+.commentlist.bluedark .comment-head:hover {
+	background-color:darken(@blueDark, 5%);
+}
+.commentlist.bluedark .comment-description {
+	background-color:lighten(@blueDark, 20%);
+}
+
+.commentlist.blue .comment-head {
+	background-color:@blue;
+	border-top: 1px solid darken(@blue, 5%);
+	border-bottom: 1px solid lighten(@blue, 5%);
+	color:@white;
+}
+.commentlist.blue .comment-head:hover {
+	background-color:darken(@blue, 5%);
+}
+.commentlist.blue .comment-description {
+	background-color:lighten(@blue, 20%);
+}
+
+.commentlist.pink .comment-head {
+	background-color:@pink;
+	border-top: 1px solid darken(@pink, 5%);
+	border-bottom: 1px solid lighten(@pink, 5%);
+	color:@white;
+}
+.commentlist.pink .comment-head:hover {
+	background-color:darken(@pink, 5%);
+}
+.commentlist.pink .comment-description {
+	background-color:lighten(@pink, 20%);
+}
+
+/* Drag and Drop Sortabel Formulas */
+
+#draggable, #sortable { 
+	list-style-type: none; 
+	margin: 0 0 20px; 
+	padding: 20px; 
+}
+#sortable { 
+	height: 100px;
+background: lighten(@grayLighter, 5%);
+}
+#sortable.ui-state-hover { 
+	background: lighten(@yellow, 20%);
+}
+#sortable li { 
+	margin: 3px;
+	padding: 0.4em;
+	font-size: 1.4em;
+	height: 18px;
+	float: left;
+	background: @grayLighter;
+	border: 2px dashed @grayLight;
+	text-align: center;
+	min-width: 50px;
+  }
+#sortable li.ui-state-highlight {
+	background: lighten(@yellow, 20%);
+	border: 2px dashed @yellow;
+}
+
+#trash {
+	.opacity(0);
+	background: @grayLighter;
+	border: 2px dashed @grayLight;
+	color: lighten(@gray, 20%);
+	cursor: default;
+	display: inline-block;
+	padding: 4px 12px;
+	margin-bottom: 0;
+	font-size: 13px;
+	line-height: 20px;
+	text-align: center;
+	vertical-align: middle;
+	.border-radius(3px);
+	.transition(all 0.3s ease-out);
+}
+
+
+#trash.trash-active {
+	.opacity(100);
+}
+
+#trash.trash-hover {
+	background: lighten(@red, 20%);
+	border: 2px dashed @red;
+	color: @white;
+}
+
+.formula-box {
+	margin-right: 12px;
+}
+
+/* Dashboard styling
+-------------------------------------------------- */
+// boxes, widgets and sorting
+.column > .row-fluid{
+	min-height:50px;
+}
+
+.ui-placeholder {
+	background: lighten(@yellow, 22%);
+	border: 1px dashed lighten(@yellow, 5%);
+	.box-shadow(2px 2px 5px #eee);
+	min-height:40px;
+	margin-top:40px;
+	margin-bottom:10px;
+	margin-left:12px;
+	//width:100%;
+}
+
+.widget {
+	.transition(opacity 0.5s ease-out);
+	margin-bottom:10px;
+}
+
+.widget h3 {
+	color: darken(@grayLight, 10%);
+}
+
+.widget .header .tools a, 
+.widget .list .row-fluid .tools a {
+	.transition(all 0.3s ease-out);
+	.opacity(0);
+}
+
+.widget .header:hover .tools a, 
+.widget .list .row-fluid:hover .tools a {
+	.opacity(20);
+}
+
+.widget .header .tools a:hover, 
+.widget .list .row-fluid .tools a:hover {
+	.opacity(65);
+}
+
+.widget .content {
+	padding:12px;
+	background:@white;
+	border-top-width: 2px;
+	border-top-style: solid;
+}
+
+.widget.ui-sortable-helper .content {
+	.transition(all 0.25s ease-out);
+	.box-shadow(2px 2px 5px #ccc);
+}
+
+#dashboard .nav {
+	margin-bottom: 0;
+}
+
+#dashboard .nav > li > a, 
+#dashboard .nav > li > a:hover, 
+#dashboard .nav > li > a:focus {
+	color: darken(@grayLight, 10%);
+	font-weight: bold;
+	background: transparent;
+}
+
+#dashboard .list > .row-fluid {
+	padding: 8px 0;
+}
+
+#dashboard .commentlist .list > .row-fluid {
+	padding: 0;
+}
+
+#dashboard .list > .row-fluid:nth-child(odd) {
+	background-color: lighten(@grayLighter, 2%);
+}
+
+#dashboard .list > .row-fluid:hover {
+	background-color: @tableBackgroundHover;
+}
+
+#dashboard .list .line {
+	border-bottom: 1px dotted @grayLight;
+}
+
+#dashboard .list .line:hover {
+	.transition(all 0.5s ease-out);
+	background: @grayLighter;
+}
+
+
