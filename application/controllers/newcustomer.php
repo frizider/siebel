@@ -16,6 +16,7 @@ class newcustomer extends CI_Controller {
 		
 		// load the model we will be using
 		$this->load->model('newcustomer_model');
+		$this->load->model('messenger_model');
 	}
 	
 	public function index() 
@@ -34,10 +35,10 @@ class newcustomer extends CI_Controller {
 			if($this->newcustomer_model->save($_POST, $data['customerNo']))
 			{
 				$lang = $data['lang'];
-				$content = array('custom' => $this->siebel->getMailText('subject_newcontact_saved'.$data['customerNo'].'. <br/>Link: '.site_url('contacts/customer/'.$data['customerNo']), $lang));
-				$subject = $this->siebel->getMailText('subject_newcontact_saved'.$data['customerNo'], $lang);
+				$content = array('custom' => $this->messenger_model->getMailText('subject_newcontact_saved'.$data['customerNo'].'. <br/>Link: '.site_url('contacts/customer/'.$data['customerNo']), $lang));
+				$subject = $this->messenger_model->getMailText('subject_newcontact_saved'.$data['customerNo'], $lang);
 				$to = $this->siebel->get_return_to_sender('newcontact',$data['customerNo'])->email;
-				$this->siebel->sendMail('savenewcontact', $subject, $content, $lang, $to, param('param_mailhost'), $data['customerNo']);
+				$this->messenger_model->sendMail('savenewcontact', $subject, $content, $lang, $to, param('param_mailhost'), $data['customerNo']);
 				
 				$this->session->set_flashdata('success', $this->siebel->getLang('success_contactsaved', $data['lang']));
 				redirect(current_url(), 'refresh');

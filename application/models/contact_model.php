@@ -93,7 +93,7 @@ class Contact_model extends CI_Model
 		
 		if($id == 'new')
 		{
-			$id = $this->siebel->newId();
+			$id = $this->newId();
 			$data[param('param_asw_database_column_contact_customerid')] = md5($data[param('param_asw_database_column_contact_customernumber')]);
 			$data[param('param_asw_database_column_contact_id')] = $id;
 			if($dbAsw->insert(param('param_asw_database_table_contact'), $data))
@@ -117,7 +117,7 @@ class Contact_model extends CI_Model
 	{
 		$dbContact = $this->load->database('contact', TRUE);
 		
-		$id = $this->siebel->newId();
+		$id = $this->newId();
 		$md5 = md5($data['RECUNO']);
 		$data['RECUID'] = $md5;
 		$data['REIDNO'] = $id;
@@ -142,8 +142,59 @@ class Contact_model extends CI_Model
 		};
 	}
 	
+	public function getDepartments($lang = FALSE) {
+		$ci = get_instance();
+		$dbDefault = $ci->load->database('default', TRUE);
+		$departments = $dbDefault->get('departments')->result();
+
+		foreach ($departments as $department) {
+			$return[$department->asw_field] = $this->getLang('department_' . $department->name, $lang);
+		}
+
+		return $return;
+	}	
 	
-	
+	public function listDepartments($contact) {
+		$departments = array(
+			'general' => $this->getDepartmentLang('department_general', $contact[param('param_asw_database_column_contact_general')]),
+			'billing' => $this->getDepartmentLang('department_billing', $contact[param('param_asw_database_column_contact_billing')]),
+			'order' => $this->getDepartmentLang('department_order', $contact[param('param_asw_database_column_contact_order')]),
+			'purchase' => $this->getDepartmentLang('department_purchase', $contact[param('param_asw_database_column_contact_purchase')]),
+			'transport' => $this->getDepartmentLang('department_transport', $contact[param('param_asw_database_column_contact_transport')]),
+			'packing' => $this->getDepartmentLang('department_packing', $contact[param('param_asw_database_column_contact_packing')]),
+			'quality' => $this->getDepartmentLang('department_quality', $contact[param('param_asw_database_column_contact_quality')]),
+		);
+
+		return $departments;
+	}
+
+	public function getContactypes($name = FALSE) {
+		$ci = get_instance();
+		$dbDefault = $ci->load->database('default', TRUE);
+
+		if ($name) {
+			$dbDefault->where('name', $name);
+		}
+
+		$results = $dbDefault->get('contacttypes')->result();
+		foreach ($results as $result) {
+			$return[$result->name] = $result->description;
+		}
+
+		return $return;
+	}
+
+	public function newId() {
+		$ci = get_instance();
+		$dbAsw = $ci->load->database('asw', TRUE);
+
+		$dbAsw->select_max(param('param_asw_database_column_contact_id'));
+		$query = $dbAsw->get(param('param_asw_database_table_contact'))->result_array();
+		$return = $query[0][param('param_asw_database_column_contact_id')] + 1;
+
+		return $return;
+	}
+
 }
 
 /* End of file */

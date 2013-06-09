@@ -33,7 +33,7 @@
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown"> <?php echo ucfirst($this->siebel->getLang('users')) ?> <b class="caret"></b></a>
 						<ul class="dropdown-menu">
 							<?php
-							echo $this->bootstrap->navItem('Edit own account', 'auth/edit_user/:any', '/auth/edit_user/'.$this->siebel->getUserdata('id'), 'account');
+							echo $this->bootstrap->navItem('Edit own account', 'auth/edit_user/:any', '/auth/edit_user/'.$this->ion_auth->getUserdata('id'), 'account');
 							echo $this->bootstrap->navItem('View users', 'auth', '/auth', 'users');
 							echo $this->bootstrap->navItem('View permissions', 'auth/permissions', '/auth/permissions', 'permissions');
 							echo $this->bootstrap->navItem('Create user', 'auth/create_user', '/auth/create_user', 'create_user');
@@ -45,7 +45,7 @@
 					}
 					else
 					{
-						echo $this->bootstrap->navItem('Edit own account', 'auth/edit_user/:any', '/auth/edit_user/'.$this->siebel->getUserdata('id'), 'account');
+						echo $this->bootstrap->navItem('Edit own account', 'auth/edit_user/:any', '/auth/edit_user/'.$this->ion_auth->getUserdata('id'), 'account');
 					}
 					?>
 				</ul>

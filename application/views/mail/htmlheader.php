@@ -1,4 +1,5 @@
-<html>
+<?php
+echo'<html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html" charset="utf-8"><meta name=Generator content="Siebel for Aliplast"><meta name=Developer content="Jens De Schrijver">
 		<style>
@@ -16,4 +17,5 @@
 			b{font-weight: bold;font-family:"Century Gothic","Helvetica Neue", "Helvetica", "Verdena", "Arial", "sans-serif";}
 		</style>
 	</head>
-	<body class="normal"><div><div id="header"><p><b>' . $this->getMailText('greeting', $lang) . '</b></p></div>
+	<body class="normal"><div><div id="header"><p><b>' . $this->messenger_model->getMailText('greeting', $lang) . '</b></p></div>';
+?>

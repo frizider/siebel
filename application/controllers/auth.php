@@ -46,7 +46,7 @@ class Auth extends CI_Controller {
 				$this->data['users'][$k]->groups = $this->ion_auth->get_users_groups($user->id)->result();
 			}
 
-			$this->data['usergroups'] = $this->siebel->getUserGroups();
+			$this->data['usergroups'] = $this->ion_auth->getUserGroups();
 			
 			// Load the general view
 			$this->data['view'] = 'auth/index';
@@ -624,7 +624,7 @@ class Auth extends CI_Controller {
 			'id' => 'group',
 			'class' => 'group',
 			'type' => 'hidden',
-			'value' => $this->form_validation->set_value('group', $this->siebel->getUserGroup($user->id)->group_id )
+			'value' => $this->form_validation->set_value('group', $this->ion_auth->getUserGroup($user->id)->group_id )
 		);
 		$this->data['password'] = array(
 			'name' => 'password',

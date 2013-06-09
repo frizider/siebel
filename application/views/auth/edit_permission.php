@@ -30,8 +30,8 @@ echo form_hidden('id', $permission['id']);
 
 					<div class="span5">
 						<?php 
-						$groups = $this->siebel->getUserGroups();
-						$permissions_groups = $this->siebel->getPermissionsGroups($permission['name']);
+						$groups = $this->ion_auth->getUserGroups();
+						$permissions_groups = $this->ion_auth->getPermissionsGroups($permission['name']);
 						
 						foreach ($groups as $key => $value) {
 							

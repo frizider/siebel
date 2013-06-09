@@ -50,7 +50,8 @@ class newcustomer_model extends CI_Model
 			// Insert each new contact
 			foreach($post as $contact)
 			{
-				$contact['REIDNO'] = $this->siebel->newId();
+				$this->load->model('contact_model');
+				$contact['REIDNO'] = $this->contact_model->newId();
 				$contact['RESTATE'] = '1';
 				$dbContact->insert(param('param_asw_database_table_contact'), $contact);
 			}

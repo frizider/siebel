@@ -11,6 +11,7 @@ class contactcontroller extends CI_Controller {
 		
 		// Load stuff
 		$this->load->model('contact_model');
+		$this->load->model('messenger_model');
 		
 	}
 	
@@ -148,8 +149,8 @@ class contactcontroller extends CI_Controller {
 							{
 								$lang = strtolower(trim($this->siebel->getCustomerdata($_POST['customernumber'], param('param_asw_database_column_customerlang'))));
 								$content = array('custom' => $this->siebel->newContactMail($_POST['customernumber'], $lang, $md5));
-								$subject = $this->siebel->getMailText('subject_welcome_aliplast', $lang);
-								$this->siebel->sendMail('newcontact', $subject, $content, $lang, $_POST['email'], FALSE, $_POST['customernumber']);
+								$subject = $this->messenger_model->getMailText('subject_welcome_aliplast', $lang);
+								$this->messenger_model->sendMail('newcontact', $subject, $content, $lang, $_POST['email'], FALSE, $_POST['customernumber']);
 
 								$this->session->set_flashdata('success', $this->siebel->getLang('success_contactsaved'));
 								redirect(site_url('contacts/customer/'.$_POST['customernumber']), 'refresh');

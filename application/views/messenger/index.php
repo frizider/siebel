@@ -3,7 +3,7 @@
 <?php 
 echo form_open(current_url(), $form_attributes);
 $name = ($this->input->post('department')) ? $this->input->post('department') : $this->siebel->getLang('choose');
-$departmentBox = $this->bootstrap->dropdown(FALSE, $this->siebel->getLang('department'), $name, 'department', $this->siebel->getDepartments(), 'pull-right');
+$departmentBox = $this->bootstrap->dropdown(FALSE, $this->siebel->getLang('department'), $name, 'department', $this->contact_model->getDepartments(), 'pull-right');
 echo $this->bootstrap->heading(1, $this->siebel->getLang('messenger'), $departmentBox); 
 ?>
 

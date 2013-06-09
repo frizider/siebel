@@ -15,7 +15,7 @@
 
 					<?php
 					$value = (isset($_POST['search_group']) && !empty($_POST['search_group'])) ? $_POST['search_group'] : '';
-					echo $this->bootstrap->dropdown(TRUE, FALSE, ucfirst($this->siebel->getLang('group')), 'search_group', $this->siebel->getUserGroups(), 'span6', FALSE, $value);
+					echo $this->bootstrap->dropdown(TRUE, FALSE, ucfirst($this->siebel->getLang('group')), 'search_group', $this->ion_auth->getUserGroups(), 'span6', FALSE, $value);
 					?>
 					<li class="span2 align-right">
 						<p>

@@ -285,6 +285,92 @@ h1 a.backbutton:hover span {
 	bottom: 20px;
 }
 
+// The dropdown menu (ul)
+// ----------------------
+.ui-autocomplete {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: @zindexDropdown;
+  display: none; // none by default, but block on "open" of the menu
+  float: left;
+  min-width: 160px;
+  padding: 5px 0;
+  margin: 2px 0 0; // override default ul
+  list-style: none;
+  background-color: @dropdownBackground;
+  border: 1px solid #ccc; // Fallback for IE7-8
+  border: 1px solid @dropdownBorder;
+  *border-right-width: 2px;
+  *border-bottom-width: 2px;
+  .border-radius(6px);
+  .box-shadow(0 5px 10px rgba(0,0,0,.2));
+  -webkit-background-clip: padding-box;
+     -moz-background-clip: padding;
+          background-clip: padding-box;
+
+  // Aligns the dropdown menu to right
+  &.pull-right {
+    right: 0;
+    left: auto;
+  }
+
+  // Dividers (basically an hr) within the dropdown
+  .divider {
+    .nav-divider(@dropdownDividerTop, @dropdownDividerBottom);
+  }
+
+  // Links within the dropdown menu
+  > li > a {
+    display: block;
+    padding: 3px 20px;
+    clear: both;
+    font-weight: normal;
+    line-height: @baseLineHeight;
+    color: @dropdownLinkColor;
+    white-space: nowrap;
+	border-bottom: 1px solid @grayLighter;
+  }
+}
+
+// Hover/Focus state
+// -----------
+.ui-autocomplete > li > a.ui-state-hover,
+.ui-autocomplete > li > a:hover,
+.ui-autocomplete > li > a:focus {
+  text-decoration: none;
+  color: @dropdownLinkColorHover;
+  #gradient > .vertical(@dropdownLinkBackgroundHover, darken(@dropdownLinkBackgroundHover, 5%));
+}
+
+// Active state
+// ------------
+.ui-autocomplete > .active > a,
+.ui-autocomplete > .active > a:hover,
+.ui-autocomplete > .active > a:focus {
+  color: @dropdownLinkColorActive;
+  text-decoration: none;
+  outline: 0;
+  #gradient > .vertical(@dropdownLinkBackgroundActive, darken(@dropdownLinkBackgroundActive, 5%));
+}
+
+// Disabled state
+// --------------
+// Gray out text and ensure the hover/focus state remains gray
+.ui-autocomplete > .disabled > a,
+.ui-autocomplete > .disabled > a:hover,
+.ui-autocomplete > .disabled > a:focus {
+  color: @grayLight;
+}
+// Nuke hover/focus effects
+.ui-autocomplete > .disabled > a:hover,
+.ui-autocomplete > .disabled > a:focus {
+  text-decoration: none;
+  background-color: transparent;
+  background-image: none; // Remove CSS gradient
+  .reset-filter();
+  cursor: default;
+}
 
 
 

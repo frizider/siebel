@@ -36,7 +36,7 @@
 					<div class="span3">
 						<p><ul><?php 
 							/* echo utf8_encode($contact[param('param_asw_database_column_contact_general')]) */ 
-							$departments = $this->siebel->listDepartments($contact);
+							$departments = $this->contact_model->listDepartments($contact);
 
 							foreach($departments as $department)
 							{

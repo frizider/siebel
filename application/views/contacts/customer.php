@@ -109,7 +109,7 @@ else
 					
 					<?php
 					$department = (isset($_POST['search_department']) && !empty($_POST['search_department'])) ? $_POST['search_department'] : '';
-					echo $this->bootstrap->dropdown(TRUE, FALSE, $this->siebel->getLang('department'), 'search_department', $this->siebel->getDepartments(), 'span2', FALSE, $department);
+					echo $this->bootstrap->dropdown(TRUE, FALSE, $this->siebel->getLang('department'), 'search_department', $this->contact_model->getDepartments(), 'span2', FALSE, $department);
 					?>
 					
 					<li class="span2 align-right">
@@ -149,7 +149,7 @@ else
 				<div class="span2">
 					<p><ul><?php 
 						/* echo utf8_encode($contact[param('param_asw_database_column_contact_general')]) */ 
-						$departments = $this->siebel->listDepartments($contact);
+						$departments = $this->contact_model->listDepartments($contact);
 						
 						foreach($departments as $department)
 						{

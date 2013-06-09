@@ -36,7 +36,7 @@ echo form_hidden($name['name'], $name['value']);
 		<div class="well">
 			
 			<?php
-			$departments = $this->siebel->getDepartments();
+			$departments = $this->contact_model->getDepartments();
 			foreach($departments as $key => $value)
 			{
 			?>

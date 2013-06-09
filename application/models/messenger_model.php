@@ -31,6 +31,48 @@ class Messenger_model extends CI_Model
 		return $contactlist;
 	}
 	
+	public function getMailText($short, $language) {
+		$dbDefault = $this->load->database('default', TRUE);
+		$dbDefault->select($language);
+		$dbDefault->where('short', $short);
+		$result = $dbDefault->get('mailtext')->row();
+		return $result->$language;
+	}
+
+	public function sendMail($type, $subject, $content = array('custom' => FALSE, 'short' => FALSE), $lang, $to, $from = FALSE, $extra = FALSE) {
+		$ci = & get_instance();
+
+		$ci->load->library('email');
+		$ci->email->set_crlf("\r\n");
+
+		$config['protocol'] = 'SMTP';
+		$config['mailtype'] = 'html';
+		$config['newline'] = '\n';
+		$ci->email->initialize($config);
+
+		if ($from) {
+			$ci->email->from(param('param_mailhost'), $from);
+		} else {
+			$ci->email->from(param('param_mailhost'), $ci->ion_auth->getUserdata('first_name') . ' ' . $ci->ion_auth->getUserdata('last_name') . ' @ ' . param('param_company_name'));
+		}
+		$ci->email->to($to);
+		$ci->email->reply_to($ci->ion_auth->getUserdata('email'));
+		$ci->email->bcc($ci->ion_auth->getUserdata('email'));
+
+		$mail = ($content['custom']) ? $content['custom'] : $this->messenger_model->getMailText($content['short'], $lang);
+		$message = $ci->load->view('mail/htmlheader', $data) . '<div id="content">' . $mail . '</div>' . $ci->load->view('mail/htmlfooter', $data);
+
+		$ci->email->subject($subject);
+		$ci->email->message($message);
+
+		if ($ci->email->send()) {
+			$email = ($from) ? $from : $ci->ion_auth->getUserdata('email');
+			if ($this->set_return_to_sender($email, $type, $extra)) {
+				return TRUE;
+			};
+		};
+	}
+
 }
 
 /* End of file */

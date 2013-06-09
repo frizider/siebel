@@ -75,7 +75,7 @@ echo form_open(current_url(), $form_attributes);
 					$label = $this->siebel->getLang('group');
 					$currentgroup = $this->ion_auth->group($group['value'])->result();
 					$name = (isset($group['value']) && !empty($group['value'])) ? $currentgroup[0]->description : $this->siebel->getLang('choose');
-					$values = $this->siebel->getUserGroups();
+					$values = $this->ion_auth->getUserGroups();
 					echo $this->bootstrap->dropdown(FALSE, $label, $name, 'group', $values, FALSE, FALSE, $group['value']);
 					?>
 				</div>

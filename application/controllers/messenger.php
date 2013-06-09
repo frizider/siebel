@@ -48,7 +48,7 @@ class Messenger extends CI_Controller {
 				$name = trim($contact['RENAM1']);
 				$email = strtolower(trim($contact['REEMAIL']));
 				$cuno = trim($contact['RECUNO']);
-				if($this->siebel->sendMail('messenger', $_POST['subject_'.$lang], $content = array('custom' => $_POST['message_'.$lang]), $lang, $email, $cuno))
+				if($this->messenger_model->sendMail('messenger', $_POST['subject_'.$lang], $content = array('custom' => $_POST['message_'.$lang]), $lang, $email, $cuno))
 				{
 					$sended[] = 'Message was succesfull sended to '.$name.' - '.$email.' - '.$cuno.';';
 				}

@@ -64,7 +64,7 @@ else
 				<hr/>
 				<div class="row" data-step="3" data-intro="<?php echo $this->siebel->getLang('intro_newcontact_departements', $lang) ?>">
 					<?php
-					$departments = $this->siebel->getDepartments($lang);
+					$departments = $this->contact_model->getDepartments($lang);
 					foreach($departments as $key => $value)
 					{
 						$retgen = ($key == 'RETGEN') ? 1 : 0;
@@ -148,7 +148,7 @@ echo '</div>';
 							+'<hr/>'
 							+'<div class="row">'
 								<?php
-								$departments = $this->siebel->getDepartments($lang);
+								$departments = $this->contact_model->getDepartments($lang);
 								foreach($departments as $key => $value)
 								{
 										echo '+\'<div class="span2"><input type="hidden" name="contact\'+i+\'['.$key.']" value="0" id="'.$key.'\'+i+\'" class="'.$key.'"><label class="checkbox pull-left " data-name="'.$key.'\'+i+\'" data-value="1"><a href="#" class="checkbox-wrapper"><span class="cb-inner"><i class=" icon-white"></i></span></a>'.ucfirst($value).'</label></div>\'';

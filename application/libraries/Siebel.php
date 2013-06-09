@@ -2,12 +2,6 @@
 
 class Siebel {
 
-	public function getUserdata($column, $id = FALSE) {
-		$ci = get_instance();
-		$user = $ci->ion_auth->user($id)->row();
-		return $user->$column;
-	}
-
 	public function getCustomerdata($customernumber, $column) {
 		$ci = get_instance();
 		$dbAsw = $ci->load->database('asw', TRUE);
@@ -22,7 +16,7 @@ class Siebel {
 		if ($language) {
 			$dbDefault->select($language);
 		} else {
-			$language = $this->getUserdata('lang');
+			$language = $ci->ion_auth->getUserdata('lang');
 		};
 
 		if ($id == FALSE && $short != FALSE) {
@@ -36,114 +30,9 @@ class Siebel {
 		return $result->$language;
 	}
 
-	public function getMailText($short, $language) {
-		$ci = get_instance();
-		$dbDefault = $ci->load->database('default', TRUE);
-		$dbDefault->select($language);
-		$dbDefault->where('short', $short);
-		$result = $dbDefault->get('mailtext')->row();
-		return $result->$language;
-	}
-
-	public function getUserGroups() {
-		$ci = get_instance();
-		$groups = $ci->ion_auth->groups()->result();
-		foreach ($groups as $group) {
-			$return[$group->id] = $group->description;
-		}
-
-		return $return;
-	}
-
-	public function getUserGroup($id) {
-		$ci = get_instance();
-		$dbDefault = $ci->load->database('default', TRUE);
-		$dbDefault->where('user_id', $id);
-		$return = $dbDefault->get('users_groups')->result();
-
-		return $return[0];
-	}
-
-	public function getPermission($permission_name) {
-		$ci = get_instance();
-		$dbDefault = $ci->load->database('default', TRUE);
-		$dbDefault->where('name', $permission_name);
-		$return = $dbDefault->get('permissions')->result();
-
-		return $return[0];
-	}
-
-	public function getPermissionsGroups($permission_name) {
-		$ci = get_instance();
-		$dbDefault = $ci->load->database('default', TRUE);
-
-		$permission_id = $this->getPermission($permission_name)->id;
-
-		if ($permission_id != FALSE) {
-			$groups = $dbDefault->select('group_id')
-					->where('permissions_id', $permission_id)
-					->get('permissions_groups')
-					->result_array();
-
-			if (empty($groups)) {
-				$groups_array = array();
-			} else {
-				foreach ($groups as $group) {
-					$groups_array[] = $group['group_id'];
-				};
-			}
-		} else {
-			$groups_array = array();
-		};
-
-		return $groups_array;
-	}
-
-	public function getDepartments($lang = FALSE) {
-		$ci = get_instance();
-		$dbDefault = $ci->load->database('default', TRUE);
-		$departments = $dbDefault->get('departments')->result();
-
-		foreach ($departments as $department) {
-			$return[$department->asw_field] = $this->getLang('department_' . $department->name, $lang);
-		}
-
-		return $return;
-	}
-
-	public function getContactypes($name = FALSE) {
-		$ci = get_instance();
-		$dbDefault = $ci->load->database('default', TRUE);
-
-		if ($name) {
-			$dbDefault->where('name', $name);
-		}
-
-		$results = $dbDefault->get('contacttypes')->result();
-		foreach ($results as $result) {
-			$return[$result->name] = $result->description;
-		}
-
-		return $return;
-	}
-
 	public function dbConAsw() {
 		$connection = odbc_connect(param('param_asw_database_host'), param('param_asw_database_username'), param('param_asw_database_password')) or die('Connection failed!');
 		return $connection;
-	}
-
-	public function listDepartments($contact) {
-		$departments = array(
-			'general' => $this->getDepartmentLang('department_general', $contact[param('param_asw_database_column_contact_general')]),
-			'billing' => $this->getDepartmentLang('department_billing', $contact[param('param_asw_database_column_contact_billing')]),
-			'order' => $this->getDepartmentLang('department_order', $contact[param('param_asw_database_column_contact_order')]),
-			'purchase' => $this->getDepartmentLang('department_purchase', $contact[param('param_asw_database_column_contact_purchase')]),
-			'transport' => $this->getDepartmentLang('department_transport', $contact[param('param_asw_database_column_contact_transport')]),
-			'packing' => $this->getDepartmentLang('department_packing', $contact[param('param_asw_database_column_contact_packing')]),
-			'quality' => $this->getDepartmentLang('department_quality', $contact[param('param_asw_database_column_contact_quality')]),
-		);
-
-		return $departments;
 	}
 
 	public function getDepartmentLang($department, $state) {
@@ -156,54 +45,9 @@ class Siebel {
 		return $return;
 	}
 
-	public function newId() {
-		$ci = get_instance();
-		$dbAsw = $ci->load->database('asw', TRUE);
-
-		$dbAsw->select_max(param('param_asw_database_column_contact_id'));
-		$query = $dbAsw->get(param('param_asw_database_table_contact'))->result_array();
-		$return = $query[0][param('param_asw_database_column_contact_id')] + 1;
-
-		return $return;
-	}
-
-	public function sendMail($type, $subject, $content = array('custom' => FALSE, 'short' => FALSE), $lang, $to, $from = FALSE, $extra = FALSE) {
-		$ci = & get_instance();
-
-		$ci->load->library('email');
-		$ci->email->set_crlf("\r\n");
-
-		$config['protocol'] = 'SMTP';
-		$config['mailtype'] = 'html';
-		$config['newline'] = '\n';
-		$ci->email->initialize($config);
-
-		if ($from) {
-			$ci->email->from(param('param_mailhost'), $from);
-		} else {
-			$ci->email->from(param('param_mailhost'), $this->getUserdata('first_name') . ' ' . $this->getUserdata('last_name') . ' @ ' . param('param_company_name'));
-		}
-		$ci->email->to($to);
-		$ci->email->reply_to($this->getUserdata('email'));
-		$ci->email->bcc($this->getUserdata('email'));
-
-		$mail = ($content['custom']) ? $content['custom'] : $this->getMailText($content['short'], $lang);
-		$message = $ci->load->view('mail/htmlheader', $data) . '<div id="content">' . $mail . '</div>' . $ci->load->view('mail/htmlfooter', $data);
-
-		$ci->email->subject($subject);
-		$ci->email->message($message);
-
-		if ($ci->email->send()) {
-			$email = ($from) ? $from : $this->getUserdata('email');
-			if ($this->set_return_to_sender($email, $type, $extra)) {
-				return TRUE;
-			};
-		};
-	}
-
 	public function newContactMail($customerNo, $lang, $md5) {
 		$url = 'http://customer.aliplast.com/vp/siebel/index.php/newcustomer/' . $customerNo . '/' . $lang . '/' . $md5;
-		$return = $this->getMailText('newcontact', $lang);
+		$return = $this->messenger_model->getMailText('newcontact', $lang);
 		$return .= '<p><a href="' . $url . '">' . $url . '</a></p>';
 
 		return $return;
@@ -491,7 +335,7 @@ class Siebel {
 
 	public function getUserDashboard() {
 		
-		$userDashboard = $this->getUserdata('userDashboard');
+		$userDashboard = $ci->ion_auth->getUserdata('userDashboard');
 		if(!empty($userDashboard))
 		{
 			$userDashboard = explode('||', $userDashboard);

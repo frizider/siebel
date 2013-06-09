@@ -2028,4 +2028,64 @@ class Ion_auth_model extends CI_Model
 			return inet_pton($ip_address);
 		}
 	}
+
+	
+	public function getUserdata($column, $id = FALSE) {
+		$user = $this->user($id)->row();
+		return $user->$column;
+	}
+
+	public function getUserGroups() {
+		$groups = $this->groups()->result();
+		foreach ($groups as $group) {
+			$return[$group->id] = $group->description;
+		}
+
+		return $return;
+	}
+
+	public function getUserGroup($id) {
+		$ci = get_instance();
+		$dbDefault = $ci->load->database('default', TRUE);
+		$dbDefault->where('user_id', $id);
+		$return = $dbDefault->get('users_groups')->result();
+
+		return $return[0];
+	}
+
+	public function getPermission($permission_name) {
+		$ci = get_instance();
+		$dbDefault = $ci->load->database('default', TRUE);
+		$dbDefault->where('name', $permission_name);
+		$return = $dbDefault->get('permissions')->result();
+
+		return $return[0];
+	}
+
+	public function getPermissionsGroups($permission_name) {
+		$ci = get_instance();
+		$dbDefault = $ci->load->database('default', TRUE);
+
+		$permission_id = $this->getPermission($permission_name)->id;
+
+		if ($permission_id != FALSE) {
+			$groups = $dbDefault->select('group_id')
+					->where('permissions_id', $permission_id)
+					->get('permissions_groups')
+					->result_array();
+
+			if (empty($groups)) {
+				$groups_array = array();
+			} else {
+				foreach ($groups as $group) {
+					$groups_array[] = $group['group_id'];
+				};
+			}
+		} else {
+			$groups_array = array();
+		};
+
+		return $groups_array;
+	}
+	
 }

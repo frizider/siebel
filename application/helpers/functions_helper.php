@@ -31,7 +31,7 @@ function perm($permission_name)
 		$user_groups = $user_groups[0]['id'];
 
 		// Get all the groups of the asked permission
-		$permission_groups = $ci->siebel->getPermissionsGroups($permission_name);
+		$permission_groups = $ci->ion_auth->getPermissionsGroups($permission_name);
 
 		// Check is the users group is in the permissions groups
 		if(in_array($user_groups, $permission_groups)) {

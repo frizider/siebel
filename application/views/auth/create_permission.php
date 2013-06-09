@@ -29,7 +29,7 @@ echo form_open(current_url(), $form_attributes);
 
 					<div class="span5">
 						<?php 
-						$groups = $this->siebel->getUserGroups();
+						$groups = $this->ion_auth->getUserGroups();
 						
 						foreach ($groups as $key => $value) {
 							echo form_checkbox('groups[]', $key);

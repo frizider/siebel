@@ -13,15 +13,11 @@ class dashboard_model extends CI_Model
 	 * Other function below this section
 	 */
 	
-	public function get() {
-		return 'Hello Test!';
-	}
-	
 	public function saveUserDashboard()
 	{
 		$sort = $this->input->post('sort');
 		$dbDefault = $this->load->database('default', TRUE);
-		$dbDefault->where('id', $this->siebel->getUserdata('id'));
+		$dbDefault->where('id', $this->ion_auth->getUserdata('id'));
 		if($dbDefault->update('users', array('userDashboard' => $sort)))
 		{
 			return TRUE;
