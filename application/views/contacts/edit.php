@@ -1,10 +1,10 @@
 <?php 
-echo $this->bootstrap->heading(1, $this->siebel->getLang('edit_contact'), $contact[param('param_asw_database_column_contact_name')], '<a class="backbutton" title="Go back" href="'.site_url('dashboard/customer/'.$customernumber).'"><span><i class="icon-chevron-left"></i></span></a> '); 
+echo $this->bootstrap->heading(1, $this->siebel->getLang('edit_contact'), $contact[param('param_asw_database_column_contact_name')], '<a class="backbutton" title="Go back" href="'.site_url('dashboard/customer/'.$customernumber['value']).'"><span><i class="icon-chevron-left"></i></span></a> '); 
 echo form_open(current_url(), $form_attributes);
-echo form_input($REIDNO);
-echo form_input($RECUID);
-echo form_input($RECUNO);
-echo form_hidden($RENAM1['name'], $RENAM1['value']);
+echo form_input($id);
+echo form_input($customerid);
+echo form_input($customernumber);
+echo form_hidden($name['name'], $name['value']);
 ?>
 
 <div class="row">
@@ -14,15 +14,15 @@ echo form_hidden($RENAM1['name'], $RENAM1['value']);
 
 				<div class="span5">
 					<?php 
-					echo $this->bootstrap->formControlGroup(array($this->siebel->getLang('name'), 'customer', array('class' => 'control-label')), array($RENAM1));
-					echo $this->bootstrap->formControlGroup(array($this->siebel->getLang('email'), 'email', array('class' => 'control-label')), array($REEMAIL));
+					echo $this->bootstrap->formControlGroup(array($this->siebel->getLang('name'), 'customer', array('class' => 'control-label')), array($name));
+					echo $this->bootstrap->formControlGroup(array($this->siebel->getLang('email'), 'email', array('class' => 'control-label')), array($email));
 					?>
 				</div>
 
 				<div class="span5">
 					<?php 
-					echo $this->bootstrap->formControlGroup(array($this->siebel->getLang('phone'), 'phone', array('class' => 'control-label')), array($REPHONE));
-					echo $this->bootstrap->formControlGroup(array($this->siebel->getLang('fax'), 'fax', array('class' => 'control-label')), array($REFAX));
+					echo $this->bootstrap->formControlGroup(array($this->siebel->getLang('phone'), 'phone', array('class' => 'control-label')), array($phone));
+					echo $this->bootstrap->formControlGroup(array($this->siebel->getLang('fax'), 'fax', array('class' => 'control-label')), array($fax));
 					?>				
 				</div>
 

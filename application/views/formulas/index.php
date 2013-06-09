@@ -1,4 +1,6 @@
 <?php
+echo $this->bootstrap->alert('<h3>LOOK OUT!</h3><p>Please notice that this part is currently in development. It will not work fine for the moment.</p>', 'alert-error');
+
 
 if(isset($id) && !empty($id))
 {

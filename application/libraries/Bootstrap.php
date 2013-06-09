@@ -197,7 +197,7 @@ class Bootstrap
 	
 	public function alert($text, $class = '') 
 	{
-		return '<div class="alert '.$class.'"><a class="close" data-dismiss="alert">×</a>'.$text.'</div>';
+		return '<div class="alert '.$class.'"><a class="close" data-dismiss="alert"></a>'.$text.'</div>';
 
 	}
 	

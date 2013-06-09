@@ -38,14 +38,19 @@ class dashboard extends CI_Controller {
 	{
 		$data['containerClassMainnav'] = '-fluid';
 		$data['containerClassContent'] = '-fluid';
-		$data['customernumber'] = $this->uri->segment(3);
+		$data['pageclass'] = 'bg-graybright dashboard';
 		$data['form_attributes'] = array('class' => 'form-horizontal');
+		
+		$data['customernumber'] = $this->uri->segment(3);
+		
 		$widgetsModifications = array(
 			'comments__0' => $this->siebel->getCategoriesAsWidgetsArray()
 		);
+		
 		$data['widgets'] = $this->siebel->getWidgets($widgetsModifications);
+		
 		$data['userDashboard'] = $this->siebel->getUserDashboard();
-		$data['pageclass'] = 'bg-graybright dashboard';
+		
 		
 		// Load the general view
 		$data['view'] = 'dashboard/index';
@@ -60,5 +65,30 @@ class dashboard extends CI_Controller {
 		}
 	}
 	
+	/*
+	public function getWidgets($widgetsModification = FALSE) {
+		foreach (glob(APPPATH . 'widgets/*') as $folder)
+		{
+			$folder = explode('/', $folder);
+			$folders[$folder[2].'__0'] = array($folder[2], '0');
+		}
+		
+		$widgets = $folders;
+		
+		if($widgetsModification)
+		{
+			foreach($widgetsModification as $key => $value)
+			{
+				if(array_key_exists($key, $folders))
+				{
+					unset($widgets[$key]);
+					$widgets = array_merge($widgets, $value);
+				}
+			}
+		}
+		
+		return $widgets;
+	}
+	*/
 }
 

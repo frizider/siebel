@@ -9,7 +9,6 @@
 		<title><?= param('param_pagetitle') ?></title>
 		
 		<!-- STYLESHEETS -->
-		<link rel="stylesheet" type="text/css" href="<?= base_url(); ?>assets/css/loading.css" />
 		<!--[if lte IE 8]>
 		<link href="<?= base_url(); ?>assets/css/introjs-ie.css" rel="stylesheet">
 		<!-- <![endif]-->

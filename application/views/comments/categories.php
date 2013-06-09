@@ -43,7 +43,7 @@ echo $this->bootstrap->heading(1, $this->siebel->getLang('edit_category'));
 						'yellow' => $this->siebel->getLang('yellow'), 
 						'pink' => $this->siebel->getLang('pink'), 
 						'purple' => $this->siebel->getLang('purple'), 
-						'fuschia' => $this->siebel->getLang('fuschia'), 
+						'fushia' => $this->siebel->getLang('fushia'), 
 						'lila' => $this->siebel->getLang('lila'), 
 						'gray' => $this->siebel->getLang('gray'), 
 						);

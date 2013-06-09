@@ -188,7 +188,7 @@ class Siebel {
 		$ci->email->bcc($this->getUserdata('email'));
 
 		$mail = ($content['custom']) ? $content['custom'] : $this->getMailText($content['short'], $lang);
-		$message = $this->mailHead($lang) . '<div id="content">' . $mail . '</div>' . $this->mailFooter($lang);
+		$message = $ci->load->view('mail/htmlheader', $data) . '<div id="content">' . $mail . '</div>' . $ci->load->view('mail/htmlfooter', $data);
 
 		$ci->email->subject($subject);
 		$ci->email->message($message);
@@ -199,41 +199,6 @@ class Siebel {
 				return TRUE;
 			};
 		};
-	}
-
-	public function mailHead($lang) {
-		return '<html>
-			<head>
-				<meta http-equiv="Content-Type" content="text/html" charset="utf-8"><meta name=Generator content="Siebel for Aliplast"><meta name=Developer content="Jens De Schrijver">
-				<style>
-					/* Font Definitions */
-				   @font-face{font-family: "Century Gothic";panose-1:2 11 5 2 2 2 2 2 2 4;mso-font-charset:0;mso-generic-font-family:swiss;mso-font-pitch:variable;mso-font-signature:647 0 0 0 159 0;}
-				   /* Style Definitions */
-				   body{padding: 20px;font-family:"Century Gothic","Helvetica Neue", "Helvetica", "Verdena", "Arial", "sans-serif";}
-				   .normal, p.normal, li.normal, div.normal{mso-style-unhide:no;mso-style-qformat:yes;mso-style-parent:"";margin:0cm;margin-bottom:.0001pt;mso-pagination:widow-orphan;font-size:11.0pt;font-family:"Century Gothic","Helvetica Neue", "Helvetica", "Verdena", "Arial", "sans-serif";mso-fareast-font-family:Calibri;mso-fareast-theme-font:minor-latin;mso-bidi-font-family:"Times New Roman";mso-fareast-language:EN-US;}
-				   p{margin: 0 0 15px 0;font-family:"Century Gothic","Helvetica Neue", "Helvetica", "Verdena", "Arial", "sans-serif";}
-				   hr{color:#BFBFBF; border-bottom:solid #BFBFBF 1.0pt; border-left: none; border-right: none; border-top: none; width: 100%; margin-top: 50px;text-align: left;}
-				   .footer, .footer p {color: #7F7F7F;font-size: 10.0pt;font-family:"Century Gothic","Helvetica Neue", "Helvetica", "Verdena", "Arial", "sans-serif";}
-				   .footer a {color: #7F7F7F;text-decoration: none;font-family:"Century Gothic","Helvetica Neue", "Helvetica", "Verdena", "Arial", "sans-serif";}
-				   table td{min-height: 12.35pt;border: none;padding: 0 5.4pt 0 5.4pt;font-family:"Century Gothic","Helvetica Neue", "Helvetica", "Verdena", "Arial", "sans-serif";}
-				   table td.leftcolumn{border-right:solid #BFBFBF 1.0pt;width:121.9pt; font-family:"Century Gothic","Helvetica Neue", "Helvetica", "Verdena", "Arial", "sans-serif";}
-				   b{font-weight: bold;font-family:"Century Gothic","Helvetica Neue", "Helvetica", "Verdena", "Arial", "sans-serif";}
-				</style>
-			</head>
-			<body class="normal"><div><div id="header"><p><b>' . $this->getMailText('greeting', $lang) . '</b></p></div>';
-	}
-
-	public function mailFooter($lang) {
-		return '<div id="footer"><hr />
-			<table border=0 cellspacing=0 cellpadding=0 width="100%" style="width:100%; border-collapse:collapse;" class="footer">
-				<tr>
-					<td valign="top" class="leftcolumn"><b>' . $this->getUserdata('first_name') . ' ' . $this->getUserdata('last_name') . '</b></td>
-					<td valign="bottom"><b>' . $this->getMailText('thanks', $lang) . '</b> <span style="float:right; font-style: italic; text-align:right;">Think before you <img width=20 height=20 src="http://customer.aliplast.com/vp/public/img/mail_green_print.png" alt="">print</span></td>
-				</tr><tr>
-					<td valign="top" class="leftcolumn"><img border=0 width=113 height=24 src="http://customer.aliplast.com/vp/public/img/mail_logo_aliplast.jpg" alt="' . param('param_company_name') . '" style="margin-top:5px;"></td>
-					<td valign="top">' . $this->getUserdata('company') . ' <br/>' . param('param_company_address') . ' &#124; ' . param('param_company_location') . ' <br /><a href="mailto:' . $this->getUserdata('email') . '">M: ' . $this->getUserdata('email') . '</a> &#124; <a href="tel:' . $this->getUserdata('phone') . '">T: ' . $this->getUserdata('phone') . '</a> &#124; F: ' . param('param_company_fax') . '</td>
-				</tr>
-			</table></div></div></body></html>';
 	}
 
 	public function newContactMail($customerNo, $lang, $md5) {
@@ -510,7 +475,7 @@ class Siebel {
 
 	public function math($expression) {
 		eval('$math = ' . preg_replace('/[^0-9\+\-\*\/\(\)\.]/', '', $expression) . ';');
-		return $math;
+		return $result;
 	}
 
 	public function getColumns($table) {
