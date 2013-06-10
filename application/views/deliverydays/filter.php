@@ -48,8 +48,7 @@ echo $this->bootstrap->heading(1, $this->siebel->getLang('filter_deliverydays'))
 							// Dropdown for languages
 							$label = $this->siebel->getLang('country');
 							$name = (isset($_POST['country']) && !empty($_POST['country'])) ? $_POST['country'] : $this->siebel->getLang('choose');
-							$values = $this->siebel->getDeliveryCountries();
-							echo $this->bootstrap->dropdown(FALSE, $label, $name, 'country', $values, FALSE, FALSE, (isset($_POST['country']) && !empty($_POST['country'])) ? $_POST['country'] : '');
+							echo $this->bootstrap->dropdown(FALSE, $label, $name, 'country', $countries, FALSE, FALSE, (isset($_POST['country']) && !empty($_POST['country'])) ? $_POST['country'] : '');
 							?>
 						</div>
 					</div>

@@ -28,17 +28,14 @@ class comments extends CI_Controller {
 	public function index() 
 	{
 		
+		// CK Editor
 		$this->load->library('ckeditor');
-
-
-
 		$this->ckeditor->basePath = base_url().'assets/ckeditor/';
 		$this->ckeditor->config['toolbar'] = array(
 						array( 'Source', '-', 'Bold', 'Italic', 'Underline', '-','Cut','Copy','Paste','PasteText','PasteFromWord','-','Undo','Redo','-','NumberedList','BulletedList' )
-															);
+													);
 		$this->ckeditor->config['language'] = 'en';
 		$this->ckeditor->config['height'] = '210px';            
-
 		
 		
 		$data['id'] = $this->uri->segment(4);
@@ -79,46 +76,49 @@ class comments extends CI_Controller {
 			{
 				$data['comment'] = $this->comments_model->getSingleComment($data['id']);
 				$comment = $data['comment'];
+				$data['current_category'] = $this->comments_model->getCommentsCategories($comment->category);
 			}
-				
-				// Text fields
-				$fields = array('title');
-				foreach($fields as $field)
-				{
-					$data[$field] = array(
-						'name'  => $field,
-						'id'    => $field,
-						'class'    => $field,
-						'type'  => 'text',
-						'value' => $comment->$field,
-					);
-				}
-				
-				// Textaera fields
-				$fields = array('description');
-				foreach($fields as $field)
-				{
-					$data[$field] = array(
-						'name'  => $field,
-						'id'    => $field,
-						'class'    => $field,
-						'type'  => 'textarea',
-						'value' => $comment->$field,
-					);
-				}
-				
-				// Hidden fields
-				$fields = array('priority', 'category', 'global');
-				foreach($fields as $field)
-				{
-					$data[$field] = array(
-						'name'  => $field,
-						'id'    => $field,
-						'class'    => $field,
-						'type'  => 'hidden',
-						'value' => $comment->$field,
-					);
-				}
+			
+			$data['categories'] = $this->comments_model->getCommentsCategories();
+
+			// Text fields
+			$fields = array('title');
+			foreach($fields as $field)
+			{
+				$data[$field] = array(
+					'name'  => $field,
+					'id'    => $field,
+					'class'    => $field,
+					'type'  => 'text',
+					'value' => $comment->$field,
+				);
+			}
+
+			// Textaera fields
+			$fields = array('description');
+			foreach($fields as $field)
+			{
+				$data[$field] = array(
+					'name'  => $field,
+					'id'    => $field,
+					'class'    => $field,
+					'type'  => 'textarea',
+					'value' => $comment->$field,
+				);
+			}
+
+			// Hidden fields
+			$fields = array('priority', 'category', 'global');
+			foreach($fields as $field)
+			{
+				$data[$field] = array(
+					'name'  => $field,
+					'id'    => $field,
+					'class'    => $field,
+					'type'  => 'hidden',
+					'value' => $comment->$field,
+				);
+			}
 
 		}
 		else

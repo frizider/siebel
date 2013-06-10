@@ -66,33 +66,29 @@ echo $this->bootstrap->heading(1, $this->siebel->getLang('edit_deliverydays'), $
 				<div class="span1">
 					<?php
 					// Set AM
-					$values = $this->siebel->hourSet('am');
 					$name = (isset($deliverydatdata[$day.'_am_from']['value']) && !empty($deliverydatdata[$day.'_am_from']['value'])) ? $deliverydatdata[$day.'_am_from']['value'] : $this->siebel->getLang('choose');
-					echo $this->bootstrap->dropdown(FALSE, FALSE, $name, $day.'_am_from', $values, FALSE, FALSE, $deliverydatdata[$day.'_am_from']['value'], TRUE);
+					echo $this->bootstrap->dropdown(FALSE, FALSE, $name, $day.'_am_from', $hoursAm, FALSE, FALSE, $deliverydatdata[$day.'_am_from']['value'], TRUE);
 					?>
 				</div>
 				<div class="span2">
 					<?php
 					// Set AM
-					$values = $this->siebel->hourSet('am');
 					$name = (isset($deliverydatdata[$day.'_am_to']['value']) && !empty($deliverydatdata[$day.'_am_to']['value'])) ? $deliverydatdata[$day.'_am_to']['value'] : $this->siebel->getLang('choose');
-					echo $this->bootstrap->dropdown(FALSE, FALSE, $name, $day.'_am_to', $values, FALSE, FALSE, $deliverydatdata[$day.'_am_to']['value'], TRUE);
+					echo $this->bootstrap->dropdown(FALSE, FALSE, $name, $day.'_am_to', $hoursAm, FALSE, FALSE, $deliverydatdata[$day.'_am_to']['value'], TRUE);
 					?>
 				</div>
 				<div class="span1">
 					<?php
 					// Set PM
-					$values = $this->siebel->hourSet('pm');
 					$name = (isset($deliverydatdata[$day.'_pm_from']['value']) && !empty($deliverydatdata[$day.'_pm_from']['value'])) ? $deliverydatdata[$day.'_pm_from']['value'] : $this->siebel->getLang('choose');
-					echo $this->bootstrap->dropdown(FALSE, FALSE, $name, $day.'_pm_from', $values, FALSE, FALSE, $deliverydatdata[$day.'_pm_from']['value'], TRUE);
+					echo $this->bootstrap->dropdown(FALSE, FALSE, $name, $day.'_pm_from', $hoursPm, FALSE, FALSE, $deliverydatdata[$day.'_pm_from']['value'], TRUE);
 					?>
 				</div>
 				<div class="span2">
 					<?php
 					// Set PM
-					$values = $this->siebel->hourSet('pm');
 					$name = (isset($deliverydatdata[$day.'_pm_to']['value']) && !empty($deliverydatdata[$day.'_pm_to']['value'])) ? $deliverydatdata[$day.'_pm_to']['value'] : $this->siebel->getLang('choose');
-					echo $this->bootstrap->dropdown(FALSE, FALSE, $name, $day.'_pm_to', $values, FALSE, FALSE, $deliverydatdata[$day.'_pm_to']['value'], TRUE);
+					echo $this->bootstrap->dropdown(FALSE, FALSE, $name, $day.'_pm_to', $hoursPm, FALSE, FALSE, $deliverydatdata[$day.'_pm_to']['value'], TRUE);
 					?>
 				</div>
 				<div class="span1"><?php echo $this->bootstrap->checkbox(FALSE, $day.'_close', $deliverydatdata[$day.'_close']['value'], array('1' => '')); ?></div>

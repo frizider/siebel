@@ -153,6 +153,23 @@ class Deliverydays_model extends CI_Model
 		return $dbAsw->get(param('param_asw_database_table_deliveryaddress'))->result_array();
 	}
 	
+	public function getDeliveryCountries() {
+		$dbAsw = $this->load->database('asw', TRUE);
+		$dbAsw->select(param('param_asw_database_column_deliveryaddress_country'));
+		$dbAsw->where(param('param_asw_database_column_deliveryaddress_cuno') . ' Like ', 'MB%');
+		$results = $dbAsw->get(param('param_asw_database_table_deliveryaddress'))->result_array();
+
+		$countries = array();
+		foreach ($results as $result) {
+			foreach ($result as $key => $value) {
+				$value = trim(strtoupper($value));
+				$countries[$value] = $value;
+			}
+		}
+
+		return array_unique($countries);
+	}
+
 }
 
 /* End of file */

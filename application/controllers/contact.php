@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class ContactController extends CI_Controller {
+class contact extends CI_Controller {
 
 	// Constructor
 	public function __construct()
@@ -45,35 +45,15 @@ class ContactController extends CI_Controller {
 			if(isset($id) && !empty($id)) 
 			{
 				if(!perm('Edit contact')) { redirect(base_url(), 'refresh'); }
-				//validate form input
-				//$this->form_validation->set_rules('id', 'id', 'is_unique['.param('param_asw_database_column_contact_id').']');
-				//$this->form_validation->set_rules('customerid', 'customerid', 'required|xss_clean|exact_length[32]');
-				$this->form_validation->set_rules('customernumber', $this->siebel->getLang('customernumber'), 'required|xss_clean|alpha_numeric');
-				$this->form_validation->set_rules('name', $this->siebel->getLang('name'), 'required|xss_clean');
-				$this->form_validation->set_rules('email', $this->siebel->getLang('email'), 'xss_clean|valid_email');
-				$this->form_validation->set_rules('phone', $this->siebel->getLang('phone'), 'xss_clean|numeric');
-				$this->form_validation->set_rules('fax', $this->siebel->getLang('fax'), 'xss_clean|numeric');
-				$this->form_validation->set_rules('general', $this->siebel->getLang('department_general'), 'required|xss_clean|integer');
-				$this->form_validation->set_rules('billing', $this->siebel->getLang('department_billing'), 'required|xss_clean|integer');
-				$this->form_validation->set_rules('order', $this->siebel->getLang('department_order'), 'required|xss_clean|integer');
-				$this->form_validation->set_rules('purchase', $this->siebel->getLang('department_purchase'), 'required|xss_clean|integer');
-				$this->form_validation->set_rules('transport', $this->siebel->getLang('department_transport'), 'required|xss_clean|integer');
-				$this->form_validation->set_rules('packing', $this->siebel->getLang('department_packing'), 'required|xss_clean|integer');
-				$this->form_validation->set_rules('quality', $this->siebel->getLang('department_quality'), 'required|xss_clean|integer');
-				
-				// Form attributes
 				$data['form_attributes'] = array('class' => 'form-horizontal');
 				
 				if (isset($_POST) && !empty($_POST))
 				{
-					if ($this->form_validation->run() === TRUE)
+					if($id = $this->contact_model->save($_POST, $id))
 					{
-						if($id = $this->contact_model->save($_POST, $id))
-						{
-							//redirect them back to the admin page
-							$this->session->set_flashdata('success', $this->siebel->getLang('success_contactsaved'));
-							redirect(site_url('contacts/customer/'.$customernumber.'/'.$id), 'refresh');
-						}
+						//redirect them back to the admin page
+						$this->session->set_flashdata('success', $this->siebel->getLang('success_contactsaved'));
+						redirect(site_url('contacts/customer/'.$customernumber.'/'.$id), 'refresh');
 					}
 				}
 				
@@ -81,22 +61,11 @@ class ContactController extends CI_Controller {
 				
 				if($id == 'new')
 				{
-					$contact = array(
-						'id' => '',
-						'customernumber' => $customernumber,
-						'name' => '',
-						'email' => '',
-						'fax' => '',
-						'phone' => '',
-						'customerid' => '',
-						'general' => 0,
-						'billing' => 0,
-						'order' => 0,
-						'purchase' => 0,
-						'transport' => 0,
-						'packing' => 0,
-						'quality' => 0,
-					);
+					$fields = $this->contact_model->getFields(param('param_asw_database_table_contact'));
+					foreach ($fields as $field) {
+						$contact[$field] = '';
+					};
+					$contact[param('param_asw_database_column_contact_customernumber')] = $customernumber;
 					$data['contact'] = $contact;
 				}
 				else
@@ -106,7 +75,7 @@ class ContactController extends CI_Controller {
 					$contact = $data['contact'];
 				}
 				
-				$fields = array('email', 'phone', 'fax', 'name');
+				$fields = $this->contact_model->getFields(param('param_asw_database_table_contact'));
 				foreach($fields as $field)
 				{
 					$data[$field] = array(
@@ -114,22 +83,10 @@ class ContactController extends CI_Controller {
 						'id'    => $field,
 						'class'    => $field,
 						'type'  => 'text',
-						'value' => $this->form_validation->set_value($field, trim($contact[$field])),
-					);
-				}
-				
-				$fields = array('id', 'customernumber', 'customerid');
-				foreach($fields as $field)
-				{
-					$data[$field] = array(
-						'name'  => $field,
-						'id'    => $field,
-						'class'    => $field,
-						'type'  => 'hidden',
 						'value' => trim($contact[$field]),
 					);
 				}
-
+				
 				// Load the general view
 				$data['view'] = 'contacts/edit';
 				
@@ -147,9 +104,10 @@ class ContactController extends CI_Controller {
 							if($md5 = $this->contact_model->saveNew($_POST))
 							{
 								$lang = strtolower(trim($this->siebel->getCustomerdata($_POST['customernumber'], param('param_asw_database_column_customerlang'))));
-								$content = array('custom' => $this->siebel->newContactMail($_POST['customernumber'], $lang, $md5));
-								$subject = $this->siebel->getMailText('subject_welcome_aliplast', $lang);
-								$this->siebel->sendMail('newcontact', $subject, $content, $lang, $_POST['email'], FALSE, $_POST['customernumber']);
+								$this->load->model('messenger_model');
+								$content = array('custom' => $this->messenger_model->newContactMail($_POST['customernumber'], $lang, $md5));
+								$subject = $this->messenger_model->getMailText('subject_welcome_aliplast', $lang);
+								$this->messenger_model->sendMail('newcontact', $subject, $content, $lang, $_POST['email'], FALSE, $_POST['customernumber']);
 
 								$this->session->set_flashdata('success', $this->siebel->getLang('success_contactsaved'));
 								redirect(site_url('contacts/customer/'.$_POST['customernumber']), 'refresh');
@@ -158,13 +116,9 @@ class ContactController extends CI_Controller {
 					}
 				}
 				
-				$data['contacts'] = $this->contact_model->contacts($customernumber, $id);
+				$data['contacts'] = $this->contact_model->contacts($customernumber);
 				$contacts = $data['contacts'];
-				
-				if(empty($contact)) 
-				{
-					// Do something
-				}
+				$data['departments'] = $this->contact_model->getDepartments();
 				
 				// Load the general view
 				$data['view'] = 'contacts/customer';

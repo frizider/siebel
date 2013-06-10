@@ -59,7 +59,7 @@ class Messenger_model extends CI_Model
 		$ci->email->reply_to($ci->ion_auth->getUserdata('email'));
 		$ci->email->bcc($ci->ion_auth->getUserdata('email'));
 
-		$mail = ($content['custom']) ? $content['custom'] : $this->messenger_model->getMailText($content['short'], $lang);
+		$mail = ($content['custom']) ? $content['custom'] : $this->getMailText($content['short'], $lang);
 		$message = $ci->load->view('mail/htmlheader', $data) . '<div id="content">' . $mail . '</div>' . $ci->load->view('mail/htmlfooter', $data);
 
 		$ci->email->subject($subject);
@@ -71,6 +71,39 @@ class Messenger_model extends CI_Model
 				return TRUE;
 			};
 		};
+	}
+
+	public function newContactMail($customerNo, $lang, $md5) {
+		$url = 'http://customer.aliplast.com/vp/siebel/index.php/newcustomer/' . $customerNo . '/' . $lang . '/' . $md5;
+		$return = $this->getMailText('newcontact', $lang);
+		$return .= '<p><a href="' . $url . '">' . $url . '</a></p>';
+
+		return $return;
+	}
+
+	public function setReturnToSender($email, $type, $extra = FALSE) {
+		$dbDefault = $this->load->database('default', TRUE);
+		$data = array(
+			'email' => $email,
+			'type' => $type,
+			'extra' => $email
+		);
+		if ($dbDefault->insert('return_to_sender', $data)) {
+			return TRUE;
+		};
+	}
+
+	public function getReturnToSender($type, $extra = FALSE) {
+		$dbDefault = $this->load->database('default', TRUE);
+
+		$dbDefault->where('type', $type);
+		if ($extra) {
+			$dbDefault->where('extra', $extra);
+		}
+		$dbDefault->order_by('date', 'desc');
+		$return = $dbDefault->get('return_to_sender')->result();
+
+		return $return[0];
 	}
 
 }

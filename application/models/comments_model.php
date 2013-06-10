@@ -14,15 +14,7 @@ class Comments_model extends CI_Model
 	 */
 	
 	public function getComments($custNo, $id = FALSE) {
-		if($id)
-		{
-			$categories = (object) array((object)array('id' => $id));
-		}
-		else
-		{
-			$categories = $this->siebel->getCommentsCategories();
-		}
-		$return = array();
+		$categories =  $this->getCommentsCategories($id);
 		
 		foreach($categories as $category)
 		{
@@ -34,9 +26,21 @@ class Comments_model extends CI_Model
 			
 			$dbDefault->order_by("priority", "desc");
 			$dbDefault->order_by("date", "desc");
-			$return[$category->id] = $dbDefault->get('comments')->result();
+			$category->comments = $dbDefault->get('comments')->result();
 		}
-		
+		return $categories;
+	}
+	
+	public function getCommentsCategories($id = FALSE) {
+		$dbDefault = $this->load->database('default', TRUE);
+
+		if ($id) {
+			$dbDefault->where('id', $id);
+		}
+
+		$dbDefault->order_by('id', 'asc');
+		$return = $dbDefault->get('comments_categories')->result();
+
 		return $return;
 	}
 	
@@ -163,6 +167,26 @@ class Comments_model extends CI_Model
 		
 	}
 	
+	public function getCategoriesAsWidgetsArray()
+	{
+		$comments = $this->getCommentsCategories();
+		$array = array();
+		foreach ($comments as $comment)
+		{
+			$array['comments__'.$comment->id] = Array('comments', $comment->id);
+		}
+		
+		return $array;
+	}
+
+	public function getCommentsCategoriesLang($slug) {
+		$dbDefault = $this->load->database('default', TRUE);
+		$dbDefault->where('short', $slug);
+		$return = $dbDefault->get('language')->row();
+
+		return $return;
+	}
+
 	
 }
 

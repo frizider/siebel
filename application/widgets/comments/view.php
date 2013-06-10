@@ -2,8 +2,7 @@
 	<div class="header">
 		<h3>
 			<?php 
-			$category = $this->siebel->getCommentsCategories($_GET['dataId']);
-			echo $title .' '.$this->siebel->getLang('category_'.$category[0]->slug); 
+			echo $title .' '.$this->siebel->getLang('category_'.$comments->slug); 
 			?>
 			<span class="tools pull-right">
 				<a href="<?php echo site_url($boxId.'/customer/'.$customernumber.'/new') ?>" class="add"><i class="icon-plus"></i></a>
@@ -12,11 +11,11 @@
 			</span>
 		</h3>
 	</div>
-	<div class="content commentlist <?php echo $category[0]->color ?> border-<?php echo $category[0]->color ?>">
+	<div class="content commentlist <?php echo $comments->color ?> border-<?php echo $comments->color ?>">
 		<div>
 			<div class="list list-striped">
 
-			<?php foreach($comments_content[$_GET['dataId']] as $item) { 
+			<?php foreach($comments->comments as $item) { 
 			?>
 				<div class="row-fluid">
 					<div class="span12">

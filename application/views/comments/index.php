@@ -6,7 +6,7 @@ $customerLang = trim($this->siebel->getCustomerdata($customernumber, param('para
 
 if(isset($id) && !empty($id))
 {
-echo $this->bootstrap->heading(1, $this->siebel->getLang('edit_comment'), utf8_encode($customerName).' | '.$customernumber.' | '.$customerLang, '<a class="backbutton" title="Go back" href="'.site_url('dashboard/customer/'.$customernumber).'"><span><i class="icon-chevron-left"></i></span></a> '); 
+echo $this->bootstrap->heading(1, '<i class="icon-comment"></i> '.ucfirst($this->siebel->getLang('edit_comment')), utf8_encode($customerName).' | '.$customernumber.' | '.$customerLang, '<a class="backbutton" title="Go back" href="'.site_url('dashboard/customer/'.$customernumber).'"><span><i class="icon-chevron-left"></i></span></a> '); 
 ?>
 
 <div class="row">
@@ -62,10 +62,8 @@ echo $this->bootstrap->heading(1, $this->siebel->getLang('edit_comment'), utf8_e
 					<?php
 					// Dropdown for Groups
 					$label = $this->siebel->getLang('category');
-					$current = $this->siebel->getCommentsCategories($category['value']);
-					$name = (isset($category['value']) && !empty($category['value'])) ? ucfirst($this->siebel->getLang('category_'.$current[0]->slug)) : $this->siebel->getLang('choose');
-					$comments_categories = $this->siebel->getCommentsCategories();
-					foreach($comments_categories as $comments_category) {
+					$name = (isset($category['value']) && !empty($category['value'])) ? ucfirst($this->siebel->getLang('category_'.$current_category[0]->slug)) : $this->siebel->getLang('choose');
+					foreach($categories as $comments_category) {
 						$categories_values[$comments_category->id] = $this->siebel->getLang('category_'.$comments_category->slug);
 					}
 					echo $this->bootstrap->dropdown(FALSE, $label, $name, 'category', $categories_values, FALSE, FALSE, $category['value']);
@@ -124,27 +122,25 @@ echo $this->bootstrap->heading(1, $this->siebel->getLang('edit_comment'), utf8_e
 }
 else 
 {
-echo $this->bootstrap->heading(1, $this->siebel->getLang('comments'), utf8_encode($customerName).' | '.$customernumber.' | '.$customerLang.' <a class="btn" href="'.current_url().'/new"><i class="icon-plus"></i></a>', '<a class="backbutton" title="Go back" href="'.site_url('dashboard/customer/'.$customernumber).'"><span><i class="icon-chevron-left"></i></span></a> '); 
+echo $this->bootstrap->heading(1, '<i class="icon-comment"></i> '.  ucfirst($this->siebel->getLang('comments')), utf8_encode($customerName).' | '.$customernumber.' | '.$customerLang.' <a class="btn" href="'.current_url().'/new"><i class="icon-plus"></i></a>', '<a class="backbutton" title="Go back" href="'.site_url('dashboard/customer/'.$customernumber).'"><span><i class="icon-chevron-left"></i></span></a> '); 
 ?>
 
 <div class="container">
 
 <?php 
-
-foreach ($comments as $category => $objects)
+foreach ($comments as $comment)
 {
-	$category = $this->siebel->getCommentsCategories($category);
 ?>
 	<div class="row">
 		<div class="span12">
 			<div class="row">
 				<div class="span12">
-					<?php echo $this->bootstrap->heading(3, $this->siebel->getLang('category_'.$category[0]->slug)); ?>
+					<?php echo $this->bootstrap->heading(3, $this->siebel->getLang('category_'.$comment->slug)); ?>
 				</div>
 			</div>
-			<div class="commentlist <?php echo $category[0]->color ?>">
+			<div class="commentlist <?php echo $comment->color ?>">
 <?php	
-	foreach($objects as $item) { 
+	foreach($comment->comments as $item) { 
 		//dev($item);
 ?>
 			<div class="row">

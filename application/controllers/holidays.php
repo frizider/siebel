@@ -48,7 +48,7 @@ class holidays extends CI_Controller {
 		{
 			if($id == 'new')
 			{
-				$data['item'] = $this->siebel->getColumns('holidays');
+				$data['item'] = $this->holidays_model->getColumns();
 				$data['item']->from = $this->siebel->date_to_mysql(date('d/m/Y', now()));
 				$data['item']->until = $this->siebel->date_to_mysql(date('d/m/Y', now()));
 			}

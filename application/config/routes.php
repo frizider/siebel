@@ -38,14 +38,14 @@
 |
 */
 
-$route['default_controller'] = "contactcontroller";
+$route['default_controller'] = "contact";
 $route['404_override'] = '';
 $route['diamond/:any'] = "diamond";
-$route['contacts'] = "contactcontroller";
-$route['contacts/edit/:any'] = "contactcontroller/edit";
-$route['contacts/customer'] = "contactcontroller/customer";
-$route['contacts/customer/:any'] = "contactcontroller/customer";
-$route['contacts/delete/:any'] = "contactcontroller/delete";
+$route['contacts'] = "contact";
+$route['contacts/edit/:any'] = "contact/edit";
+$route['contacts/customer'] = "contact/customer";
+$route['contacts/customer/:any'] = "contact/customer";
+$route['contacts/delete/:any'] = "contact/delete";
 $route['comments/customer/:any'] = "comments";
 $route['comments/categories/:any'] = "comments/categories";
 $route['newcustomer/:any'] = "newcustomer";

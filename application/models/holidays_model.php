@@ -61,6 +61,17 @@ class holidays_model extends CI_Model
 		};
 		
 	}
+	
+	public function getColumns() {
+		$dbDefault = $this->load->database('default', TRUE);
+
+		foreach ($dbDefault->list_fields('holidays') as $key => $value) {
+			$return->$value = '';
+		}
+
+		return $return;
+	}
+	
 }
 
 /* End of file */

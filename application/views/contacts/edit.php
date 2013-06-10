@@ -1,10 +1,15 @@
 <?php 
 echo $this->bootstrap->heading(1, $this->siebel->getLang('edit_contact'), $contact[param('param_asw_database_column_contact_name')], '<a class="backbutton" title="Go back" href="'.site_url('dashboard/customer/'.$customernumber['value']).'"><span><i class="icon-chevron-left"></i></span></a> '); 
 echo form_open(current_url(), $form_attributes);
-echo form_input($id);
-echo form_input($customerid);
-echo form_input($customernumber);
-echo form_hidden($name['name'], $name['value']);
+//dev(eval('return $'. param('param_asw_database_column_contact_name') . '["name"];'));
+echo form_hidden(eval('return $'. param('param_asw_database_column_contact_id') . '["name"];'), 
+		eval('return $'. param('param_asw_database_column_contact_id') . '["value"];'));
+echo form_hidden(eval('return $'. param('param_asw_database_column_contact_customerid') . '["name"];'),
+		eval('return $'. param('param_asw_database_column_contact_customerid') . '["value"];'));
+echo form_hidden(eval('return $'. param('param_asw_database_column_contact_customernumber') . '["name"];'),
+		eval('return $'. param('param_asw_database_column_contact_customernumber') . '["value"];'));
+echo form_hidden(eval('return $'. param('param_asw_database_column_contact_name') . '["name"];'),
+		eval('return $'. param('param_asw_database_column_contact_name') . '["value"];'));
 ?>
 
 <div class="row">
@@ -14,15 +19,15 @@ echo form_hidden($name['name'], $name['value']);
 
 				<div class="span5">
 					<?php 
-					echo $this->bootstrap->formControlGroup(array($this->siebel->getLang('name'), 'customer', array('class' => 'control-label')), array($name));
-					echo $this->bootstrap->formControlGroup(array($this->siebel->getLang('email'), 'email', array('class' => 'control-label')), array($email));
+					echo $this->bootstrap->formControlGroup(array($this->siebel->getLang('name'), 'customer', array('class' => 'control-label')), array(eval('return $'. param('param_asw_database_column_contact_name') . ';')));
+					echo $this->bootstrap->formControlGroup(array($this->siebel->getLang('email'), 'email', array('class' => 'control-label')), array(eval('return $'. param('param_asw_database_column_contact_email') . ';')));
 					?>
 				</div>
 
 				<div class="span5">
 					<?php 
-					echo $this->bootstrap->formControlGroup(array($this->siebel->getLang('phone'), 'phone', array('class' => 'control-label')), array($phone));
-					echo $this->bootstrap->formControlGroup(array($this->siebel->getLang('fax'), 'fax', array('class' => 'control-label')), array($fax));
+					echo $this->bootstrap->formControlGroup(array($this->siebel->getLang('phone'), 'phone', array('class' => 'control-label')), array(eval('return $'. param('param_asw_database_column_contact_phone') . ';')));
+					echo $this->bootstrap->formControlGroup(array($this->siebel->getLang('fax'), 'fax', array('class' => 'control-label')), array(eval('return $'. param('param_asw_database_column_contact_fax') . ';')));
 					?>				
 				</div>
 
@@ -47,12 +52,7 @@ echo form_hidden($name['name'], $name['value']);
 					</div>
 					<div class="span7">
 						<?php 
-						$values = array(
-							'0' => 'geen',
-							'1' => 'email',
-							'2' => 'fax',
-							'3' => 'print',
-						);
+						$values = array('geen','email','fax','print');
 						echo $this->bootstrap->radio(FALSE, $key, $contact[$key], $values, TRUE);
 						?>
 					</div>

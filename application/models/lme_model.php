@@ -58,6 +58,16 @@ class Lme_model extends CI_Model
 		return $results;
 	}
 	
+	public function getColumns() {
+		$dbDefault = $this->load->database('default', TRUE);
+
+		foreach ($dbDefault->list_fields('lme') as $key => $value) {
+			$return->$value = '';
+		}
+
+		return $return;
+	}
+	
 }
 
 /* End of file */

@@ -109,7 +109,7 @@ else
 					
 					<?php
 					$department = (isset($_POST['search_department']) && !empty($_POST['search_department'])) ? $_POST['search_department'] : '';
-					echo $this->bootstrap->dropdown(TRUE, FALSE, $this->siebel->getLang('department'), 'search_department', $this->contact_model->getDepartments(), 'span2', FALSE, $department);
+					echo $this->bootstrap->dropdown(TRUE, FALSE, strtoupper($this->siebel->getLang('department')), 'search_department', $departments, 'span2', FALSE, $department);
 					?>
 					
 					<li class="span2 align-right">
@@ -142,16 +142,13 @@ else
 				</div>
 				<div class="span2">
 					<p>
-						<b>T: <?= trim($contact[param('param_asw_database_column_contact_phone')]) ?></b><br/>
-						<b>F: <?= trim($contact[param('param_asw_database_column_contact_fax')]) ?></b>
+						<b><i class="icon-phone"></i> <?= trim($contact[param('param_asw_database_column_contact_phone')]) ?></b><br/>
+						<b><i class="icon-print"></i> <?= trim($contact[param('param_asw_database_column_contact_fax')]) ?></b>
 					</p>
 				</div>
 				<div class="span2">
-					<p><ul><?php 
-						/* echo utf8_encode($contact[param('param_asw_database_column_contact_general')]) */ 
-						$departments = $this->contact_model->listDepartments($contact);
-						
-						foreach($departments as $department)
+					<p><ul><?php
+						foreach($contact['departments'] as $department)
 						{
 							if(!empty($department))
 							{

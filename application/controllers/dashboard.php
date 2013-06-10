@@ -23,6 +23,7 @@ class dashboard extends CI_Controller {
 		
 		// load the model we will be using
 		$this->load->model('dashboard_model');
+		$this->load->model('comments_model');
 	}
 	
 	public function index() 
@@ -44,12 +45,12 @@ class dashboard extends CI_Controller {
 		$data['customernumber'] = $this->uri->segment(3);
 		
 		$widgetsModifications = array(
-			'comments__0' => $this->siebel->getCategoriesAsWidgetsArray()
+			'comments__0' => $this->comments_model->getCategoriesAsWidgetsArray()
 		);
 		
-		$data['widgets'] = $this->siebel->getWidgets($widgetsModifications);
+		$data['widgets'] = $this->dashboard_model->getWidgets($widgetsModifications);
 		
-		$data['userDashboard'] = $this->siebel->getUserDashboard();
+		$data['userDashboard'] = $this->dashboard_model->getUserDashboard();
 		
 		
 		// Load the general view
@@ -65,30 +66,4 @@ class dashboard extends CI_Controller {
 		}
 	}
 	
-	/*
-	public function getWidgets($widgetsModification = FALSE) {
-		foreach (glob(APPPATH . 'widgets/*') as $folder)
-		{
-			$folder = explode('/', $folder);
-			$folders[$folder[2].'__0'] = array($folder[2], '0');
-		}
-		
-		$widgets = $folders;
-		
-		if($widgetsModification)
-		{
-			foreach($widgetsModification as $key => $value)
-			{
-				if(array_key_exists($key, $folders))
-				{
-					unset($widgets[$key]);
-					$widgets = array_merge($widgets, $value);
-				}
-			}
-		}
-		
-		return $widgets;
-	}
-	*/
 }
-

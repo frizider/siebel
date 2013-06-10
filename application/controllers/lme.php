@@ -49,7 +49,7 @@ class Lme extends CI_Controller {
 			{
 				if($id == 'new')
 				{
-					$data['lme'] = $this->siebel->getColumns('lme');
+					$data['lme'] = $this->lme_model->getColumns('lme');
 					$data['lme']->date = $this->siebel->date_to_mysql(date('d/m/Y', now()));
 				}
 				else 

@@ -32,7 +32,26 @@ class Contact_model extends CI_Model
 	 * Other function below this section
 	 */
 	
-	public function contacts($customernumber, $id) 
+	public function customers() 
+	{
+		// Load customers from ASW database
+		$dbAsw = $this->load->database('asw', TRUE);
+		
+		$customernumber = strtolower($this->input->post('search_customer'));
+		if($customernumber) 
+		{
+			$dbAsw->like('LOWER('.param('param_asw_database_column_customernumber').')', $customernumber);
+		}
+		$dbAsw->like(param('param_asw_database_column_customernumber'), param('param_asw_database_column_customernumber_prefix'));
+		$dbAsw->where(param('param_asw_database_column_customer_state').' !=', param('param_asw_database_column_customer_state_active'));
+		$dbAsw->order_by(param('param_asw_database_column_customernumber'), 'desc');
+		$dbAsw->limit(20);
+		$result = $dbAsw->get(param('param_asw_database_table_customer'))->result_array();
+
+		return $result;
+	}
+	
+	public function contacts($customernumber, $id = false) 
 	{
 		// Load contact database
 		$dbContact = $this->load->database('contact', TRUE);
@@ -41,7 +60,7 @@ class Contact_model extends CI_Model
 		{
 			$dbContact->where(param('param_asw_database_column_contact_customernumber'), $customernumber);
 			
-			if(empty($id))
+			if(empty($id) || $id == false)
 			{
 				if(isset($_POST) && !empty($_POST))
 				{
@@ -65,26 +84,23 @@ class Contact_model extends CI_Model
 		
 		$dbContact->where(param('param_asw_database_column_contact_state').' !=', 99);
 		$dbContact->order_by(param('param_asw_database_column_contact_name'), 'desc');
-		return $dbContact->get(param('param_asw_database_table_contact'))->result_array();
-	}
-	
-	public function customers() 
-	{
-		// Load customers from ASW database
-		$dbAsw = $this->load->database('asw', TRUE);
+		$result = $dbContact->get(param('param_asw_database_table_contact'))->result_array();
 		
-		$customernumber = strtolower($this->input->post('search_customer'));
-		if($customernumber) 
-		{
-			$dbAsw->like('LOWER('.param('param_asw_database_column_customernumber').')', $customernumber);
+		foreach($result as $contact) {
+			$departments = array(
+				'general' => $this->siebel->getDepartmentLang('department_general', $contact[param('param_asw_database_column_contact_general')]),
+				'billing' => $this->siebel->getDepartmentLang('department_billing', $contact[param('param_asw_database_column_contact_billing')]),
+				'order' => $this->siebel->getDepartmentLang('department_order', $contact[param('param_asw_database_column_contact_order')]),
+				'purchase' => $this->siebel->getDepartmentLang('department_purchase', $contact[param('param_asw_database_column_contact_purchase')]),
+				'transport' => $this->siebel->getDepartmentLang('department_transport', $contact[param('param_asw_database_column_contact_transport')]),
+				'packing' => $this->siebel->getDepartmentLang('department_packing', $contact[param('param_asw_database_column_contact_packing')]),
+				'quality' => $this->siebel->getDepartmentLang('department_quality', $contact[param('param_asw_database_column_contact_quality')]),
+			);
+			$contact['departments'] = $departments;
+			$contacts[] = $contact;
 		}
-		$dbAsw->like(param('param_asw_database_column_customernumber'), param('param_asw_database_column_customernumber_prefix'));
-		$dbAsw->where(param('param_asw_database_column_customer_state').' !=', param('param_asw_database_column_customer_state_active'));
-		$dbAsw->order_by(param('param_asw_database_column_customernumber'), 'desc');
-		$dbAsw->limit(20);
-		$result = $dbAsw->get(param('param_asw_database_table_customer'))->result_array();
-
-		return $result;
+		
+		return $contacts;
 	}
 	
 	public function save($data, $id)
@@ -143,34 +159,18 @@ class Contact_model extends CI_Model
 	}
 	
 	public function getDepartments($lang = FALSE) {
-		$ci = get_instance();
-		$dbDefault = $ci->load->database('default', TRUE);
+		$dbDefault = $this->load->database('default', TRUE);
 		$departments = $dbDefault->get('departments')->result();
 
 		foreach ($departments as $department) {
-			$return[$department->asw_field] = $this->getLang('department_' . $department->name, $lang);
+			$return[$department->asw_field] = $this->siebel->getLang('department_' . $department->name, $lang);
 		}
 
 		return $return;
 	}	
-	
-	public function listDepartments($contact) {
-		$departments = array(
-			'general' => $this->getDepartmentLang('department_general', $contact[param('param_asw_database_column_contact_general')]),
-			'billing' => $this->getDepartmentLang('department_billing', $contact[param('param_asw_database_column_contact_billing')]),
-			'order' => $this->getDepartmentLang('department_order', $contact[param('param_asw_database_column_contact_order')]),
-			'purchase' => $this->getDepartmentLang('department_purchase', $contact[param('param_asw_database_column_contact_purchase')]),
-			'transport' => $this->getDepartmentLang('department_transport', $contact[param('param_asw_database_column_contact_transport')]),
-			'packing' => $this->getDepartmentLang('department_packing', $contact[param('param_asw_database_column_contact_packing')]),
-			'quality' => $this->getDepartmentLang('department_quality', $contact[param('param_asw_database_column_contact_quality')]),
-		);
-
-		return $departments;
-	}
 
 	public function getContactypes($name = FALSE) {
-		$ci = get_instance();
-		$dbDefault = $ci->load->database('default', TRUE);
+		$dbDefault = $this->load->database('default', TRUE);
 
 		if ($name) {
 			$dbDefault->where('name', $name);
@@ -185,14 +185,24 @@ class Contact_model extends CI_Model
 	}
 
 	public function newId() {
-		$ci = get_instance();
-		$dbAsw = $ci->load->database('asw', TRUE);
+		$dbAsw = $this->load->database('asw', TRUE);
 
 		$dbAsw->select_max(param('param_asw_database_column_contact_id'));
 		$query = $dbAsw->get(param('param_asw_database_table_contact'))->result_array();
 		$return = $query[0][param('param_asw_database_column_contact_id')] + 1;
 
 		return $return;
+	}
+	
+	public function getFields() {
+		$dbContact = $this->load->database('contact', TRUE);
+		$dbContact->limit(1);
+		$record = $dbContact->get(param('param_asw_database_table_contact'))->result_array();
+		foreach ($record[0] as $key => $value) {
+			$fields[] = $key;
+		}
+		
+		return $fields;
 	}
 
 }

@@ -117,7 +117,7 @@ $autoload['language'] = array();
 |
 */
 
-$autoload['model'] = array('ion_auth_model', 'domain_model', 'permissions_model');
+$autoload['model'] = array('ion_auth_model', 'permissions_model');
 
 
 /* End of file autoload.php */

@@ -35,17 +35,13 @@
 					</div>
 					<div class="span3">
 						<p><ul><?php 
-							/* echo utf8_encode($contact[param('param_asw_database_column_contact_general')]) */ 
-							$departments = $this->contact_model->listDepartments($contact);
-
-							foreach($departments as $department)
+							foreach($contact['departments'] as $department)
 							{
 								if(!empty($department))
 								{
 									echo '<li>'.ucfirst(utf8_encode($department)).'</li>';
 								}
 							}
-
 						?></ul> <br/></p>
 					</div>
 					<div class="text-right tools">
