@@ -22,6 +22,11 @@ class Prices_model extends CI_Model
 		}
 		$dbDefault->order_by('date', 'desc');
 		$results = $dbDefault->get('prices')->result();
+		
+		foreach($results as $result) {
+			$result->priceunit = $this->getPriceUnit($result->priceunit_id)->short;
+		}
+		
 		return $results;
 	}
 	
@@ -68,6 +73,22 @@ class Prices_model extends CI_Model
 		
 	}
 	
+	public function getPriceUnit($id) {
+		$dbDefault = $this->load->database('default', TRUE);
+		$dbDefault->where('id', $id);
+		$result = $dbDefault->get('priceunits')->result();
+		return $result[0];
+	}
+
+	public function getDropdownValues($table, $key = 'id', $value = 'short') {
+		$dbDefault = $this->load->database('default', TRUE);
+		$results = $dbDefault->get($table)->result();
+		foreach ($results as $result) {
+			$group[$result->$key] = $result->$value;
+		}
+		return $group;
+	}
+
 }
 
 /* End of file */

@@ -43,8 +43,7 @@ echo $this->bootstrap->heading(1, $this->siebel->getLang('edit_price'), $custome
 					);
 					$label = $this->siebel->getLang('formula');
 					$name = (isset($value['value']) && !empty($value['value'])) ? $this->siebel->getFormula($price->formula_id)->formulaname : $this->siebel->getLang('choose');
-					$values = $this->siebel->getDropdownValues('formulas', 'id', 'formulaname');
-					echo $this->bootstrap->dropdown(FALSE, $label, $name, $field, $values, FALSE, FALSE, $value['value']);
+					echo $this->bootstrap->dropdown(FALSE, $label, $name, $field, $dropdown_formulas, FALSE, FALSE, $value['value']);
 					?>
 				</div>
 				<div class="span4">
@@ -69,9 +68,8 @@ echo $this->bootstrap->heading(1, $this->siebel->getLang('edit_price'), $custome
 						'value' => $price->$field,
 					);
 					$label = $this->siebel->getLang('priceunit');
-					$name = (isset($value['value']) && !empty($value['value'])) ? $this->siebel->getLang('priceunit_'.$this->siebel->getPriceUnit($price->priceunit_id)->short) : $this->siebel->getLang('choose');
-					$values = $this->siebel->getDropdownValues('priceunits');
-					echo $this->bootstrap->dropdown(FALSE, $label, $name, $field, $values, FALSE, FALSE, $value['value']);
+					$name = (isset($value['value']) && !empty($value['value'])) ? $this->siebel->getLang('priceunit_'.$price->priceunit) : $this->siebel->getLang('choose');
+					echo $this->bootstrap->dropdown(FALSE, $label, $name, $field, $dropdown_priceunits, FALSE, FALSE, $value['value']);
 					?>
 				</div>
 			</div>

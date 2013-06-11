@@ -52,32 +52,6 @@ class Siebel {
 	/*
 	 * Prices
 	 */
-	public function getPriceUnit($id) {
-		$ci = get_instance();
-		$dbDefault = $ci->load->database('default', TRUE);
-		$dbDefault->where('id', $id);
-		$result = $dbDefault->get('priceunits')->result();
-		return $result[0];
-	}
-
-	public function getPriceType($id) {
-		$ci = get_instance();
-		$dbDefault = $ci->load->database('default', TRUE);
-		$dbDefault->where('id', $id);
-		$result = $dbDefault->get('pricetypes')->result();
-		return $result[0];
-	}
-
-	public function getDropdownValues($table, $key = 'id', $value = 'short') {
-		$ci = get_instance();
-		$dbDefault = $ci->load->database('default', TRUE);
-		$results = $dbDefault->get($table)->result();
-		foreach ($results as $result) {
-			$group[$result->$key] = $result->$value;
-		}
-		return $group;
-	}
-
 	public function math($expression) {
 		eval('$math = ' . preg_replace('/[^0-9\+\-\*\/\(\)\.]/', '', $expression) . ';');
 		return $result;

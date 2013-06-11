@@ -49,6 +49,9 @@ class Prices extends CI_Controller {
 		
 		if(isset($id) && !empty($id))
 		{
+			$data['dropdown_formulas'] = $this->prices_model->getDropdownValues('formulas', 'id', 'formulaname');
+			$data['dropdown_priceunits'] = $this->prices_model->getDropdownValues('priceunits');
+			
 			if($id == 'new')
 			{
 				$data['price'] = $this->siebel->getColumns('prices');

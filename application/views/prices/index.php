@@ -50,7 +50,7 @@ else
 					<div class="span2">
 						<p>
 							<b><?php echo '&euro; ' . $price->price ?></b>
-							<?php echo ' /'. $this->siebel->getLang('priceunit_'.$this->siebel->getPriceUnit($price->priceunit_id)->short) ?><br />
+							<?php echo ' /'. $this->siebel->getLang('priceunit_'.$price->priceunit) ?><br />
 						</p>
 					</div>
 					<div class="span2">
