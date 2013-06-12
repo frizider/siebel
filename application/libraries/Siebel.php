@@ -62,14 +62,16 @@ class Siebel {
 	/*
 	 * Date transformations
 	 */
-	public function date_to_mysql($date) {
+	public function date_to_mysql($date, $time = TRUE) {
 		$date = explode('/', $date);
-		return $date[2] . $date[1] . $date[0] . '000000';
+		$time = $time ? '000000' : '';
+		return $date[2] . $date[1] . $date[0] . $time;
 	}
 
-	public function date_to_mysql_human($date) {
+	public function date_to_mysql_human($date, $time = TRUE) {
 		$date = explode('/', $date);
-		return $date[2] . '-' . $date[1] . '-' . $date[0] . ' 00:00:00';
+		$time = $time ? ' 00:00:00' : '';
+		return $date[2] . '-' . $date[1] . '-' . $date[0] . $time;
 	}
 
 	
