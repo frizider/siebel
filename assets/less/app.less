@@ -371,5 +371,63 @@ h1 a.backbutton:hover span {
   cursor: default;
 }
 
+.opacity50 {
+	.opacity(50);
+}
 
+/* Contractlist */
+.contractlist p {
+	padding: 0 10px;
+	margin: 0;
+}
+
+.contractlist > div {
+	padding-bottom: 20px;
+}
+
+.contractlist .contractdata > div {
+	padding: 8px 0;
+	border-bottom: 1px solid @btnBorder;
+	background-color: @tableBackgroundAccent;
+
+	&:hover {
+		background-color: @tableBackgroundHover;
+	}
+}
+
+.contractlist .salesorder > div {
+	padding: 8px 0;
+	border-bottom: 1px solid lighten(@btnBorder, 5%);
+
+}
+
+.contractlist .salesorder:nth-child(odd) > div {
+	background-color: lighten(@tableBackgroundAccent, 2%);
+
+}
+
+.contractlist .salesorder:hover > div {
+	background-color: lighten(@tableBackgroundHover, 2%);
+
+}
+
+.contractlist .saleslines > div .well {
+	margin: 10px;
+}
+
+.contractlist .saleslines > div .well .row {
+	padding: 8px 0;
+	border-bottom: 1px solid lighten(@btnBorder, 5%);
+
+}
+
+.contractlist .saleslines > div .well .row:nth-child(odd) {
+	background-color: @white;
+
+}
+
+.contractlist .saleslines > div .well .row:hover {
+	background-color: lighten(@tableBackgroundHover, 2%);
+
+}
 

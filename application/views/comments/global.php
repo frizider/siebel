@@ -127,18 +127,20 @@ echo $this->bootstrap->heading(1, $this->siebel->getLang('comments'), ' <a class
 
 <?php 
 
-foreach ($comments as $category => $objects)
+foreach ($comments as $comment)
 {
-	$category = $this->siebel->getCommentsCategories($category);
+	//dev($comment);
+	$category = $comment['category'];
+	$objects = $comment['comments'];
 ?>
 	<div class="row">
 		<div class="span12">
 			<div class="row">
 				<div class="span12">
-					<?php echo $this->bootstrap->heading(3, $this->siebel->getLang('category_'.$category[0]->slug)); ?>
+					<?php echo $this->bootstrap->heading(3, $this->siebel->getLang('category_'.$category->slug)); ?>
 				</div>
 			</div>
-			<div class="commentlist <?php echo $category[0]->color ?>">
+			<div class="commentlist <?php echo $category->color ?>">
 <?php	
 	foreach($objects as $item) { 
 		//dev($item);

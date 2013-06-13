@@ -233,8 +233,7 @@ class comments extends CI_Controller {
 						array( 'Source', '-', 'Bold', 'Italic', 'Underline', '-','Cut','Copy','Paste','PasteText','PasteFromWord','-','Undo','Redo','-','NumberedList','BulletedList' )
 															);
 		$this->ckeditor->config['language'] = 'en';
-		$this->ckeditor->config['height'] = '210px';            
-
+		$this->ckeditor->config['height'] = '210px';  
 		
 		
 		$data['id'] = $this->uri->segment(3);

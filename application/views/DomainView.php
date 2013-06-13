@@ -2,18 +2,24 @@
 
 /* *********************************************************************
  * Header:
- * Always in the bottom of this page 
+ * Always in the top of this page 
  */
 $this->load->view('include/header.php');
 
 
-if($this->config->item('devmode') != 0) 
-{
-	if(isset($_POST) && !empty($_POST))
-	{
-		dev($_POST);
-	}
-};
+
+/* *********************************************************************
+ * Devmode data:
+ * Print out available variables and $_REQUEST data if is in devmode
+ */
+if($this->config->item('devmode') != 0) {$this->load->view('include/dev.php');};
+
+
+
+/* *********************************************************************
+ * Mainheading <h1>
+ */
+$this->load->view('include/mainheading.php');
 
 
 

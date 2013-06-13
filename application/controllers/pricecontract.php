@@ -29,7 +29,7 @@ class Pricecontract extends CI_Controller {
 		 */
 		
 		// load the model we will be using
-		//$this->load->model('pricecontract_model');
+		$this->load->model('pricecontract_model');
 		$this->load->model('domain_model', 'model');
 	}
 	
@@ -40,6 +40,9 @@ class Pricecontract extends CI_Controller {
 	
 	public function customer() {
 		$data['form_attributes'] = array('class' => 'form-horizontal');
+		$data['module'] = $this->module;
+		$data['customernumber'] = $this->customernumber;
+		$data['id'] = $this->id;
 		
 		if(isset($this->id) && !empty($this->id)) {
 			if($this->id == 'new')
@@ -50,8 +53,7 @@ class Pricecontract extends CI_Controller {
 			}
 			else 
 			{
-				$data['item'] = $this->model->get($this->customernumber, $this->id)->row();
-				dev($data['item']);
+				$data['item'] = $this->model->get($this->customernumber, $this->id);
 			}
 			
 			// Create fields sets for input fields in view
@@ -71,11 +73,11 @@ class Pricecontract extends CI_Controller {
 				}
 			}
 		} else {
-			$data['items'] = $this->model->get($this->customernumber, $this->id);
+			$data['items'] = $this->pricecontract_model->addSalesOrders($this->model->get($this->customernumber, $this->id));
 		}
 		
 		// Load the general view
-		$data['view'] = 'pricecontract/index';
+		$data['view'] = (isset($this->id) && !empty($this->id)) ? $this->module.'/edit' : $this->module.'/index';
 		$this->load->view('DomainView', $data);
 		
 	}

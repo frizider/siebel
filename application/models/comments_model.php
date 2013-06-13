@@ -53,21 +53,22 @@ class Comments_model extends CI_Model
 	}
 	
 	public function getGlobalComments() {
-		$categories = $this->siebel->getCommentsCategories();
+		$categories = $this->getCommentsCategories();
 		$return = array();
+		$dbDefault = $this->load->database('default', TRUE);
 		
 		foreach($categories as $category)
 		{
-			$dbDefault = $this->load->database('default', TRUE);
 			
 			$dbDefault->where('global', 1);
 			$dbDefault->where('delete', 0);
 			$dbDefault->where('category', $category->id);
 			$dbDefault->order_by("priority", "desc");
 			$dbDefault->order_by("date", "desc");
-			$return[$category->id] = $dbDefault->get('comments')->result();
+			$return[$category->id]['category'] = $category;
+			$return[$category->id]['comments'] = $dbDefault->get('comments')->result();
 		}
-		
+
 		return $return;
 	}
 	
