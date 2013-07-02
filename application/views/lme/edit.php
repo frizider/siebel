@@ -1,8 +1,3 @@
-<?php
-//dev($price);
-echo $this->bootstrap->heading(1, 'LME '.$this->siebel->getLang('edit'), FALSE, '<a class="backbutton" title="Go back" href="'.site_url('lme').'"><span><i class="icon-chevron-left"></i></span></a> '); 
-?>
-
 <div class="row">
 	<div class="span12">
 

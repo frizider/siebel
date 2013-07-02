@@ -7,10 +7,6 @@ if(isset($id) && !empty($id))
 }
 else 
 {
-
-	//dev($prices);
-
-	echo $this->bootstrap->heading(1, $this->siebel->getLang('holidays'), $customerName. ' | '. $customernumber, '<a class="backbutton" title="Go back" href="'.site_url('dashboard/customer/'.$customernumber).'"><span><i class="icon-chevron-left"></i></span></a> '); 
 ?>
 	<div class="row">
 

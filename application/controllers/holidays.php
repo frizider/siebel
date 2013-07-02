@@ -9,10 +9,17 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class holidays extends CI_Controller {
 	
+	private $module;
+	private $customernumber;
+	private $id;
+	
 	public function __construct()
 	{
 		// load Controller constructor
 		parent::__construct();
+		$this->module = get_class();
+		$this->customernumber = ($this->uri->segment(3)) ? $this->uri->segment(3) : '';
+		$this->id = ($this->uri->segment(4)) ? $this->uri->segment(4) : '';
 		
 		// Check if the current logged in user is permitted
 		/*
@@ -27,6 +34,10 @@ class holidays extends CI_Controller {
 	
 	public function index() 
 	{
+		$data['id'] = $this->id;
+		$data['customernumber'] = $this->customernumber;
+		$data['module'] = $this->module;
+
 		$data['form_attributes'] = array('class' => 'form-horizontal');
 		
 		// Load the general view
@@ -36,6 +47,10 @@ class holidays extends CI_Controller {
 	
 	public function customer() 
 	{
+		$data['id'] = $this->id;
+		$data['customernumber'] = $this->customernumber;
+		$data['module'] = $this->module;
+
 		$data['form_attributes'] = array('class' => 'form-horizontal');
 		$data['customernumber'] = $this->uri->segment(3);
 		$cuno = $data['customernumber'];
@@ -75,6 +90,10 @@ class holidays extends CI_Controller {
 	
 	public function delete()
 	{
+		$data['id'] = $this->id;
+		$data['customernumber'] = $this->customernumber;
+		$data['module'] = $this->module;
+
 		$data['customernumber'] = $this->uri->segment(3);
 		$data['id'] = $this->uri->segment(4);
 		

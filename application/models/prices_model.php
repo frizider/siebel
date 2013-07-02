@@ -13,18 +13,42 @@ class Prices_model extends CI_Model
 	 * Other function below this section
 	 */
 	
-	public function getPrices($cuno, $id = FALSE) {
+	public function getPrices($cuno, $id = FALSE, $search = FALSE) {
 		$dbDefault = $this->load->database('default', TRUE);
 		$dbDefault->where('customernumber', $cuno);
 		if($id)
 		{
 			$dbDefault->where('id', $id);
 		}
+		
+		// Search
+		if($search) {
+			
+			if(!empty($search['search_price'])) {
+				$dbDefault->like('price', $search['search_price']);
+			}
+			if(!empty($search['search_priceunit'])) {
+				$dbDefault->where('priceunit_id', $search['search_priceunit']);
+			}
+			if(!empty($search['search_profile'])) {
+				$dbDefault->like('profile', $search['search_profile']);
+			}
+			if(!empty($search['search_finish'])) {
+				$dbDefault->like('finish', $search['search_finish']);
+			}
+			if(!empty($search['search_length'])) {
+				$dbDefault->like('length', $search['search_length']);
+			}
+			
+		}
+		
 		$dbDefault->order_by('date', 'desc');
 		$results = $dbDefault->get('prices')->result();
 		
 		foreach($results as $result) {
-			$result->priceunit = $this->getPriceUnit($result->priceunit_id)->short;
+			if(isset($result->priceunit_id) && !empty($result->priceunit_id)) {
+				$result->priceunit = $this->getPriceUnit($result->priceunit_id)->short;
+			}
 		}
 		
 		return $results;
@@ -74,10 +98,12 @@ class Prices_model extends CI_Model
 	}
 	
 	public function getPriceUnit($id) {
-		$dbDefault = $this->load->database('default', TRUE);
-		$dbDefault->where('id', $id);
-		$result = $dbDefault->get('priceunits')->result();
-		return $result[0];
+		if(isset($id) && !empty($id)) {
+			$dbDefault = $this->load->database('default', TRUE);
+			$dbDefault->where('id', $id);
+			$result = $dbDefault->get('priceunits')->result();
+			return $result[0];
+		}
 	}
 
 	public function getDropdownValues($table, $key = 'id', $value = 'short') {

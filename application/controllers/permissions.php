@@ -1,10 +1,17 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Permissions extends CI_Controller {
+	
+	private $module;
+	private $customernumber;
+	private $id;
 
 	public function __construct()
 	{
 		parent::__construct();
+		$this->module = get_class();
+		$this->customernumber = ($this->uri->segment(3)) ? $this->uri->segment(3) : '';
+		$this->id = ($this->uri->segment(4)) ? $this->uri->segment(4) : '';
 		
 		// Check if the current logged in user is permitted
 		if(!is_permitted('View permissions')) {
@@ -25,6 +32,10 @@ class Permissions extends CI_Controller {
 	//redirect if needed, otherwise display the user list
 	function index()
 	{
+		$data['id'] = $this->id;
+		$data['customernumber'] = $this->customernumber;
+		$data['module'] = $this->module;
+
 
 		if (!$this->ion_auth->logged_in())
 		{
@@ -54,6 +65,10 @@ class Permissions extends CI_Controller {
 	// create a new permission
 	function create_permission()
 	{
+		$data['id'] = $this->id;
+		$data['customernumber'] = $this->customernumber;
+		$data['module'] = $this->module;
+
 		$this->data['title'] = "Create Permission";
 		$this->data['form_attributes'] = array('class' => 'jqtransform');
 
@@ -106,6 +121,10 @@ class Permissions extends CI_Controller {
 	//edit a permission
 	function edit_permission()
 	{
+		$data['id'] = $this->id;
+		$data['customernumber'] = $this->customernumber;
+		$data['module'] = $this->module;
+
 		$this->data['form_attributes'] = array('class' => 'jqtransform');
 		
 		$id = $this->uri->segment(3);

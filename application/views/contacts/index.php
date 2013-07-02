@@ -1,6 +1,4 @@
 
-<?php echo $this->bootstrap->heading(1, $this->siebel->getLang('contactslist')); ?>
-
 <div class="container list list-striped">
 
 <?php foreach($customers as $customer) { 
@@ -23,10 +21,11 @@
 									<?php
 									echo $this->bootstrap->navItem('View contacts', 'contacts/customer', '/contacts/customer/'.$customernumber, 'contacts', FALSE, 'icon-envelope');
 									echo $this->bootstrap->navItem('View comments', 'comments/customer', '/comments/customer/'.$customernumber, 'comments', FALSE, 'icon-comment');
+									echo $this->bootstrap->navItem('View prices', 'prices/customer', '/prices/customer/'.$customernumber, 'prices', FALSE, 'icon-tags');
+									echo $this->bootstrap->navItem('View pricecontract', 'pricecontract/customer', '/pricecontract/customer/'.$customernumber, 'pricecontract', FALSE, 'icon-folder');
 									echo $this->bootstrap->navItem('View deliverydays', 'deliverydays/customer', '/deliverydays/customer/'.$customernumber, 'deliverydays', FALSE, 'icon-truck');
 									echo $this->bootstrap->navItem('View holidays', 'holidays/customer', '/holidays/customer/'.$customernumber, 'holidays', FALSE, 'icon-plane');
 									echo $this->bootstrap->navItem('View delivery terms', 'deliveryterms/customer', '/deliveryterms/customer/'.$customernumber, 'deliveryterms', FALSE, 'icon-calendar');
-									echo $this->bootstrap->navItem('View prices', 'prices/customer', '/prices/customer/'.$customernumber, 'prices', FALSE, 'icon-tags');
 									?>
 								</ul>
 							</div>

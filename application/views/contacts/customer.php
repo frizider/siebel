@@ -1,8 +1,6 @@
 <?php 
 $customerName = trim($this->siebel->getCustomerdata($customernumber, param('param_asw_database_column_customername')));
 $customerLang = trim($this->siebel->getCustomerdata($customernumber, param('param_asw_database_column_customerlang')));
-echo $this->bootstrap->heading(1, $this->siebel->getLang('contactslist'), utf8_encode($customerName).' | '.$customernumber.' | '.$customerLang, '<a class="backbutton" title="Go back" href="'.site_url('dashboard/customer/'.$customernumber).'"><span><i class="icon-chevron-left"></i></span></a> '); 
-
 if(empty($contacts))
 {
 	
@@ -104,7 +102,7 @@ else
 					</li>
 					
 					<li class="span2">
-						<a href="#">Phone / Fax</a>
+						<a href="#">GSM/Phone/Fax</a>
 					</li>
 					
 					<?php
@@ -142,6 +140,7 @@ else
 				</div>
 				<div class="span2">
 					<p>
+						<b><i class="icon-mobile-phone"></i> <?= trim($contact[param('param_asw_database_column_contact_gsm')]) ?></b><br/>
 						<b><i class="icon-phone"></i> <?= trim($contact[param('param_asw_database_column_contact_phone')]) ?></b><br/>
 						<b><i class="icon-print"></i> <?= trim($contact[param('param_asw_database_column_contact_fax')]) ?></b>
 					</p>
@@ -161,7 +160,7 @@ else
 				<div class="span2 align-right">
 					<p>
 						<a href="<?php echo site_url("contacts/customer/".$customernumber.'/'.trim($contact[param('param_asw_database_column_contact_id')])); ?>" class="btn btn-small edit"><i class="icon-pencil"></i> <?php echo $this->siebel->getLang('edit') ?></a>
-						<a href="#delete" data-href="<?php echo site_url("contacts/delete/".$customernumber.'/'.trim($contact[param('param_asw_database_column_contact_id')])); ?>" class="btn btn-small btn-danger delete"><i class="icon-remove icon-white"></i></a>
+						<a href="delete" data-href="<?php echo site_url("contacts/delete/".$customernumber.'/'.trim($contact[param('param_asw_database_column_contact_id')])); ?>" class="btn btn-small btn-danger delete"><i class="icon-remove icon-white"></i></a>
 					</p>
 				</div>
 			</div>

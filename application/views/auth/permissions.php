@@ -1,6 +1,4 @@
 
-<?php echo $this->bootstrap->heading(1, $this->siebel->getLang('permissions')); ?>
-
 <div class="row">
 	
 	<div class="span12">

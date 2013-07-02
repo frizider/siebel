@@ -1,6 +1,5 @@
 <?php 
 
-echo $this->bootstrap->heading(1, $this->siebel->getLang('edit_permission'), $permission['name']); 
 echo form_open(current_url(), $form_attributes);
 //echo form_submit('submit', 'Save User', 'class="button blue save"');
 echo form_hidden('id', $permission['id']);

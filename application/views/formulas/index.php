@@ -1,15 +1,10 @@
 <?php
-echo $this->bootstrap->alert('<h3>LOOK OUT!</h3><p>Please notice that this part is currently in development. It will not work fine for the moment.</p>', 'alert-error');
-
-
 if(isset($id) && !empty($id))
 {
 	$this->load->view('formulas/editor');
 }
 else 
 {
-	//dev($prices);
-	echo $this->bootstrap->heading(1, $this->siebel->getLang('formulas')); 
 ?>
 	<div class="row">
 

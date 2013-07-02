@@ -28,6 +28,12 @@ class Domain_model extends CI_Model
 
 		$idColumn = isset($extra['idColumn']) ? $extra['idColumn'] : 'id';
 		if($id) {$db->where($idColumn, $id);}
+		
+		if(array_key_exists('where', $extra)) {
+			foreach($extra['where'] as $key => $value) {
+				$db->where($key, $value);
+			}
+		}
 
 		if(isset($extra['order_by'])) {$db->order_by($extra['order_by']);}
 		
@@ -58,7 +64,8 @@ class Domain_model extends CI_Model
 		$table = isset($extra['table']) ? $extra['table'] : $this->table;
 		$db = isset($extra['db']) ? $this->load->database($extra['db'], TRUE) : $this->db;
 		
-		if($db->delete($table, array('id' => $id)))
+		$db->where('id', $id);
+		if($db->update($table, array('delete' => 1)))
 		{
 			return TRUE;
 		};

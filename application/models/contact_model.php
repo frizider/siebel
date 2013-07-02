@@ -86,6 +86,7 @@ class Contact_model extends CI_Model
 		$dbContact->order_by(param('param_asw_database_column_contact_name'), 'desc');
 		$result = $dbContact->get(param('param_asw_database_table_contact'))->result_array();
 		
+		$contacts= array();
 		foreach($result as $contact) {
 			$departments = array(
 				'general' => $this->siebel->getDepartmentLang('department_general', $contact[param('param_asw_database_column_contact_general')]),

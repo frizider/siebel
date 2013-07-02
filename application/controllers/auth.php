@@ -1,10 +1,18 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Auth extends CI_Controller {
-
+	
+	private $module;
+	private $customernumber;
+	private $id;
+	
 	function __construct()
 	{
 		parent::__construct();
+		$this->module = get_class();
+		$this->customernumber = ($this->uri->segment(3)) ? $this->uri->segment(3) : '';
+		$this->id = ($this->uri->segment(4)) ? $this->uri->segment(4) : '';
+
 		$this->load->library('ion_auth');
 		$this->load->library('session');
 		$this->load->library('form_validation');
@@ -35,6 +43,10 @@ class Auth extends CI_Controller {
 		}
 		else
 		{
+			$data['id'] = $this->id;
+			$data['customernumber'] = $this->customernumber;
+			$data['module'] = $this->module;
+
 			//set the flash data error message if there is one
 			$this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
 

@@ -1,6 +1,5 @@
 <?php
 $customerName = trim($this->siebel->getCustomerdata($customernumber, param('param_asw_database_column_customername')));
-echo $this->bootstrap->heading(1, 'Dashboard', $customerName. ' | '. $customernumber, FALSE, '-fluid'); 
 ?>
 <hr/>
 <div class="row-fluid" id="dashboard">

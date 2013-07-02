@@ -5,10 +5,6 @@ if(isset($id) && !empty($id))
 }
 else 
 {
-
-	//dev($prices);
-
-	echo $this->bootstrap->heading(1, 'LME'); 
 ?>
 	<div class="row">
 

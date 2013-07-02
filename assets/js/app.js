@@ -21,7 +21,7 @@ $(document).ready(function() {
         $(this).addClass(borderClasses[i]);
     });
 	
-	$('#datepicker, #datepicker2').datepicker();
+	$('#datepicker, #datepicker2, .datepicker').datepicker();
 	
 	// handle for class href
 	$('.href').click(function() {

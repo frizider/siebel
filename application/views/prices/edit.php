@@ -1,7 +1,6 @@
 <?php
 //dev($price);
 $customerName = trim($this->siebel->getCustomerdata($customernumber, param('param_asw_database_column_customername')));
-echo $this->bootstrap->heading(1, $this->siebel->getLang('edit_price'), $customerName. ' | '. $customernumber, '<a class="backbutton" title="Go back" href="'.site_url('dashboard/customer/'.$customernumber).'"><span><i class="icon-chevron-left"></i></span></a> '); 
 ?>
 
 <div class="row">
@@ -79,7 +78,6 @@ echo $this->bootstrap->heading(1, $this->siebel->getLang('edit_price'), $custome
 				<?php
 				$formula = $this->siebel->formula_to_array($price->formula_string);
 				$formula_data = ($price->formula_data) ? $this->siebel->formula_to_array($price->formula_data) : 0;
-				
 				for ($i = 0; $i < count($formula); $i++)
 				{
 					$key = $formula[$i][0];
@@ -93,7 +91,7 @@ echo $this->bootstrap->heading(1, $this->siebel->getLang('edit_price'), $custome
 							break;
 						
 						case 'fix':
-							echo '<label>&nbsp;</label><span class="formuladata" data-value="'.$value.'">'.$value.'</span>';
+							echo '<label>&nbsp;</label><span class="formuladata" data-value="'.$name.'">'.$name.'</span>';
 							break;
 						
 						case 'lme':
@@ -109,7 +107,7 @@ echo $this->bootstrap->heading(1, $this->siebel->getLang('edit_price'), $custome
 							break;
 						
 						case 'arithmetic':
-							echo '<label>&nbsp;</label><span class="formuladata" data-value="'.$value.'">'.$value.'</span>';
+							echo '<label>&nbsp;</label><span class="formuladata" data-value="'.$name.'">'.$name.'</span>';
 							break;
 						
 						default:
@@ -241,13 +239,15 @@ $(function() {
 		var lmeType = ($(this).data('type') == 'LME-cash') ? 'cash' : 'mth';
 		$.post('<?php echo site_url() ?>/lme/lme', {date:lmeDate, type:lmeType}, function(data) {
 			console.log(data);
-			$('div.'+id+' span span').data('value', data).text(data);
+			$('div.'+id+' span').data('value', data);
+			$('div.'+id+' span span').text(data);
 			$('#editLmeModal').modal('hide')
 		});
 	})
 
 
-	$('form').submit(function() {
+	$('form').submit(function(e) {
+		//e.preventDefault();
 		$('input.formuladata').each(function(i, element) {
 			$(this).data('value', $(this).val());
 		});

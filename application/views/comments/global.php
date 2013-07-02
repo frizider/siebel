@@ -3,7 +3,6 @@
 <?php 
 if(isset($id) && !empty($id))
 {
-echo $this->bootstrap->heading(1, $this->siebel->getLang('edit_comment'),'', '<a class="backbutton" title="Go back" href="'.site_url('comments/globalcomments/').'"><span><i class="icon-chevron-left"></i></span></a>' ); 
 ?>
 
 <div class="row">
@@ -120,7 +119,6 @@ echo $this->bootstrap->heading(1, $this->siebel->getLang('edit_comment'),'', '<a
 }
 else 
 {
-echo $this->bootstrap->heading(1, $this->siebel->getLang('comments'), ' <a class="btn" href="'.current_url().'/new"><i class="icon-plus"></i></a>'); 
 ?>
 
 <div class="container">

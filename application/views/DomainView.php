@@ -19,7 +19,10 @@ if($this->config->item('devmode') != 0) {$this->load->view('include/dev.php');};
 /* *********************************************************************
  * Mainheading <h1>
  */
-$this->load->view('include/mainheading.php');
+if ($this->ion_auth->logged_in())
+{
+	$this->load->view('include/mainheading.php');
+}
 
 
 

@@ -14,7 +14,7 @@
 			<div class="row-fluid">
 				<ul class="nav nav-pills">
 					<li class="span4"><a href="#"><?php echo ucfirst($this->siebel->getLang('name')); ?></a></li>
-					<li class="span3"><a href="#"><?php echo ucfirst($this->siebel->getLang('phone')).'/'.$this->siebel->getLang('fax'); ?></a></li>
+					<li class="span3"><a href="#"><?php echo ucfirst($this->siebel->getLang('gsm').'/'.$this->siebel->getLang('phone').'/'.$this->siebel->getLang('fax')); ?></a></li>
 					<li class="span3"><a href="#"><?php echo ucfirst($this->siebel->getLang('department')); ?></a></li>
 				</ul>
 			</div>
@@ -29,6 +29,7 @@
 					</div>
 					<div class="span3">
 					<p>
+						<i class="icon-mobile-phone" title="<?php echo ucfirst($this->siebel->getLang('gsm')); ?>"></i> <?php echo trim($contact[param('param_asw_database_column_contact_gsm')]) ?><br/>
 						<i class="icon-phone" title="<?php echo ucfirst($this->siebel->getLang('phone')); ?>"></i> <?php echo trim($contact[param('param_asw_database_column_contact_phone')]) ?><br/>
 						<i class="icon-print" title="<?php echo ucfirst($this->siebel->getLang('fax')); ?>"></i> <?php echo trim($contact[param('param_asw_database_column_contact_fax')]) ?>
 					</p>

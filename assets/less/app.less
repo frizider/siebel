@@ -401,14 +401,21 @@ h1 a.backbutton:hover span {
 
 }
 
-.contractlist .salesorder:nth-child(odd) > div {
+.contractlist .salesorder:nth-child(even) > div {
 	background-color: lighten(@tableBackgroundAccent, 2%);
 
 }
 
 .contractlist .salesorder:hover > div {
 	background-color: lighten(@tableBackgroundHover, 2%);
+}
 
+.contractlist .salesheader > div, 
+.contractlist .salesheader:hover > div, 
+.contractlist .salesorder.salesheader > div, 
+.contractlist .salesorder.salesheader:hover > div {
+	background-color: @blue;
+	color: @white;
 }
 
 .contractlist .saleslines > div .well {
@@ -421,13 +428,9 @@ h1 a.backbutton:hover span {
 
 }
 
-.contractlist .saleslines > div .well .row:nth-child(odd) {
+.contractlist .saleslines > div .well .row:nth-child(even) {
 	background-color: @white;
 
 }
 
-.contractlist .saleslines > div .well .row:hover {
-	background-color: lighten(@tableBackgroundHover, 2%);
-
-}
 

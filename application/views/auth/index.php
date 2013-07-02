@@ -1,5 +1,3 @@
-<?php echo $this->bootstrap->heading(1, $this->siebel->getLang('users')); ?>
-
 <div class="row">
 	<div class="span12">
 		<?= form_open(current_url(), array('class' => 'subnav')); ?>

@@ -34,6 +34,7 @@
 		<script type="text/javascript" src="<?= base_url(); ?>assets/js/jquery.js" ></script>
 		<script type="text/javascript" src="<?= base_url(); ?>assets/js/jquery-ui.js" ></script>
 		<script type="text/javascript" src="<?= base_url(); ?>assets/js/diamond.js" ></script>
+		<script type="text/javascript" src="<?= base_url(); ?>assets/js/datepicker.js" ></script>
 		<!-- 
 		<script type="text/javascript" src="<?= base_url(); ?>assets/js/infieldlabel.js" ></script> 
 		<script type="text/javascript" src="<?= base_url(); ?>assets/js/modernizr.js" ></script>

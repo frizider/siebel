@@ -23,7 +23,6 @@ if($state == 1)
 else 
 {
 
-	echo $this->bootstrap->heading(1, $this->siebel->getLang('enter_newcontacts', $lang), '<a data-step="1" data-intro="'.$this->siebel->getLang('intro_help', $lang).'" data-position="left" class="btn" href="javascript:void(0);" onclick="javascript:introJs().start();"><i class="icon-question-sign"></i></a>'); 
 	echo '<div id="contacts">';
 
 	foreach($contacts as $contact)
@@ -41,30 +40,35 @@ else
 
 			<div class="well">
 				<div class="row" data-step="2" data-intro="<?php echo $this->siebel->getLang('intro_newcontact_firstcontact', $lang) ?>">
-					<div class="span3">
+					<div class="span2">
 						<label><?php echo ucfirst($this->siebel->getLang('name', $lang)) ?></label>
-						<?php echo form_input('contact1[RENAM1]', trim($contact->RENAM1)) ?>
+						<?php echo form_input('contact1[RENAM1]', trim($contact->RENAM1), 'class="span2"') ?>
 					</div>
 
 					<div class="span3">
 						<label><?php echo ucfirst($this->siebel->getLang('email', $lang)) ?></label>
-						<?php echo form_input('contact1[REEMAIL]', trim($contact->REEMAIL)) ?>
+						<?php echo form_input('contact1[REEMAIL]', trim($contact->REEMAIL, 'class="span3"')) ?>
 					</div>
 
-					<div class="span3">
+					<div class="span2">
+						<label><?php echo ucfirst($this->siebel->getLang('gsm', $lang)) ?></label>
+						<?php echo form_input('contact1[REGSM]', trim($contact->REGSM), 'class="span2"') ?>
+					</div>
+
+					<div class="span2">
 						<label><?php echo ucfirst($this->siebel->getLang('phone', $lang)) ?></label>
-						<?php echo form_input('contact1[REPHONE]', trim($contact->REPHONE)) ?>
+						<?php echo form_input('contact1[REPHONE]', trim($contact->REPHONE), 'class="span2"') ?>
 					</div>
 
 					<div class="span2">
 						<label><?php echo ucfirst($this->siebel->getLang('fax', $lang)) ?></label>
-						<?php echo form_input('contact1[REFAX]', trim($contact->REFAX)) ?>
+						<?php echo form_input('contact1[REFAX]', trim($contact->REFAX), 'class="span2"') ?>
 					</div>
 				</div>
 				<hr/>
 				<div class="row" data-step="3" data-intro="<?php echo $this->siebel->getLang('intro_newcontact_departements', $lang) ?>">
 					<?php
-					$departments = $this->contact_model->getDepartments($lang);
+					
 					foreach($departments as $key => $value)
 					{
 						$retgen = ($key == 'RETGEN') ? 1 : 0;
@@ -125,30 +129,34 @@ echo '</div>';
 						+'<input type="hidden" name="contact'+i+'[RECUNO]" value="'+cuno+'" />'
 						+'<div class="well">'
 							+'<div class="row">'
-								+'<div class="span3">'
+								+'<div class="span2">'
 									+'<label><?php echo ucfirst($this->siebel->getLang('name', $lang)) ?></label>'
-									+'<input type="text" name="contact'+i+'[RENAM1]" />'
+									+'<input type="text" name="contact'+i+'[RENAM1]" class="span2"/>'
 								+'</div>'
 
 								+'<div class="span3">'
 									+'<label><?php echo ucfirst($this->siebel->getLang('email', $lang)) ?></label>'
-									+'<input type="text" name="contact'+i+'[REEMAIL]" />'
+									+'<input type="text" name="contact'+i+'[REEMAIL]" class="span3" />'
 								+'</div>'
 
-								+'<div class="span3">'
+								+'<div class="span2">'
+									+'<label><?php echo ucfirst($this->siebel->getLang('gsm', $lang)) ?></label>'
+									+'<input type="text" name="contact'+i+'[REGSM]" class="span2" />'
+								+'</div>'
+
+								+'<div class="span2">'
 									+'<label><?php echo ucfirst($this->siebel->getLang('phone', $lang)) ?></label>'
-									+'<input type="text" name="contact'+i+'[REPHONE]" />'
+									+'<input type="text" name="contact'+i+'[REPHONE]" class="span2" />'
 								+'</div>'
 
 								+'<div class="span2">'
 									+'<label><?php echo ucfirst($this->siebel->getLang('fax', $lang)) ?></label>'
-									+'<input type="text" name="contact'+i+'[REFAX]" />'
+									+'<input type="text" name="contact'+i+'[REFAX]" class="span2" />'
 								+'</div>'
 							+'</div>'
 							+'<hr/>'
 							+'<div class="row">'
 								<?php
-								$departments = $this->contact_model->getDepartments($lang);
 								foreach($departments as $key => $value)
 								{
 										echo '+\'<div class="span2"><input type="hidden" name="contact\'+i+\'['.$key.']" value="0" id="'.$key.'\'+i+\'" class="'.$key.'"><label class="checkbox pull-left " data-name="'.$key.'\'+i+\'" data-value="1"><a href="#" class="checkbox-wrapper"><span class="cb-inner"><i class=" icon-white"></i></span></a>'.ucfirst($value).'</label></div>\'';

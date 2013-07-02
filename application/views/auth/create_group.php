@@ -1,6 +1,5 @@
 
 <?php 
-echo $this->bootstrap->heading(1, $this->siebel->getLang('create_user')); 
 echo form_open(current_url(), $form_attributes); 
 ?>
 <div class="row">

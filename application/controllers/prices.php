@@ -9,10 +9,17 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Prices extends CI_Controller {
 	
+	private $module;
+	private $customernumber;
+	private $id;
+
 	public function __construct()
 	{
 		// load Controller constructor
 		parent::__construct();
+		$this->module = get_class();
+		$this->customernumber = ($this->uri->segment(3)) ? $this->uri->segment(3) : '';
+		$this->id = ($this->uri->segment(4)) ? $this->uri->segment(4) : '';
 		
 		// Check if the current logged in user is permitted
 		/*
@@ -27,6 +34,10 @@ class Prices extends CI_Controller {
 	
 	public function index() 
 	{
+		$data['id'] = $this->id;
+		$data['customernumber'] = $this->customernumber;
+		$data['module'] = $this->module;
+
 		$data['form_attributes'] = array('class' => 'form-horizontal');
 		
 		// Load the general view
@@ -37,6 +48,10 @@ class Prices extends CI_Controller {
 	
 	public function customer() 
 	{
+		$data['id'] = $this->id;
+		$data['customernumber'] = $this->customernumber;
+		$data['module'] = $this->module;
+
 		$data['form_attributes'] = array('class' => 'form-horizontal');
 		$data['customernumber'] = $this->uri->segment(3);
 		$cuno = $data['customernumber'];
@@ -45,12 +60,11 @@ class Prices extends CI_Controller {
 		$data['copy'] = $this->uri->segment(5);
 		$copy = $data['copy'];
 		
-		$data['prices'] = $this->prices_model->getPrices($cuno, $id);
+		$data['dropdown_priceunits'] = $this->prices_model->getDropdownValues('priceunits');
 		
 		if(isset($id) && !empty($id))
 		{
 			$data['dropdown_formulas'] = $this->prices_model->getDropdownValues('formulas', 'id', 'formulaname');
-			$data['dropdown_priceunits'] = $this->prices_model->getDropdownValues('priceunits');
 			
 			if($id == 'new')
 			{
@@ -59,6 +73,7 @@ class Prices extends CI_Controller {
 			}
 			else 
 			{
+				$data['prices'] = $this->prices_model->getPrices($cuno, $id);
 				$data['price'] = $data['prices'][0];
 			}
 			
@@ -70,6 +85,18 @@ class Prices extends CI_Controller {
 					redirect(site_url('prices/customer/'.$cuno.'/'.$newId), 'refresh');
 				}
 			}
+			
+		} else {
+			
+			if(isset($_POST) && !empty($_POST)) {
+				$data['search_priceunit_name'] = (isset($_POST['search_priceunit']) && !empty($_POST['search_priceunit'])) ? $this->prices_model->getPriceUnit($_POST['search_priceunit'])->short : '';
+				$search = $_POST;
+			} else{
+				$search = FALSE;
+			}
+			
+			$data['prices'] = $this->prices_model->getPrices($cuno, $id, $search);
+			
 		}
 		
 		// Load the general view
@@ -80,6 +107,10 @@ class Prices extends CI_Controller {
 	
 	public function delete()
 	{
+		$data['id'] = $this->id;
+		$data['customernumber'] = $this->customernumber;
+		$data['module'] = $this->module;
+
 		$data['customernumber'] = $this->uri->segment(3);
 		$data['id'] = $this->uri->segment(4);
 		

@@ -4,12 +4,12 @@ class Siebel {
 
 	// Pull customerdata from customers-database.
 	// => this function remains in Siabel library because there is no related model
-	public function getCustomerdata($customernumber, $column) {
+	public function getCustomerdata($customernumber, $column = FALSE) {
 		$ci = get_instance();
 		$dbAsw = $ci->load->database('asw', TRUE);
 		$dbAsw->where(param('param_asw_database_column_customernumber'), $customernumber);
 		$return = $dbAsw->get(param('param_asw_database_table_customer'))->row();
-		return $return->$column;
+		return ($column) ? $return->$column : $return;
 	}
 	
 	
@@ -20,11 +20,9 @@ class Siebel {
 	public function getLang($short = FALSE, $language = FALSE, $id = FALSE) {
 		$ci = get_instance();
 		$dbDefault = $ci->load->database('default', TRUE);
-		if ($language) {
-			$dbDefault->select($language);
-		} else {
-			$language = $ci->ion_auth->getUserdata('lang');
-		};
+	
+		$language = ($language) ? strtolower(trim($language)) : strtolower($ci->ion_auth->getUserdata('lang'));
+		$dbDefault->select(strtolower($language));
 		
 		if ($id == FALSE && $short != FALSE) {
 			$dbDefault->where('short', $short);
@@ -54,7 +52,7 @@ class Siebel {
 	 */
 	public function math($expression) {
 		eval('$math = ' . preg_replace('/[^0-9\+\-\*\/\(\)\.]/', '', $expression) . ';');
-		return $result;
+		return $math;
 	}
 
 	

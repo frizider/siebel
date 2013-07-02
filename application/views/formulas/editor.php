@@ -1,7 +1,4 @@
 <?php 
-//dev($prices);
-echo $this->bootstrap->heading(1, $this->siebel->getLang('edit_formula'), $item->formulaname, '<a class="backbutton" title="Go back" href="'.site_url('formulas').'"><span><i class="icon-chevron-left"></i></span></a> '); 
-
 echo form_open(current_url(), $form_attributes);
 ?>
 
@@ -138,7 +135,7 @@ echo form_open(current_url(), $form_attributes);
 
 <script>
 	$(function() {
-		
+		$( "#sortable" ).sortable();
 		// Trigger for modal to edit the value of a block
 		$("#sortable").on("click", "i.editValue", function() {
 			$('#editValueModal .save').attr('id', $(this).parent().attr('id'));
@@ -152,8 +149,8 @@ echo form_open(current_url(), $form_attributes);
 			var id = $(this).attr('id');
 			$('#sortable #'+id).data('name', $('#editValueModal #name').val());
 			$('#sortable #'+id+' span').text($('#editValueModal #name').val());
-			$('#editValueModal').modal('hide')
-		})
+			$('#editValueModal').modal('hide');
+		});
 		
 		// Trigger for modal to edit the value of a block
 		$("#sortable").on("click", "i.editArithmetic", function() {
@@ -167,8 +164,8 @@ echo form_open(current_url(), $form_attributes);
 			var newValue = $('#editArithmeticModal #name').val();
 			$('#sortable #'+id).data('name', newValue);
 			$('#sortable #'+id+' span').text(newValue);
-			$('#editArithmeticModal').modal('hide')
-		})
+			$('#editArithmeticModal').modal('hide');
+		});
 		
 		// Trigger for modal to edit the value of a block
 		$("#sortable").on("click", "i.editLme", function() {
@@ -182,13 +179,14 @@ echo form_open(current_url(), $form_attributes);
 			var newValue = $('#editLmeModal #name').val();
 			$('#sortable #'+id).data('name', newValue);
 			$('#sortable #'+id+' span').text(newValue);
-			$('#editLmeModal').modal('hide')
-		})
+			$('#editLmeModal').modal('hide');
+		});
 		
 		// Drag new items
 		$( "#draggable li" ).draggable({
 			helper: "clone"
 		});
+		
 		// Drop new items in the sort container
 		$( "#sortable" ).droppable({
 			activeClass: "ui-state-default",
@@ -202,12 +200,14 @@ echo form_open(current_url(), $form_attributes);
 			}
 		});
 		
+		/*
 		$( "#sortable li" ).draggable({
 			connectToSortable: "#trash",
 			snap: true,
 			revert: false
 		});
-		
+		*/
+	   
 		$( "#trash" ).droppable({
 			activeClass: "trash-active",
 			hoverClass: "trash-hover",
@@ -219,10 +219,7 @@ echo form_open(current_url(), $form_attributes);
 				});
 			}
 		});
-				
-		$( "#sortable" ).sortable({
-			placeholder: "ui-state-highlight"
-		});
+		
 		$( "#sortable" ).disableSelection();
 		
 		$('#makeFormula').on('click', function(e) {
@@ -236,7 +233,8 @@ echo form_open(current_url(), $form_attributes);
 			
 			container.val(newFormula);
 			$('form').submit();
-		})
+		});
+
 	});
 </script>
 

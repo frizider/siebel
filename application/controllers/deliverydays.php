@@ -9,10 +9,17 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Deliverydays extends CI_Controller {
 	
+	private $module;
+	private $customernumber;
+	private $id;
+	
 	public function __construct()
 	{
 		// load Controller constructor
 		parent::__construct();
+		$this->module = get_class();
+		$this->customernumber = ($this->uri->segment(3)) ? $this->uri->segment(3) : '';
+		$this->id = ($this->uri->segment(4)) ? $this->uri->segment(4) : '';
 		
 		// Check if the current logged in user is permitted
 		/*
@@ -32,6 +39,10 @@ class Deliverydays extends CI_Controller {
 
 	public function customer() 
 	{
+		$data['id'] = $this->id;
+		$data['customernumber'] = $this->customernumber;
+		$data['module'] = $this->module;
+
 		$customernumber = strtoupper($this->uri->segment(3));
 		$data['customernumber'] = $customernumber;
 		if(!isset($customernumber) || empty($customernumber))
@@ -49,6 +60,10 @@ class Deliverydays extends CI_Controller {
 
 	public function edit() 
 	{
+		$data['id'] = $this->id;
+		$data['customernumber'] = $this->customernumber;
+		$data['module'] = $this->module;
+
 		$customernumber = strtoupper($this->uri->segment(3));
 		$data['customernumber'] = $customernumber;
 		$address_id = strtoupper($this->uri->segment(4));
@@ -131,6 +146,10 @@ class Deliverydays extends CI_Controller {
 	
 	public function filter()
 	{
+		$data['id'] = $this->id;
+		$data['customernumber'] = $this->customernumber;
+		$data['module'] = $this->module;
+
 		$data['form_attributes'] = array('class' => 'form-horizontal');
 		
 		$data['countries'] = $this->deliverydays_model->getDeliveryCountries();

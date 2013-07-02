@@ -1,7 +1,6 @@
 <?php 
 if(isset($id) && !empty($id))
 {
-echo $this->bootstrap->heading(1, $this->siebel->getLang('edit_category')); 
 ?>
 
 <div class="row">
@@ -125,7 +124,6 @@ echo $this->bootstrap->heading(1, $this->siebel->getLang('edit_category'));
 }
 else
 {
-echo $this->bootstrap->heading(1, $this->siebel->getLang('categories'), '<a class="btn" href="'.current_url().'/new"><i class="icon-plus"></i></a>'); 
 ?>
 
 <div class="container boxes">

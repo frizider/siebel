@@ -1,5 +1,4 @@
 <?php 
-echo $this->bootstrap->heading(1, $this->siebel->getLang('edit_contact'), $contact[param('param_asw_database_column_contact_name')], '<a class="backbutton" title="Go back" href="'.site_url('dashboard/customer/'.eval('return $'. param('param_asw_database_column_contact_customernumber') . '["value"];')).'"><span><i class="icon-chevron-left"></i></span></a> '); 
 echo form_open(current_url(), $form_attributes);
 //dev(eval('return $'. param('param_asw_database_column_contact_name') . '["name"];'));
 echo form_hidden(eval('return $'. param('param_asw_database_column_contact_id') . '["name"];'), 
@@ -26,6 +25,7 @@ echo form_hidden(eval('return $'. param('param_asw_database_column_contact_name'
 
 				<div class="span5">
 					<?php 
+					echo $this->bootstrap->formControlGroup(array($this->siebel->getLang('gsm'), 'gsm', array('class' => 'control-label')), array(eval('return $'. param('param_asw_database_column_contact_gsm') . ';')));
 					echo $this->bootstrap->formControlGroup(array($this->siebel->getLang('phone'), 'phone', array('class' => 'control-label')), array(eval('return $'. param('param_asw_database_column_contact_phone') . ';')));
 					echo $this->bootstrap->formControlGroup(array($this->siebel->getLang('fax'), 'fax', array('class' => 'control-label')), array(eval('return $'. param('param_asw_database_column_contact_fax') . ';')));
 					?>				

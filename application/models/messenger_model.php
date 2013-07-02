@@ -24,8 +24,13 @@ class Messenger_model extends CI_Model
 		
 		foreach($contacts as $contact)
 		{
-			$contact['RELANG'] = $this->siebel->getCustomerdata(trim($contact['RECUNO']), param('param_asw_database_column_customerlang'));
-			$contactlist[] = $contact;
+			$customerdata = $this->siebel->getCustomerdata(trim($contact['RECUNO']));
+			$statusColumn = param('param_asw_database_column_customer_state');
+			if($customerdata->$statusColumn != param('param_asw_database_column_customer_state_active')) {
+				$langColumn = param('param_asw_database_column_customerlang');
+				$contact['RELANG'] = $customerdata->$langColumn;
+				$contactlist[] = $contact;
+			}
 		}
 		
 		return $contactlist;
@@ -60,6 +65,8 @@ class Messenger_model extends CI_Model
 		$ci->email->bcc($ci->ion_auth->getUserdata('email'));
 
 		$mail = ($content['custom']) ? $content['custom'] : $this->getMailText($content['short'], $lang);
+		
+		$data['lang'] = $lang;
 		$message = $ci->load->view('mail/htmlheader', $data) . '<div id="content">' . $mail . '</div>' . $ci->load->view('mail/htmlfooter', $data);
 
 		$ci->email->subject($subject);

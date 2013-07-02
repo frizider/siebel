@@ -1,7 +1,3 @@
-<?php
-echo $this->bootstrap->heading(1, $this->siebel->getLang('filter_deliverydays')); 
-?>
-
 <div class="row">
 	<div class="span12">
 

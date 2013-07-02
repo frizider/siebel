@@ -6,7 +6,6 @@ $customerLang = trim($this->siebel->getCustomerdata($customernumber, param('para
 
 if(isset($id) && !empty($id))
 {
-echo $this->bootstrap->heading(1, '<i class="icon-comment"></i> '.ucfirst($this->siebel->getLang('edit_comment')), utf8_encode($customerName).' | '.$customernumber.' | '.$customerLang, '<a class="backbutton" title="Go back" href="'.site_url('dashboard/customer/'.$customernumber).'"><span><i class="icon-chevron-left"></i></span></a> '); 
 ?>
 
 <div class="row">
@@ -122,7 +121,6 @@ echo $this->bootstrap->heading(1, '<i class="icon-comment"></i> '.ucfirst($this-
 }
 else 
 {
-echo $this->bootstrap->heading(1, '<i class="icon-comment"></i> '.  ucfirst($this->siebel->getLang('comments')), utf8_encode($customerName).' | '.$customernumber.' | '.$customerLang.' <a class="btn" href="'.current_url().'/new"><i class="icon-plus"></i></a>', '<a class="backbutton" title="Go back" href="'.site_url('dashboard/customer/'.$customernumber).'"><span><i class="icon-chevron-left"></i></span></a> '); 
 ?>
 
 <div class="container">

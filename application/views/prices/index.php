@@ -1,5 +1,4 @@
 <?php
-echo $this->bootstrap->alert('<h3>LOOK OUT!</h3><p>Please notice that this part is currently in development. It will not work fine for the moment.</p>', 'alert-error');
 
 $customerName = trim($this->siebel->getCustomerdata($customernumber, param('param_asw_database_column_customername')));
 
@@ -9,25 +8,51 @@ if(isset($id) && !empty($id))
 }
 else 
 {
-
-	//dev($prices);
-
-	echo $this->bootstrap->heading(1, $this->siebel->getLang('prices'), $customerName. ' | '. $customernumber, '<a class="backbutton" title="Go back" href="'.site_url('dashboard/customer/'.$customernumber).'"><span><i class="icon-chevron-left"></i></span></a> '); 
 ?>
 	<div class="row">
 
 		<div class="span12">
 
-				<?= form_open(current_url(), array('class' => 'subnav')); ?>
+				<?php
+				echo form_open(current_url(), array('class' => 'subnav')); 
+				$value_price = (isset($_POST['search_price']) && !empty($_POST['search_price'])) ? $_POST['search_price'] : '';
+				$value_profile = (isset($_POST['search_profile']) && !empty($_POST['search_profile'])) ? $_POST['search_profile'] : '';
+				$value_finish = (isset($_POST['search_finish']) && !empty($_POST['search_finish'])) ? $_POST['search_finish'] : '';
+				$value_length = (isset($_POST['search_length']) && !empty($_POST['search_length'])) ? $_POST['search_length'] : '';
+				?>
 
 					<ul class="nav nav-pills">
-						<li class="span2"><a><?php echo ucfirst($this->siebel->getLang('price')); ?></a></li>
-						<li class="span2"><a><?php echo ucfirst($this->siebel->getLang('profil')); ?></a></li>
-						<li class="span2"><a><?php echo ucfirst($this->siebel->getLang('finish')); ?></a></li>
-						<li class="span2"><a><?php echo ucfirst($this->siebel->getLang('length')); ?></a></li>
-						<li class="span2"><a><?php echo ucfirst($this->siebel->getLang('date')); ?></a></li>
+						<li class="span1">
+							<p>
+								<input name="search_price" class="span1" placeholder="<?php echo ucfirst($this->siebel->getLang('price')); ?>" value="<?php echo $value_price ?>">
+							</p>
+						</li>
+						<?php
+						$name = (isset($_POST['search_priceunit']) && !empty($_POST['search_priceunit'])) ? $this->siebel->getLang('priceunit_'.$search_priceunit_name) : '';
+						$current = (isset($_POST['search_priceunit']) && !empty($_POST['search_priceunit'])) ? $_POST['search_priceunit'] : '';
+						echo $this->bootstrap->dropdown(TRUE, FALSE, $name, 'search_priceunit', $dropdown_priceunits, 'span1', FALSE, $current);
+						?>
+						<li class="span2">
+							<p>
+								<input name="search_profile" class="span2" placeholder="<?php echo ucfirst($this->siebel->getLang('profile')); ?>" value="<?php echo $value_profile ?>">
+							</p>
+						</li>
+						<li class="span2">
+							<p>
+								<input name="search_finish" class="span2" placeholder="<?php echo ucfirst($this->siebel->getLang('finish')); ?>" value="<?php echo $value_finish ?>">
+							</p>
+						</li>
+						<li class="span2">
+							<p>
+								<input name="search_length" class="span2" placeholder="<?php echo ucfirst($this->siebel->getLang('length')); ?>" value="<?php echo $value_length ?>">
+							</p>
+						</li>
+						<li class="span2">
+							<a><?php echo ucfirst($this->siebel->getLang('date')); ?></a>
+						</li>
 						<li class="float-right align-right">
 							<p>
+								<span class="btn btn-small btn-primary search submit"><i class="icon-search icon-white"></i> <?php echo $this->siebel->getLang('search') ?></span>
 								<span class="btn btn-small create href" data-href="<?php echo current_url() ?>/new"><i class="icon-plus"></i> <?php //echo $this->siebel->getLang('create') ?></span>
 							</p>
 						</li>
