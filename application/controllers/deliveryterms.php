@@ -92,5 +92,39 @@ class Deliveryterms extends CI_Controller {
 		$this->load->view('DomainView', $data);
 	}
 
+	public function delete($customernumber, $id) {
+		$this->customernumber = $customernumber;
+		$this->id = $id;
+		
+		$data['id'] = $this->id;
+		$data['customernumber'] = $this->customernumber;
+		$data['module'] = $this->module;
+		
+		if($this->deliveryterms_model->delete($id))
+		{
+			$this->session->set_flashdata('message', $this->siebel->getLang('success_contactdelete'). ' <a class="btn btn-small" href="'.site_url($this->module.'/undelete/'.$this->customernumber.'/'.$this->id).'"><i class="icon-undo"></i> '.$this->siebel->getLang('undo').'</a>');
+			redirect(site_url($this->module.'/customer/'.$this->customernumber), 'refresh');
+		}
+	}
+	
+	public function undelete($customernumber, $id) {
+		$this->customernumber = $customernumber;
+		$this->id = $id;
+		
+		$data['id'] = $this->id;
+		$data['customernumber'] = $this->customernumber;
+		$data['module'] = $this->module;
+		
+		
+		if($this->deliveryterms_model->undelete($id))
+		{
+			$this->session->set_flashdata('success', $this->siebel->getLang('success_contactrecover'));
+			redirect(site_url($this->module.'/customer/'.$this->customernumber), 'refresh');
+		}
+	}
+	
+	public function toExcel() {
+		$this->deliveryterms_model->toExcel();
+	}
 }
 

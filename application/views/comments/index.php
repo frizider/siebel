@@ -92,7 +92,7 @@ if(isset($id) && !empty($id))
 				<div class="form-actions">
 					<button type="submit" class="btn btn-primary"><?php echo ucfirst($this->siebel->getLang('save')); ?></button>
 					<button class="btn">Cancel</button>
-					<a class="btn btn-danger pull-right" data-target="#delete" data-toggle="modal"><?php echo ucfirst($this->siebel->getLang('delete')); ?></a>
+					<a class="btn btn-danger pull-right" href="<?php echo site_url($module.'/delete/'.$customernumber.'/'.$id) ?>"><?php echo ucfirst($this->siebel->getLang('delete')); ?></a>
 				</div>
 			</div>
 		</div>
@@ -102,21 +102,6 @@ if(isset($id) && !empty($id))
 	</div>
 </div>
 
-<div class="modal fade" id="delete">
-	<div class="modal-header">
-		<a class="close" data-dismiss="modal">×</a>
-		<h3><?php echo ucfirst($this->siebel->getLang('delete')); ?></h3>
-	</div>
-	<div class="modal-body">
-		<p><?php echo $this->siebel->getLang('delete_sure'); ?></p>
-	</div>
-	<div class="modal-footer">
-		<a href="#" class="btn" data-dismiss="modal"><?php echo ucfirst($this->siebel->getLang('cancel')); ?></a>
-		<a href="<?php echo site_url('comments/delete/'.$customernumber.'/'.$id) ?>" class="btn btn-danger"><?php echo ucfirst($this->siebel->getLang('delete')); ?></a>
-	</div>
-</div>
-
-
 <?php
 }
 else 
@@ -124,6 +109,11 @@ else
 ?>
 
 <div class="container">
+	<div class="row">
+		<div class="span12">
+			<a class="btn" href="<?php echo current_url() ?>/new"><i class="icon-plus"></i></a>
+		</div>
+	</div>
 
 <?php 
 foreach ($comments as $comment)

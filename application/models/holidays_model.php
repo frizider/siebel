@@ -16,6 +16,7 @@ class holidays_model extends CI_Model
 	public function get($cuno, $id = FALSE) {
 		$dbDefault = $this->load->database('default', TRUE);
 		$dbDefault->where('customernumber', $cuno);
+		$dbDefault->where('delete', 0);
 		if($id)
 		{
 			$dbDefault->where('id', $id);
@@ -52,16 +53,24 @@ class holidays_model extends CI_Model
 		}
 	}
 	
-	public function delete($id)
-	{
+
+	public function delete($id) {
 		$dbDefault = $this->load->database('default', TRUE);
-		if($dbDefault->delete('holidays', array('id' => $id)))
+		$dbDefault->where('id', $id);
+		if($dbDefault->update('holidays', array('delete' => 1)))
 		{
 			return TRUE;
 		};
-		
 	}
 	
+	public function unDelete($id) {
+		$dbDefault = $this->load->database('default', TRUE);
+		$dbDefault->where('id', $id);
+		if($dbDefault->update('holidays', array('delete' => 0)))
+		{
+			return TRUE;
+		};
+	}
 	public function getColumns() {
 		$dbDefault = $this->load->database('default', TRUE);
 

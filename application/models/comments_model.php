@@ -157,15 +157,22 @@ class Comments_model extends CI_Model
 		}
 	}
 	
-	public function delete($id)
-	{
+	public function delete($id) {
 		$dbDefault = $this->load->database('default', TRUE);
 		$dbDefault->where('id', $id);
 		if($dbDefault->update('comments', array('delete' => 1)))
 		{
 			return TRUE;
 		};
-		
+	}
+	
+	public function unDelete($id) {
+		$dbDefault = $this->load->database('default', TRUE);
+		$dbDefault->where('id', $id);
+		if($dbDefault->update('comments', array('delete' => 0)))
+		{
+			return TRUE;
+		};
 	}
 	
 	public function getCategoriesAsWidgetsArray()

@@ -159,6 +159,15 @@ class Contact_model extends CI_Model
 		};
 	}
 	
+	public function unDelete($id) {
+		$dbContact = $this->load->database('contact', TRUE);
+		$dbContact->where(param('param_asw_database_column_contact_id'), $id);
+		if($dbContact->update(param('param_asw_database_table_contact'), array(param('param_asw_database_column_contact_state') => 1)))
+		{
+			return TRUE;
+		};
+	}
+	
 	public function getDepartments($lang = FALSE) {
 		$dbDefault = $this->load->database('default', TRUE);
 		$departments = $dbDefault->get('departments')->result();

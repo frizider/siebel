@@ -35,6 +35,7 @@
 		<script type="text/javascript" src="<?= base_url(); ?>assets/js/jquery-ui.js" ></script>
 		<script type="text/javascript" src="<?= base_url(); ?>assets/js/diamond.js" ></script>
 		<script type="text/javascript" src="<?= base_url(); ?>assets/js/datepicker.js" ></script>
+		<script type="text/javascript" src="<?= base_url(); ?>assets/js/shortcut.js" ></script>
 		<!-- 
 		<script type="text/javascript" src="<?= base_url(); ?>assets/js/infieldlabel.js" ></script> 
 		<script type="text/javascript" src="<?= base_url(); ?>assets/js/modernizr.js" ></script>
@@ -71,6 +72,7 @@
 				<div class="span12">
 					<?php 
 					echo (isset($message) && !empty($message)) ? $this->bootstrap->alert($message) : '';
+					echo ($this->session->flashdata('message')) ? $this->bootstrap->alert($this->session->flashdata('message'), 'alert-info') : '' ;
 					echo ($this->session->flashdata('success')) ? $this->bootstrap->alert($this->session->flashdata('success'), 'alert-success') : '' ;
 					echo ($this->session->flashdata('error')) ? $this->bootstrap->alert($this->session->flashdata('error'), 'alert-error') : '' ;
 					?>

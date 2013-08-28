@@ -7,7 +7,7 @@ class pricecontract extends widget {
 		$data['customernumber'] = $this->uri->segment(3);
 		$this->load->model('domain_model');
 		$this->load->model('pricecontract_model');
-		$data['pricecontracts_content'] = $this->pricecontract_model->addSalesOrders($this->domain_model->get($data['customernumber'], FALSE, array("table"=>"pricecontract", "db"=>"default")));
+		$data['pricecontracts_content'] = $this->pricecontract_model->listContracts($data['customernumber']);
 		$this->render($data);
     }
     

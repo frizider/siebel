@@ -57,10 +57,8 @@ if(isset($id) && !empty($id))
 					<?php
 					// Dropdown for Groups
 					$label = $this->siebel->getLang('category');
-					$current = $this->siebel->getCommentsCategories($category['value']);
-					$name = (isset($category['value']) && !empty($category['value'])) ? ucfirst($this->siebel->getLang('category_'.$current[0]->slug)) : $this->siebel->getLang('choose');
-					$comments_categories = $this->siebel->getCommentsCategories();
-					foreach($comments_categories as $comments_category) {
+					$name = (isset($category['value']) && !empty($category['value'])) ? ucfirst($this->siebel->getLang('category_'.$current_category[0]->slug)) : $this->siebel->getLang('choose');
+					foreach($categories as $comments_category) {
 						$categories_values[$comments_category->id] = $this->siebel->getLang('category_'.$comments_category->slug);
 					}
 					echo $this->bootstrap->dropdown(FALSE, $label, $name, 'category', $categories_values, FALSE, FALSE, $category['value']);
@@ -90,27 +88,13 @@ if(isset($id) && !empty($id))
 				<div class="form-actions">
 					<button type="submit" class="btn btn-primary"><?php echo ucfirst($this->siebel->getLang('save')); ?></button>
 					<button class="btn">Cancel</button>
-					<a class="btn btn-danger pull-right" data-target="#delete" data-toggle="modal"><?php echo ucfirst($this->siebel->getLang('delete')); ?></a>
+					<a class="btn btn-danger pull-right" href="<?php echo site_url($module.'/delete/global/'.$id) ?>"><?php echo ucfirst($this->siebel->getLang('delete')); ?></a>
 				</div>
 			</div>
 		</div>
 		
 		</form>
 		
-	</div>
-</div>
-
-<div class="modal fade" id="delete">
-	<div class="modal-header">
-		<a class="close" data-dismiss="modal">×</a>
-		<h3><?php echo ucfirst($this->siebel->getLang('delete')); ?></h3>
-	</div>
-	<div class="modal-body">
-		<p><?php echo $this->siebel->getLang('delete_sure'); ?></p>
-	</div>
-	<div class="modal-footer">
-		<a href="#" class="btn" data-dismiss="modal"><?php echo ucfirst($this->siebel->getLang('cancel')); ?></a>
-		<a href="<?php echo site_url('comments/delete/global/'.$id) ?>" class="btn btn-danger"><?php echo ucfirst($this->siebel->getLang('delete')); ?></a>
 	</div>
 </div>
 
@@ -122,6 +106,11 @@ else
 ?>
 
 <div class="container">
+	<div class="row">
+		<div class="span12">
+			<a class="btn" href="<?php echo current_url() ?>/new"><i class="icon-plus"></i></a>
+		</div>
+	</div>
 
 <?php 
 

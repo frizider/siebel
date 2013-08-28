@@ -67,7 +67,7 @@ class Messenger_model extends CI_Model
 		$mail = ($content['custom']) ? $content['custom'] : $this->getMailText($content['short'], $lang);
 		
 		$data['lang'] = $lang;
-		$message = $ci->load->view('mail/htmlheader', $data) . '<div id="content">' . $mail . '</div>' . $ci->load->view('mail/htmlfooter', $data);
+		$message = $ci->load->view('mail/htmlheader', $data, TRUE) . '<div id="content">' . $mail . '</div>' . $ci->load->view('mail/htmlfooter', $data, TRUE);
 
 		$ci->email->subject($subject);
 		$ci->email->message($message);

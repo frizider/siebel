@@ -116,7 +116,7 @@ class contact extends CI_Controller {
 							unset($_POST['newcontact']);
 							if($md5 = $this->contact_model->saveNew($_POST))
 							{
-								dev($_POST);
+								//dev($_POST);
 								$lang = strtolower(trim($this->siebel->getCustomerdata($_POST[param('param_asw_database_column_contact_customernumber')], param('param_asw_database_column_customerlang'))));
 								$this->load->model('messenger_model');
 								$content = array('custom' => $this->messenger_model->newContactMail($_POST[param('param_asw_database_column_contact_customernumber')], $lang, $md5));
@@ -162,17 +162,34 @@ class contact extends CI_Controller {
 		$this->load->view('DomainView', $data);
 	}
 	
-	public function delete() {
+	public function delete($customernumber, $id) {
+		$this->customernumber = $customernumber;
+		$this->id = $id;
+		
 		$data['id'] = $this->id;
 		$data['customernumber'] = $this->customernumber;
 		$data['module'] = $this->module;
 		
-		$customernumber = $this->customernumber;
-		$id = $this->id;
 		if($this->contact_model->delete($id))
 		{
-			$this->session->set_flashdata('message', $this->siebel->getLang('success_contactdelete'));
-			redirect(site_url('contacts/customer/'.$customernumber), 'refresh');
+			$this->session->set_flashdata('message', $this->siebel->getLang('success_contactdelete'). ' <a class="btn btn-small" href="'.site_url($this->module.'/undelete/'.$this->customernumber.'/'.$this->id).'"><i class="icon-undo"></i> '.$this->siebel->getLang('undo').'</a>');
+			redirect(site_url($this->module.'/customer/'.$this->customernumber), 'refresh');
+		}
+	}
+	
+	public function undelete($customernumber, $id) {
+		$this->customernumber = $customernumber;
+		$this->id = $id;
+		
+		$data['id'] = $this->id;
+		$data['customernumber'] = $this->customernumber;
+		$data['module'] = $this->module;
+		
+		
+		if($this->contact_model->undelete($id))
+		{
+			$this->session->set_flashdata('success', $this->siebel->getLang('success_contactrecover'));
+			redirect(site_url($this->module.'/customer/'.$this->customernumber), 'refresh');
 		}
 	}
 	

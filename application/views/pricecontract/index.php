@@ -28,21 +28,10 @@
 <div class="container contractlist">
 
 	<?php
-	// Test output
-	/*
-	foreach($items as $item) {
-		foreach($item->salesorders as $salesorder) {
-			foreach($salesorder->orderlines as $orderline) {
-				echo $orderline->OLORNO.';'.$orderline->OLLINE.';'.$orderline->OLUNIT.';'.$orderline->ordertonnage.';'.$orderline->deliveredtonnage.';'.'<br/>';
-			}
-		}
-	}
-	 * 
-	 */
-	
-	foreach ($items as $item) { ?>
+	foreach ($items as $item) { 
+	?>
 
-		<div class="<?php echo ($item->closed == 1) ? 'opacity50' : '' ?> <?php echo ($item->active == 1) ? 'bg-orangelight' : '' ?>">
+		<div class="<?php echo ($item->closed == 1) ? 'opacity50' : '' ?> <?php echo ($item->active == 1) ? 'active' : '' ?>">
 			<div class="row heading">
 
 				<div class="span12">
@@ -58,6 +47,8 @@
 							</span>
 							<span class="pull-left text-right">
 								<a href="<?php echo current_url() . '/' . $item->id; ?>" class="link btn-small edit"><i class="icon-pencil"></i></a>
+								<a href="<?php echo current_url().'/'. $item->id.'/copy'; ?>" class="link btn-small"><i class="icon-copy"></i></a>
+
 							</span>
 						</small>
 						<small><?php echo date('d/m/Y', mysql_to_unix($item->date)) ?> </small>
@@ -103,13 +94,32 @@
 							</div>
 							<div class="span3">
 								<p>
-									<?php echo $item->starttonnage - $item->ordertonnage + $item->lurk ?>
+									<?php echo round($item->starttonnage - $item->ordertonnage + $item->lurk, 2) ?>
 									<br/>
-									<?php echo $item->starttonnage - $item->deliveredtonnage + $item->lurk ?>
+									<?php echo round($item->starttonnage - $item->deliveredtonnage + $item->lurk, 2) ?>
 								</p>
 							</div>
 
 						</div>
+						
+						<?php if(!empty($item->comment)) { ?>
+						<div class="row"><div class="span12"><p>&nbsp;</p></div></div>
+						
+						<div class="row">
+							<div class="span2 txt-blue">
+								<p>
+									<strong><?php echo ucfirst($this->siebel->getLang('comment')) ?></strong>
+								</p>
+							</div>
+							<div class="span10">
+								<p>
+									<?php echo $item->comment ?>
+								</p>
+							</div>
+						</div>
+						
+						<?php } ?>
+						
 					</div>
 				</div>
 				<div class="row salesdata accordion-body collapse" id="contractsalesline_<?php echo $item->id ?>">

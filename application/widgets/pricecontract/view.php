@@ -25,7 +25,7 @@
 
 			<?php foreach($pricecontracts_content as $item) { ?>
 
-				<div class="<?php echo ($item->closed == 1) ? 'opacity50' : '' ?> <?php echo ($item->active == 1) ? 'bg-orangelight' : '' ?>">
+				<div class="<?php echo ($item->closed == 1) ? 'opacity50' : '' ?> <?php echo ($item->active == 1) ? 'active' : '' ?>">
 					<div class="row-fluid heading">
 
 						<div class="span12">
@@ -39,8 +39,8 @@
 										Pre: <?php echo $item->premium ?> | 
 										Mup: <?php echo ($item->price - $item->lme - $item->premium) ?>
 									</span>
-									<span class="pull-left text-right">
-										<a href="<?php echo current_url() . '/' . $item->id; ?>" class="link btn-small edit"><i class="icon-pencil"></i></a>
+									<span class="pull-left text-right tools">
+										<a href="<?php echo site_url($boxId.'/customer/'.$customernumber.'/'. $item->id); ?>" class="edit"><i class="icon-pencil"></i></a>
 									</span>
 								</small>
 								<small><?php echo date('d/m/Y', mysql_to_unix($item->date)) ?> </small>
@@ -63,11 +63,13 @@
 									</div>
 									<div class="span2">
 										<p class="txt-blue">
-											<strong>
-												<?php echo ucfirst($this->siebel->getLang('ordered')) ?> ton:
-												<br/>
-												<?php echo ucfirst($this->siebel->getLang('delivered')) ?> ton:
-											</strong>
+											<small>
+												<strong>
+													<?php echo ucfirst($this->siebel->getLang('ordered')) ?> ton:
+													<br/>
+													<?php echo ucfirst($this->siebel->getLang('delivered')) ?> ton:
+												</strong>
+											</small>
 										</p>
 									</div>
 									<div class="span2">
@@ -86,12 +88,20 @@
 									</div>
 									<div class="span3">
 										<p>
-											<?php echo $item->starttonnage - $item->ordertonnage + $item->lurk ?>
+											<?php echo round($item->starttonnage - $item->ordertonnage + $item->lurk, 2) ?>
 											<br/>
-											<?php echo $item->starttonnage - $item->deliveredtonnage + $item->lurk ?>
+											<?php echo round($item->starttonnage - $item->deliveredtonnage + $item->lurk, 2) ?>
 										</p>
 									</div>
 
+								</div>
+								<div class="row-fluid">
+									<div class="span2">
+										<p class="txt-blue"><strong><?php echo ucfirst($this->siebel->getLang('comment')) ?></strong></p>
+									</div>
+									<div class="span10">
+										<p><?php echo $item->comment ?></p>
+									</div>
 								</div>
 							</div>
 						</div>

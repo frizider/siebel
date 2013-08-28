@@ -159,8 +159,7 @@ else
 				</div>
 				<div class="span2 align-right">
 					<p>
-						<a href="<?php echo site_url("contacts/customer/".$customernumber.'/'.trim($contact[param('param_asw_database_column_contact_id')])); ?>" class="btn btn-small edit"><i class="icon-pencil"></i> <?php echo $this->siebel->getLang('edit') ?></a>
-						<a href="delete" data-href="<?php echo site_url("contacts/delete/".$customernumber.'/'.trim($contact[param('param_asw_database_column_contact_id')])); ?>" class="btn btn-small btn-danger delete"><i class="icon-remove icon-white"></i></a>
+						<a href="<?php echo site_url($module."/customer/".$customernumber.'/'.trim($contact[param('param_asw_database_column_contact_id')])); ?>" class="btn btn-small edit"><i class="icon-pencil"></i> <?php echo $this->siebel->getLang('edit') ?></a>
 					</p>
 				</div>
 			</div>

@@ -293,8 +293,10 @@ class comments extends CI_Controller {
 			{
 				$data['comment'] = $this->comments_model->getSingleComment($data['id']);
 				$comment = $data['comment'];
+				$data['current_category'] = $this->comments_model->getCommentsCategories($comment->category);
 			}
 				
+			$data['categories'] = $this->comments_model->getCommentsCategories();
 				// Text fields
 				$fields = array('title');
 				foreach($fields as $field)
@@ -345,31 +347,50 @@ class comments extends CI_Controller {
 		$this->load->view('DomainView', $data);
 	}
 	
-	public function delete()
-	{
+	public function delete($customernumber, $id) {
+		$this->customernumber = $customernumber;
+		$this->id = $id;
+		
 		$data['id'] = $this->id;
 		$data['customernumber'] = $this->customernumber;
 		$data['module'] = $this->module;
-
-		$data['customernumber'] = $this->uri->segment(3);
-		$data['id'] = $this->uri->segment(4);
 		
-		if($this->comments_model->delete($data['id']))
+		if($this->comments_model->delete($id))
 		{
-			$this->session->set_flashdata('error', 'Comment deleted!');
+			$this->session->set_flashdata('message', $this->siebel->getLang('success_contactdelete'). ' <a class="btn btn-small" href="'.site_url($this->module.'/undelete/'.$this->customernumber.'/'.$this->id).'"><i class="icon-undo"></i> '.$this->siebel->getLang('undo').'</a>');
 			if($data['customernumber'] == 'global')
 			{
-				redirect(site_url('comments/globalcomments'), 'refresh');
+				redirect(site_url($this->module.'/globalcomments/'), 'refresh');
 			}
 			else
 			{
-				redirect(site_url('comments/customer/'.$data['customernumber']), 'refresh');
+				redirect(site_url($this->module.'/customer/'.$this->customernumber), 'refresh');
 			}
 		}
-		
 	}
-
 	
+	public function undelete($customernumber, $id) {
+		$this->customernumber = $customernumber;
+		$this->id = $id;
+		
+		$data['id'] = $this->id;
+		$data['customernumber'] = $this->customernumber;
+		$data['module'] = $this->module;
+		
+		
+		if($this->comments_model->undelete($id))
+		{
+			$this->session->set_flashdata('success', $this->siebel->getLang('success_contactrecover'));
+			if($data['customernumber'] == 'global')
+			{
+				redirect(site_url($this->module.'/globalcomments/'), 'refresh');
+			}
+			else
+			{
+				redirect(site_url($this->module.'/customer/'.$this->customernumber), 'refresh');
+			}
+		}
+	}
 	
 }
 

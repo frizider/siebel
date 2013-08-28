@@ -52,7 +52,6 @@ $route['newcustomer/:any'] = "newcustomer";
 $route['auth/edit_permission/:any'] = "auth/edit_permission";
 $route['deliverydays/customer/:any'] = "deliverydays/customer";
 $route['deliverydays/edit/:any'] = "deliverydays/edit";
-$route['formulas/:any'] = "formulas";
 $route['lme/:any'] = "lme";
 
 

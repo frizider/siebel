@@ -30,8 +30,8 @@ class Siebel {
 			$dbDefault->where('id', $id);
 		};
 		
-		$result = $dbDefault->get('language')->row();
 		
+		$result = $dbDefault->get('language')->row();
 		return $result->$language;
 	}
 

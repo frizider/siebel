@@ -30,6 +30,7 @@ class Messenger extends CI_Controller {
 		
 		// load the model we will be using
 		$this->load->model('messenger_model');
+		$this->load->model('contact_model');
 	}
 	
 	public function index() 
@@ -39,6 +40,7 @@ class Messenger extends CI_Controller {
 		$data['module'] = $this->module;
 
 		$data['form_attributes'] = array('class' => 'form-horizontal');
+		
 		$this->load->library('ckeditor');
 		$this->ckeditor->basePath = base_url().'assets/ckeditor/';
 		$this->ckeditor->config['toolbar'] = array(

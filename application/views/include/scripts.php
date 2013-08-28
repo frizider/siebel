@@ -30,7 +30,28 @@ $(document).ready(function() {
         .append( "<a href=\"<?php echo site_url('dashboard/customer') ?>/"+item.value+"\"><strong>" + item.label + "</strong><small class=\"pull-right\">" + item.value + "</small><br>" + item.address + "</a>" )
         .appendTo( ul );
     };
+	
+	
+	/* Shortcuts
+	 * ----------------------------------------------------------------------
+	 * 
+	 */ 
+	
+	shortcut.add(",",function() {
+		$("#search").focus();
+	}, {
+		"disable_in_input":true
+	});
+	$("#search").on('focusin', function() {
+		$(this).addClass('sb-search-input-open');
+		//$("#searchresults").addClass('open');
+	});
 
+	$("#search").on('focusout', function() {
+		$(this).removeClass('sb-search-input-open');
+		$(this).val('');
+		//$("#searchresults").removeClass('open');
+	});
 
-})
+});
 </script>

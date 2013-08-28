@@ -50,7 +50,8 @@ class PHPExcel_Style_NumberFormat extends PHPExcel_Style_Supervisor implements P
 
 	const FORMAT_DATE_YYYYMMDD2				= 'yyyy-mm-dd';
 	const FORMAT_DATE_YYYYMMDD				= 'yy-mm-dd';
-	const FORMAT_DATE_DDMMYYYY				= 'dd/mm/yy';
+	const FORMAT_DATE_DDMMYYYY				= 'dd/mm/yyyy';
+	const FORMAT_DATE_DDMMYY				= 'dd/mm/yy';
 	const FORMAT_DATE_DMYSLASH				= 'd/m/y';
 	const FORMAT_DATE_DMYMINUS				= 'd-m-y';
 	const FORMAT_DATE_DMMINUS				= 'd-m';
@@ -73,7 +74,7 @@ class PHPExcel_Style_NumberFormat extends PHPExcel_Style_Supervisor implements P
 
 	const FORMAT_CURRENCY_USD_SIMPLE		= '"$"#,##0.00_-';
 	const FORMAT_CURRENCY_USD				= '$#,##0_-';
-	const FORMAT_CURRENCY_EUR_SIMPLE		= '[$EUR ]#,##0.00_-';
+	const FORMAT_CURRENCY_EUR_SIMPLE		= '[$€]#,##0.00_-';
 
 	/**
 	 * Excel built-in number formats

@@ -43,23 +43,6 @@ function perm($permission_name)
 	
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // Fucntion to get the value of a parameter from the params config file
 function param($name) {
 	$ci =& get_instance();

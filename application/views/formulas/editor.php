@@ -87,6 +87,7 @@ echo form_open(current_url(), $form_attributes);
 		<div class="form-actions">
 			<a href="#" id="makeFormula" class="btn btn-primary"><?php echo ucfirst($this->siebel->getLang('save')); ?></a>
 			<span id="trash" class="pull-right"><i class="icon-trash icon-white"></i> <?php echo ucfirst($this->siebel->getLang('delete')); ?></span>
+			<a class="btn btn-danger pull-right" href="<?php echo site_url($module . '/delete/' . $id) ?>"><?php echo ucfirst($this->siebel->getLang('delete')); ?></a>
 		</div>
 	</div>
 </div>

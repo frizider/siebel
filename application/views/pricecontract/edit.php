@@ -3,6 +3,7 @@
 
 		<?php 
 		echo form_open(current_url(), $form_attributes);
+		echo form_hidden('price_id', $item->price_id);
 		?>
 		
 		<h3><?php echo $item->id; ?></h3>
@@ -52,6 +53,9 @@
 			<h4><?php echo ucfirst($this->siebel->getLang('price')); ?></h4>
 			<div class="row">
 				<div class="span6"><?php echo $this->bootstrap->formControlGroup(array($this->siebel->getLang('price'), 'price', array('class' => 'control-label')), array($fields->price)); ?></div>
+				<?php if (isset($item->price_id) && !empty($item->price_id) && $item->price_id != 0 ) { ?>
+				<div class="span5"><a class="btn"href="<?php echo site_url('prices/customer/'.$customernumber.'/'.$item->price_id) ?>"><i class="icon-tags"></i> <?php echo $this->siebel->getLang('prices'); ?></a></div>
+				<?php } ?>
 			</div>
 			<div class="row">
 				<div class="span6"><?php echo $this->bootstrap->formControlGroup(array($this->siebel->getLang('lme'), 'lme', array('class' => 'control-label')), array($fields->lme)); ?></div>
@@ -70,12 +74,48 @@
 			</div>
 		</div>
 			
+		<div class="well">
+			<h4><?php echo ucfirst($this->siebel->getLang('comment')); ?></h4>
+			<div class="row">
+				<div class="span11">
+					<div class="control-group">
+						<label for="description" class="control-label"><?php echo ucfirst($this->siebel->getLang('comment')) ?></label>
+						<div class="controls">
+							<?php 
+							//echo '<textarea rows="10" name="'.$description['name'].'" id="'.$description['id'].'" class="'.$description['class'].' span9">'.$description['value'].'</textarea>';
+							echo $this->ckeditor->editor($fields->comment['name'], $fields->comment['value']);
+							?>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="well">
+			<h4><?php echo ucfirst($this->siebel->getLang('multi_customer')); ?></h4>
+			<div class="row">
+				<div class="span11">
+					<ul id="multiCustomerTags">
+						
+						<?php
+						if(isset($item->multiCust) && !empty($item->multiCust)) {
+							foreach($item->multiCust as $multiCust) {
+								echo '<li>'.$multiCust.'</li>';
+							}
+						}
+						?>
+						
+					</ul>
+				</div>
+			</div>
+		</div>
+		
 		<div class="row">
 			<div class="span12">
 				<div class="form-actions">
 					<button type="submit" class="btn btn-primary"><?php echo ucfirst($this->siebel->getLang('save')); ?></button>
 					<button class="btn">Cancel</button>
-					<a class="btn btn-danger pull-right" data-target="#delete" data-toggle="modal"><?php echo ucfirst($this->siebel->getLang('delete')); ?></a>
+					<a class="btn btn-danger pull-right" href="<?php echo site_url($module.'/delete/'.$customernumber.'/'.$id) ?>"><?php echo ucfirst($this->siebel->getLang('delete')); ?></a>
 				</div>
 			</div>
 		</div>
@@ -85,16 +125,40 @@
 	</div>
 </div>
 
-<div class="modal fade" id="delete">
-	<div class="modal-header">
-		<a class="close" data-dismiss="modal">×</a>
-		<h3><?php echo ucfirst($this->siebel->getLang('delete')); ?></h3>
-	</div>
-	<div class="modal-body">
-		<p><?php echo $this->siebel->getLang('delete_sure'); ?></p>
-	</div>
-	<div class="modal-footer">
-		<a href="#" class="btn" data-dismiss="modal"><?php echo ucfirst($this->siebel->getLang('cancel')); ?></a>
-		<a href="<?php echo site_url($module.'/delete/'.$customernumber.'/'.$id) ?>" class="btn btn-danger"><?php echo ucfirst($this->siebel->getLang('delete')); ?></a>
-	</div>
-</div>
+<script type="text/javascript" src="<?= base_url(); ?>assets/js/tagit.js" ></script>
+<script>
+
+$(document).ready(function() {
+	
+	$('#multiCustomerTags').tagit({
+		fieldName: "multiCust[]", 
+		removeConfirmation: true, 
+		autocomplete: {  
+			//define callback to format results  
+			source: function(request, response){  
+				//pass request to server  
+				$.ajax({
+					url: "<?php echo site_url('/search')?>",
+					cache: false,
+					data: {term: encodeURI(request.term)},
+					data: "term=" + encodeURI(request.term),
+					dataType: "json",
+					success: function(data) {
+						response(data);
+					}
+				});
+			},
+			autoFocus: true, 
+			minLength: 3, 
+			messages: {
+				noResults: '',
+				results: function() {}
+			}, 
+			position: { my : "right top", at: "right bottom" }
+		}
+	});
+
+	
+});
+
+</script>

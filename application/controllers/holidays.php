@@ -88,23 +88,36 @@ class holidays extends CI_Controller {
 		
 	}
 	
-	public function delete()
-	{
+	public function delete($customernumber, $id) {
+		$this->customernumber = $customernumber;
+		$this->id = $id;
+		
 		$data['id'] = $this->id;
 		$data['customernumber'] = $this->customernumber;
 		$data['module'] = $this->module;
-
-		$data['customernumber'] = $this->uri->segment(3);
-		$data['id'] = $this->uri->segment(4);
 		
-		if($this->holidays_model->delete($data['id']))
+		if($this->holidays_model->delete($id))
 		{
-			$this->session->set_flashdata('error', 'Holiday deleted!');
-			redirect(site_url('holidays/customer/'.$data['customernumber']), 'refresh');
+			$this->session->set_flashdata('message', $this->siebel->getLang('success_contactdelete'). ' <a class="btn btn-small" href="'.site_url($this->module.'/undelete/'.$this->customernumber.'/'.$this->id).'"><i class="icon-undo"></i> '.$this->siebel->getLang('undo').'</a>');
+			redirect(site_url($this->module.'/customer/'.$this->customernumber), 'refresh');
 		}
-		
 	}
-
+	
+	public function undelete($customernumber, $id) {
+		$this->customernumber = $customernumber;
+		$this->id = $id;
+		
+		$data['id'] = $this->id;
+		$data['customernumber'] = $this->customernumber;
+		$data['module'] = $this->module;
+		
+		
+		if($this->holidays_model->undelete($id))
+		{
+			$this->session->set_flashdata('success', $this->siebel->getLang('success_contactrecover'));
+			redirect(site_url($this->module.'/customer/'.$this->customernumber), 'refresh');
+		}
+	}
 
 }
 

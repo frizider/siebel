@@ -15,6 +15,7 @@ class Formulas_model extends CI_Model
 	
 	public function get($id = FALSE) {
 		$dbDefault = $this->load->database('default', TRUE);
+		$dbDefault->where('delete', 0);
 		
 		if($id)
 		{
@@ -24,7 +25,7 @@ class Formulas_model extends CI_Model
 		return $dbDefault->get('formulas')->result();
 	}
 	
-	public function save($id) 
+	public function save($id, $copy) 
 	{
 		$dbDefault = $this->load->database('default', TRUE);
 		
@@ -32,6 +33,11 @@ class Formulas_model extends CI_Model
 		unset($_POST['lme']);
 		
 		$data = $_POST;
+		
+		if ($copy) {
+			$id = 'new';
+		}
+
 		if($id == 'new')
 		{
 			if($dbDefault->insert('formulas', $data))
@@ -50,6 +56,22 @@ class Formulas_model extends CI_Model
 		}
 	}
 	
+	public function delete($id) {
+		$dbDefault = $this->load->database('default', TRUE);
+		$dbDefault->where('id', $id);
+		if ($dbDefault->update('formulas', array('delete' => 1))) {
+			return TRUE;
+		};
+	}
+
+	public function unDelete($id) {
+		$dbDefault = $this->load->database('default', TRUE);
+		$dbDefault->where('id', $id);
+		if ($dbDefault->update('formulas', array('delete' => 0))) {
+			return TRUE;
+		};
+	}
+
 }
 
 /* End of file */

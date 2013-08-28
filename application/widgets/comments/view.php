@@ -2,7 +2,7 @@
 	<div class="header">
 		<h3>
 			<?php 
-			echo $title .' '.$this->siebel->getLang('category_'.$comments->slug); 
+			echo '<small>'.$title .'</small> '.$this->siebel->getLang('category_'.$comments->slug); 
 			?>
 			<span class="tools pull-right">
 				<a href="<?php echo site_url($boxId.'/customer/'.$customernumber.'/new') ?>" class="add"><i class="icon-plus"></i></a>

@@ -1,7 +1,7 @@
 /* Subnav */
 .subnav {
   width: 100%;
-  height: 36px;
+  //height: 36px;
   .buttonBackground(@btnBackground, @btnBackgroundHighlight, @grayDark, 0 1px 1px rgba(255,255,255,.75));
   border: 1px solid @btnBorder;
   *border: 0; // Remove the border to prevent IE7's black border on input:focus
@@ -83,5 +83,12 @@
     -webkit-border-radius: 0;
        -moz-border-radius: 0;
             border-radius: 0;
+  }
+}
+
+/* Fixed subnav on scroll, but only for 1200px and up (sorry IE!) */
+@media (min-width: 1200px) {
+  .subnav-fixed .nav {
+    width: 1170px;
   }
 }

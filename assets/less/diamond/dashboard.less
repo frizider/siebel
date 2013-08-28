@@ -17,7 +17,7 @@
 	//width:100%;
 }
 
-.widget {
+.widget,  {
 	.transition(opacity 0.5s ease-out);
 	margin-bottom:10px;
 }
@@ -53,6 +53,12 @@
 	background:@white;
 	border-top-width: 2px;
 	border-top-style: solid;
+	.row-fluid [class*="span"] {
+		min-height: 1px;
+		div.tools {
+			display: inline;
+		}
+	}
 }
 
 .widget.ui-sortable-helper .content {

@@ -65,7 +65,24 @@ $db['default']['swap_pre'] = '';
 $db['default']['autoinit'] = TRUE;
 $db['default']['stricton'] = FALSE;
 
-// default database 
+// packaging database 
+$db['packaging']['hostname'] = param('param_packaging_database_host');
+$db['packaging']['username'] = param('param_packaging_database_username');
+$db['packaging']['password'] = param('param_packaging_database_password');
+$db['packaging']['database'] = param('param_packaging_database_database');
+$db['packaging']['dbdriver'] = param('param_packaging_database_dbdriver');
+$db['packaging']['dbprefix'] = param('param_packaging_database_dbprefix');
+$db['packaging']['pconnect'] = TRUE;
+$db['packaging']['db_debug'] = TRUE;
+$db['packaging']['cache_on'] = FALSE;
+$db['packaging']['cachedir'] = '';
+$db['packaging']['char_set'] = 'utf8';
+$db['packaging']['dbcollat'] = 'utf8_general_ci';
+$db['packaging']['swap_pre'] = '';
+$db['packaging']['autoinit'] = TRUE;
+$db['packaging']['stricton'] = FALSE;
+
+// Siebel database 
 $db['siebel']['hostname'] = param('param_default_database_host');
 $db['siebel']['username'] = param('param_default_database_username');
 $db['siebel']['password'] = param('param_default_database_password');
@@ -82,7 +99,7 @@ $db['siebel']['swap_pre'] = '';
 $db['siebel']['autoinit'] = TRUE;
 $db['siebel']['stricton'] = FALSE;
 
-// contactlist database 
+// Contactlist database 
 $db['contact']['hostname'] = param('param_contact_database_host');
 $db['contact']['username'] = param('param_contact_database_username');
 $db['contact']['password'] = param('param_contact_database_password');

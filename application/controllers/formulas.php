@@ -18,8 +18,8 @@ class Formulas extends CI_Controller {
 		// load Controller constructor
 		parent::__construct();
 		$this->module = get_class();
-		$this->customernumber = ($this->uri->segment(3)) ? $this->uri->segment(3) : '';
-		$this->id = ($this->uri->segment(4)) ? $this->uri->segment(4) : '';
+		$this->customernumber = '';
+		$this->id = '';
 		
 		// Check if the current logged in user is permitted
 		/*
@@ -32,15 +32,13 @@ class Formulas extends CI_Controller {
 		$this->load->model('formulas_model');
 	}
 	
-	public function index() 
+	public function index($id = false) 
 	{
-		$data['id'] = $this->id;
-		$data['customernumber'] = $this->customernumber;
+		$data['id'] = $id;
+		$data['customernumber'] = '';
 		$data['module'] = $this->module;
 
 		$data['form_attributes'] = array('class' => 'form-horizontal');
-		$data['id'] = $this->uri->segment(2);
-		$id = $data['id'];
 		
 		$data['items'] = $this->formulas_model->get($id);
 		
@@ -59,10 +57,12 @@ class Formulas extends CI_Controller {
 			}
 			if(isset($_POST) && !empty($_POST))
 			{
-				if($newId = $this->formulas_model->save($id))
+				$data['copy'] = $this->uri->segment(4);
+				$copy = $data['copy'];
+				if($newId = $this->formulas_model->save($id, $copy))
 				{
 					$this->session->set_flashdata('success', 'Successful saved!');
-					redirect(site_url('formulas/'.$newId), 'refresh');
+					redirect(site_url('formulas/index/'.$newId), 'refresh');
 				}
 			}
 		}
@@ -72,5 +72,31 @@ class Formulas extends CI_Controller {
 		$this->load->view('DomainView', $data);
 	}
 
+	public function delete($id) {
+		$this->id = $id;
+		
+		$data['id'] = $this->id;
+		$data['module'] = $this->module;
+		
+		if($this->formulas_model->delete($id))
+		{
+			$this->session->set_flashdata('message', $this->siebel->getLang('success_contactdelete'). ' <a class="btn btn-small" href="'.site_url($this->module.'/undelete/'.$id).'"><i class="icon-undo"></i> '.$this->siebel->getLang('undo').'</a>');
+			redirect(site_url($this->module), 'refresh');
+		}
+	}
+	
+	public function undelete($id) {
+		$this->id = $id;
+		
+		$data['id'] = $this->id;
+		$data['module'] = $this->module;
+		
+		
+		if($this->formulas_model->undelete($id))
+		{
+			$this->session->set_flashdata('success', $this->siebel->getLang('success_contactrecover'));
+			redirect(site_url($this->module), 'refresh');
+		}
+	}
 }
 

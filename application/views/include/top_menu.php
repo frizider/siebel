@@ -16,12 +16,20 @@
 						<ul class="dropdown-menu">
 							<?php
 							echo $this->bootstrap->navItem('View formulas', 'formulas', '/formulas', 'formulas');
+							echo $this->bootstrap->navItem('View prices', 'prices/toexcel/', '/prices/toexcel/', 'price_excel');
+							echo $this->bootstrap->navItem('View prices', 'pricecontract/toexcel/', '/pricecontract/toexcel/', 'pricecontract');
+							echo '<li class="divider"></li>';
 							echo $this->bootstrap->navItem('View LME', 'lme', '/lme', 'lme');
+							echo $this->bootstrap->navItem('View LME subscribers', 'lme/mail', '/lme/mail', 'lme_subscribers');
+							echo $this->bootstrap->navItem('View prices', 'prices/defaultpremium', '/prices/defaultpremium', 'defaultpremium');
+							echo '<li class="divider"></li>';
+							echo $this->bootstrap->navItem('View tonnagelist', 'tonnagelist', '/tonnagelist', 'tonnagelist');
 							echo '<li class="divider"></li>';
 							echo $this->bootstrap->navItem('View Global Comments', 'comments/globalcomments', '/comments/globalcomments', 'global_comments');
 							echo $this->bootstrap->navItem('View comments categories', 'categories', '/comments/categories', 'categories');
 							echo '<li class="divider"></li>';
 							echo $this->bootstrap->navItem('View deliverydays', 'deliverydays/filter', '/deliverydays/filter', 'filter_deliverydays');
+							echo $this->bootstrap->navItem('Export deliveryterms', 'deliveryterms/toexcel', '/deliveryterms/toexcel', 'export_deliveryterms');
 							echo '<li class="divider"></li>';
 							echo $this->bootstrap->navItem('messenger', 'messenger', '/messenger', 'messenger');
 							?>
@@ -49,8 +57,10 @@
 					}
 					?>
 				</ul>
-				<form class="navbar-search pull-right" action="<?php echo base_url() ?>" method="post">
-					<input type="text" name="search_customer" id="search" class="search-query span2 search_customer" placeholder="Klant...">
+				<form class="navbar-search form-search pull-right" action="<?php echo base_url() ?>" method="post">
+					<div class="sb-search">
+							<input type="text" name="search_customer" id="search" class="sb-search-input search-query search_customer" placeholder="...">
+					</div>
 				</form>				
 
 				<?php if($this->config->item('devmode') != 0 && $this->ion_auth->is_admin()) { ?>
@@ -83,5 +93,125 @@
 				
 			</div>
 		</div>
+	</div>
+</div>
+
+
+<!--
+* customers		* contacts			* deliverydays		* profiles
+* prices		* pricecontracts	* orders			* packaging
+-->
+
+<div id="searchresults" class="container-fluid">
+	<div class="inner">
+
+		<div class="row-fluid">
+
+			<div class="span3 widget" id="searchresults_customers">
+				<div class="header">
+					<h4><?php echo ucfirst($this->siebel->getLang('customer')); ?></h4>
+				</div>
+				<div class="content randomborder">
+					<div>
+						<!--
+						<div class="header row-fluid">
+							<div class="span4">Lipsum</div>
+							<div class="span4">Dolor</div>
+							<div class="span4">Ebimt</div>
+						</div>
+						-->
+
+						<div class="list list-striped">
+							
+							<div class="row-fluid searchitem">
+								<div class="row-fluid">
+									<div class="span10"><strong>Lipsum est emet</strong></div>
+									<div class="span2 pull-right">Ebimt</div>
+								</div>
+								<div class="row-fluid">
+									<div class="span12 pull-right">Dolor</div>
+								</div>
+							</div>
+							
+							<div class="row-fluid searchitem">
+								<div class="row-fluid">
+									<div class="span10"><strong>Lipsum est emet</strong></div>
+									<div class="span2 pull-right">Ebimt</div>
+								</div>
+								<div class="row-fluid">
+									<div class="span12 pull-right">Dolor</div>
+								</div>
+							</div>
+							
+							<div class="row-fluid searchitem">
+								<div class="row-fluid">
+									<div class="span10"><strong>Lipsum est emet</strong></div>
+									<div class="span2 pull-right">Ebimt</div>
+								</div>
+								<div class="row-fluid">
+									<div class="span12 pull-right">Dolor</div>
+								</div>
+							</div>
+							
+							<div class="row-fluid searchitem">
+								<div class="row-fluid">
+									<div class="span10"><strong>Lipsum est emet</strong></div>
+									<div class="span2 pull-right">Ebimt</div>
+								</div>
+								<div class="row-fluid">
+									<div class="span12 pull-right">Dolor</div>
+								</div>
+							</div>
+							
+							<div class="row-fluid searchitem">
+								<div class="row-fluid">
+									<div class="span10"><strong>Lipsum est emet</strong></div>
+									<div class="span2 pull-right">Ebimt</div>
+								</div>
+								<div class="row-fluid">
+									<div class="span12 pull-right">Dolor</div>
+								</div>
+							</div>
+							
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+			<div class="span3" id="searchresults_contacts">
+
+			</div>
+
+			<div class="span3" id="searchresults_deliverydays">
+
+			</div>
+
+			<div class="span3" id="searchresults_profiles">
+
+			</div>
+
+		</div>
+
+		<div class="row-fluid">
+
+			<div class="span3" id="searchresults_prices">
+
+			</div>
+
+			<div class="span3" id="searchresults_pricecontracts">
+
+			</div>
+
+			<div class="span3" id="searchresults_orders">
+
+			</div>
+
+			<div class="span3" id="searchresults_packaging">
+
+			</div>
+
+		</div>
+
 	</div>
 </div>

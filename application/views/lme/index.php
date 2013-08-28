@@ -13,12 +13,29 @@ else
 				<?= form_open(current_url(), array('class' => 'subnav')); ?>
 
 					<ul class="nav nav-pills">
-						<li class="span1"><a><?php echo ucfirst($this->siebel->getLang('exchange')); ?></a></li>
-						<li class="span4"><a>Cash</a></li>
-						<li class="span4"><a>3mth</a></li>
-						<li class="span2"><a><?php echo ucfirst($this->siebel->getLang('date')); ?></a></li>
+						<li>
+							<p>
+								<input name="exchange" class="span1" placeholder="<?php echo ucfirst($this->siebel->getLang('exchange')); ?>" value="<?php echo $this->input->post('exchange') ?>">
+							</p>
+						</li>
+						<li>
+							<p>
+								<input name="cash" class="span3" placeholder="Cash" value="<?php echo $this->input->post('cash') ?>">
+							</p>
+						</li>
+						<li>
+							<p>
+								<input name="mth" class="span3" placeholder="3mth" value="<?php echo $this->input->post('mth') ?>">
+							</p>
+						</li>
+						<li>
+							<p>
+								<input name="date" class="span3" placeholder="<?php echo ucfirst($this->siebel->getLang('date')); ?>" value="<?php echo $this->input->post('date') ?>">
+							</p>
+						</li>
 						<li class="float-right align-right">
 							<p>
+								<button type="submit" class="btn btn-small btn-primary search submit"><i class="icon-search icon-white"></i></button>
 								<span class="btn btn-small create href" data-href="<?php echo current_url() ?>/new"><i class="icon-plus"></i> <?php //echo $this->siebel->getLang('create') ?></span>
 							</p>
 						</li>

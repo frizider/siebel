@@ -1,26 +1,138 @@
-<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
-class Pricecontract_model extends CI_Model
-{
+if (!defined('BASEPATH'))
+	exit('No direct script access allowed');
+
+class Pricecontract_model extends CI_Model {
+
 	private $table = 'pricecontract';
 	private $dbDefault;
 
 	// Constructor
-	public function __construct()
-	{
+	public function __construct() {
 		parent::__construct();
 		$this->dbDefault = $this->load->database('default', TRUE);
 	}
-	
-	/* *********************************************************************
+
+	/*	 * ********************************************************************
 	 * Other function below this section
 	 */
-	
+
+	public function saveMultiCust($data, $id, $customernumber) {
+		$dbDefault = $this->load->database('default', TRUE);
+
+		// Delete all old records for this ID
+		$dbDefault->where('pricecontract_id', $id);
+		$dbDefault->delete('pricecontract_customer');
+
+		// Save new records for the current customer number
+		$saveData = array(
+			'pricecontract_id' => $id,
+			'customernumber' => strtoupper($customernumber)
+		);
+		$dbDefault->insert('pricecontract_customer', $saveData);
+
+		// Save new records for each object in $data
+		foreach ($data as $customer) {
+			$saveData = array(
+				'pricecontract_id' => $id,
+				'customernumber' => strtoupper($customer)
+			);
+			$dbDefault->insert('pricecontract_customer', $saveData);
+		}
+
+		return TRUE;
+	}
+
+	public function savePrice($saveData, $customernumber, $newId) {
+		$priceId = (isset($saveData['price_id']) && !empty($saveData['price_id'])) ? $saveData['price_id'] : 'new';
+		if ($priceId == 0) {
+			$priceId = 'new';
+		}
+
+		$saveData = array(
+			'price' => $saveData['price'],
+			'lme' => $saveData['lme'],
+			'premium' => $saveData['premium'],
+			'markup' => $saveData['price'] - $saveData['lme'] - $saveData['premium'],
+			'comment' => strip_tags($saveData['comment']),
+			'priceunit_id' => 1,
+			'prefer_priceunit_id' => 1,
+			'formula_id' => '2',
+			'formula_string' => 'value:Prijs||',
+			'formula_data' => $saveData['price'] . '||',
+			'date' => $saveData['startdate'],
+			'pricecontract_id' => $newId,
+			'delete' => 0
+		);
+
+
+		$this->load->model('prices_model');
+		$newPriceId = $this->prices_model->save($saveData, $customernumber, $priceId, FALSE);
+
+		if ($priceId == 'new') {
+			$dbDefault = $this->load->database('default', TRUE);
+			$dbDefault->where('id', $newId);
+			$dbDefault->update('pricecontract', array('price_id' => $newPriceId));
+		}
+
+
+		return TRUE;
+	}
+
+	public function getContractById($id) {
+		$dbDefault = $this->load->database('default', TRUE);
+		$dbDefault->where('id', $id);
+		$pricecontract = $dbDefault->get('pricecontract')->row();
+		$pricecontract->multiCust = $this->getPricecontractCustomers($id);
+		return $pricecontract;
+	}
+
+	public function getPricecontractCustomers($id) {
+		$dbDefault = $this->load->database('default', TRUE);
+		$dbDefault->where('pricecontract_id', $id);
+		$results = $dbDefault->get('pricecontract_customer')->result();
+		$multiCust = array();
+		foreach ($results as $customer) {
+			$multiCust[] = $customer->customernumber;
+		}
+		return $multiCust;
+	}
+
+	public function listContracts($customernumber) {
+		$dbDefault = $this->load->database('default', TRUE);
+
+		// Get all contracts for this customer from the relation table
+		$dbDefault->where('customernumber', $customernumber);
+		$dbDefault->order_by('pricecontract_id', 'desc');
+		$results = $dbDefault->get('pricecontract_customer')->result();
+		$contractIds = array();
+		foreach ($results as $customer) {
+			$contractIds[] = $customer->pricecontract_id;
+		}
+		$contractIds = array_unique($contractIds);
+		$contracts = array();
+		foreach ($contractIds as $contractId) {
+			$dbDefault->where('id', $contractId);
+			$contract = $dbDefault->get('pricecontract')->row();
+			if ($contract->delete == 0) {
+				$contracts[] = $contract;
+			}
+		}
+
+		$results = $this->addSalesOrders($contracts);
+
+		return $results;
+	}
+
 	public function addSalesOrders($contracts) {
-		
-		foreach($contracts as $contract) {
-			$contract->salesorders = $this->getSalesOrders($contract->id);
-			
+
+		foreach ($contracts as $contract) {
+			$this->load->model('tonnagelist_model');
+			$contract->salesorders = $this->tonnagelist_model->getSalesOrders(array(
+				'contractnumber' => $contract->id
+			));
+
 			$tonnage_ordered = 0;
 			$tonnage_delivered = 0;
 			foreach ($contract->salesorders as $order) {
@@ -29,264 +141,319 @@ class Pricecontract_model extends CI_Model
 			}
 			$contract->ordertonnage = $tonnage_ordered;
 			$contract->deliveredtonnage = $tonnage_delivered;
-
 		}
 		return $contracts;
-		
 	}
-	
-	public function getSalesOrders($contractnumber) {
-		
-		$dbAsw = $this->load->database('asw', TRUE);
-		$dbAsw->where(param('param_asw_database_column_soh_contractnumber'), $contractnumber);
-		$dbAsw->where(param('param_asw_database_column_soh_type'), param('param_asw_database_column_soh_type_order'));
-		$dbAsw->order_by(param('param_asw_database_column_soh_salesordernumber'), 'desc');
-		$salesorders = $dbAsw->get(param('param_asw_database_table_salesorderheader'))->result();
-		
-		$sonumber = param('param_asw_database_column_soh_salesordernumber');
-		
-		foreach($salesorders as $salesorder) {
-			$salesorder->orderlines = $this->getOrderLines($salesorder->$sonumber);
-			
-			$tonnage_ordered = 0;
-			$tonnage_delivered = 0;
-			foreach ($salesorder->orderlines as $orderline) {
-				$tonnage_ordered += $orderline->ordertonnage;
-				$tonnage_delivered += $orderline->deliveredtonnage;
+
+	public function getPriceId($id) {
+		$dbDefault = $this->load->database('default', TRUE);
+		$dbDefault->where('id', $id);
+		$result = $dbDefault->get('pricecontract')->row();
+		return $result->price_id;
+	}
+
+	public function delete($id) {
+		$dbDefault = $this->load->database('default', TRUE);
+		$dbDefault->where('id', $id);
+		if ($dbDefault->update('pricecontract', array('delete' => 1))) {
+			$dbDefault->where('id', $this->getPriceId($id));
+			if ($dbDefault->update('prices', array('delete' => 1))) {
+				return TRUE;
 			}
-			$salesorder->ordertonnage = $tonnage_ordered;
-			$salesorder->deliveredtonnage = $tonnage_delivered;
-		}
-		
-		return $salesorders;
-		
+		};
 	}
-	
-	public function getOrderLines($salesorder) {
-		$dbAsw = $this->load->database('asw', TRUE);
-		$dbAsw->where(param('param_asw_database_column_soline_state').' !=', param('param_asw_database_column_soline_state_deleted'));
-		$dbAsw->where(param('param_asw_database_column_soline_order'), $salesorder);
-		$dbAsw->order_by(param('param_asw_database_column_soline_line'), 'asc');
-		$lines = $dbAsw->get(param('param_asw_database_table_salesorderline'))->result();
-		
-		foreach($lines as $line) {
-			$lineInfo = $this->getLineInfo($line);
-			$line->ordertonnage = $lineInfo['ordered'];
-			$line->deliveredtonnage = $lineInfo['delivered'];
-			$line->length = $lineInfo['length'];
-			$line->finish = $lineInfo['finish'];
-			$line->invoice = $lineInfo['invoice'];
-			$line->invoicedate = $lineInfo['invoicedate'];
-			$line->transport = $lineInfo['transport'];
-			$line->transportdate = $lineInfo['transportdate'];
-		}
-		
-		return $lines;
-		
+
+	public function unDelete($id) {
+		$dbDefault = $this->load->database('default', TRUE);
+		$dbDefault->where('id', $id);
+		if ($dbDefault->update('pricecontract', array('delete' => 0))) {
+			$dbDefault->where('id', $this->getPriceId($id));
+			if ($dbDefault->update('prices', array('delete' => 0))) {
+				return TRUE;
+			}
+		};
 	}
-	
-	public function getLineInfo($salesorder) {
-		
-		/*
-		 * 
-SELECT SRBSOL.OLSTAT, SRBSOL.OLORDS, SRBSOL.OLORNO, SRBSOL.OLLINE, SRBSOL.OLORLI, SRBSOL.OLROLI, SRBSOL.OLORDT,     
-SRBSOL.OLPRDC, SRBSOL.OLOQTY, SRBSOL.OLPQTY, SRBSOL.OLCQTY, SRBSOL.OLROCO , SRBSOL.pgprcl
-		 * FROM srbsol 
-		 * join srbprg on olprdc = pgprdc 
-		 * join srbpru on pgprdc = pjprdc and pjunit = pgstun                                          
-		 * 
-		 */
-		
-		// Some variables
-		$so = param('param_asw_database_column_soline_order');
-		$so = trim($salesorder->$so);
-		$soline = param('param_asw_database_column_soline_line');
-		$soline = trim($salesorder->$soline);
-		$original_line = param('param_asw_database_column_soline_originalline');
-		$original_line = trim($salesorder->$original_line);
-		$backorder_line = param('param_asw_database_column_soline_backorderline');
-		$backorder_line = trim($salesorder->$backorder_line);
-		$product = param('param_asw_database_column_soline_product');
-		$product = trim($salesorder->$product);
-		$unit = param('param_asw_database_column_soline_unit');
-		$unit = strtoupper(trim($salesorder->$unit));
-		$ordered_quantity = param('param_asw_database_column_soline_quantity_order_primary');
-		$ordered_quantity = trim($salesorder->$ordered_quantity);
-		$delivered_quantity = param('param_asw_database_column_soline_quantity_confirmed');
-		$delivered_quantity = trim($salesorder->$delivered_quantity); // in pieces
-		$status = param('param_asw_database_column_soline_status');
-		$status = trim($salesorder->$status);
 
-		// get length and color
-		$length_color = $this->getLengthAndColor($so, $soline);
-		$length = $length_color['length'];
-		$color_inside = $length_color['color_inside'];
-		$color_outside = $length_color['color_outside'];
-		
-		// get item class and unit
-		$item = $this->getItem($product);
-		$item_pgstun = trim($item['PGSTUN']);
-		$item_class = trim($item['PGPRCL']);
+	public function toExcel($post) {
 
-		// get weight
-		$weight = $this->getWeight($so, $soline);
-		$weight_piece = ($item_class == 3) ? $weight*$length : $weight;
+		// Colors
+		$black = "FF000000";
+		$grey = "FF999999";
+		$white = "FFFFFFFF";
+		$blue = "FF5698c4";
+		$green = "FF74c493";
+
+		// Include PHPExcel
+		require_once APPPATH . 'third_party/PHPExcel.php';
+
+		// Create new PHPExcel object
+		$objPHPExcel = new PHPExcel();
+
+		// Set document properties
+		$objPHPExcel->getProperties()->setCreator(param('param_company_name'))
+				->setTitle("Overview Pricecontracts");
+
+		// Set defauilt styles
+		$objPHPExcel->getDefaultStyle()
+				->getFont()
+				->setName('Helvetica');
+		$objPHPExcel->getDefaultStyle()
+				->getFont()
+				->setSize(11);
+		$objPHPExcel->getDefaultStyle()
+				->getFont()
+				->getColor()
+				->setARGB($black);
 		
-		// Get quantities
-		if($status >= 45) {
-			//$delivered_quantity = $ordered_quantity; // in $unit
+		
+		// Print date
+		$date = mdate("%d/%m/%Y", time());
+
+		// Set active sheet
+		$objPHPExcel->setActiveSheetIndex(0);
+		$objWorksheet = $objPHPExcel->getActiveSheet();
+
+		$objPHPExcel->getActiveSheet()->freezePane('A3');
+		$objPHPExcel->getActiveSheet()->setAutoFilter('A2:N2');
+
+		// Rename worksheet
+		$objWorksheet->setTitle('Pricecontracts');
+
+		// Sheet proporties
+		$objWorksheet->getPageSetup()
+				->setOrientation(PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE);
+
+		$objWorksheet->getPageSetup()
+				->setPaperSize(PHPExcel_Worksheet_PageSetup::PAPERSIZE_A4);
+
+		$objWorksheet->getPageSetup()->setFitToPage(TRUE);
+		$objWorksheet->getPageSetup()->setFitToWidth(1);
+		$objWorksheet->getPageSetup()->setFitToHeight(0);
+
+
+		// Column's width
+		$objWorksheet->getDefaultColumnDimension()->setWidth(8);
+		$objWorksheet->getColumnDimension('B')->setWidth(25);
+		$objWorksheet->getColumnDimension('D')->setWidth(12);
+		$objWorksheet->getColumnDimension('E')->setWidth(12);
+		$objWorksheet->getColumnDimension('F')->setWidth(12);
+		$objWorksheet->getColumnDimension('J')->setWidth(10);
+		$objWorksheet->getColumnDimension('K')->setWidth(10);
+		$objWorksheet->getColumnDimension('L')->setWidth(10);
+		$objWorksheet->getColumnDimension('M')->setWidth(10);
+		$objWorksheet->getColumnDimension('N')->setWidth(10);
+
+
+		// Individual cell stypes and data
+		$cell = 'A1';
+		$objWorksheet->getStyle($cell)
+				->getFont()
+				->getColor()
+				->setARGB($green);
+
+		$objWorksheet->getStyle($cell)
+				->getFont()
+				->setSize(24);
+
+		$objWorksheet->getStyle($cell)
+				->getFont()
+				->setBold(true);
+
+		$objWorksheet->setCellValue($cell, 'Pricecontracts');
+
+		$cell = 'E1';
+		$objWorksheet->getStyle($cell)
+				->getFont()
+				->getColor()
+				->setARGB($grey);
+
+		$objWorksheet->setCellValue($cell, 'Printed: ' . $date);
+
+		$row = 2;
+		// titles font bold left white background green
+		$cell = 'A' . $row . ':N' . $row;
+		$objWorksheet->getStyle($cell)
+				->getFont()
+				->setBold(TRUE);
+
+		$objWorksheet->getStyle($cell)
+				->getFont()
+				->setSize(9);
+
+		$objWorksheet->getStyle($cell)
+				->getAlignment()
+				->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+
+		$objWorksheet->getStyle($cell)
+				->getFont()
+				->getColor()
+				->setARGB($white);
+
+		$objWorksheet->getStyle($cell)
+				->getFill()
+				->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+
+		$objWorksheet->getStyle($cell)
+				->getFill()
+				->getStartColor()
+				->setARGB($blue);
+
+		$objWorksheet->setCellValue('A' . $row, 'Customer number');
+		$objWorksheet->setCellValue('B' . $row, 'Customer name');
+		$objWorksheet->setCellValue('C' . $row, 'ID');
+		$objWorksheet->setCellValue('D' . $row, 'Contract date');
+		$objWorksheet->setCellValue('E' . $row, 'Start date');
+		$objWorksheet->setCellValue('F' . $row, 'End date');
+		$objWorksheet->setCellValue('G' . $row, 'Price');
+		$objWorksheet->setCellValue('H' . $row, 'LME');
+		$objWorksheet->setCellValue('I' . $row, 'Premium');
+		$objWorksheet->setCellValue('J' . $row, 'Markup');
+		$objWorksheet->setCellValue('K' . $row, 'Start tonnage');
+		$objWorksheet->setCellValue('L' . $row, 'Rest (ordered)');
+		$objWorksheet->setCellValue('M' . $row, 'Rest (delivered)');
+		
+		
+		// Get contracts
+		$dbDefault = $this->load->database('default', TRUE);
+		$dbDefault->where('delete', 0);
+		$dbDefault->order_by('id', 'desc');
+		$results = $dbDefault->get('pricecontract')->result();
+		$contracts = $this->addSalesOrders($results);
+		
+		
+		foreach ($contracts as $contract) {
 			
-			if($original_line == 0 || $original_line == $soline) {
-				if($backorder_line == 0 || $backorder_line == $soline) {
-	/* Set OK !! */
-					$ordered_quantity =  $this->getManufacturingQuantity($so, $soline, $product);
-				} else {
-	/* Set OK !! */
-					$ordered_quantity =  $this->getManufacturingQuantity($so, $backorder_line, $product);
+			$row += 1;
+			
+			$objWorksheet->getStyle('A' . $row.':N' . $row)
+					->getFont()
+					->getColor()
+					->setARGB($black);
+
+			if($contract->active == 1) {
+				$objWorksheet->getStyle('A' . $row.':N' . $row)
+						->getFont()
+						->getColor()
+						->setARGB($green);
+
+			}
+			if($contract->closed == 1) {
+				$objWorksheet->getStyle('A' . $row.':N' . $row)
+						->getFont()
+						->getColor()
+						->setARGB($grey);
+			}
+
+			
+			$objWorksheet->setCellValue('A' . $row, $contract->customernumber);
+			$objWorksheet->setCellValue('B' . $row, utf8_encode(trim($this->siebel->getCustomerdata($contract->customernumber, param('param_asw_database_column_customername')))));
+			$objWorksheet->setCellValue('C' . $row, $contract->id);
+			
+			// Dates
+			$objWorksheet->getStyle('D' . $row.':F' . $row)
+					->getNumberFormat()
+					->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_DATE_DDMMYYYY);
+			
+			$objWorksheet->setCellValue('D' . $row, PHPExcel_Shared_Date::PHPToExcel(mysql_to_unix($contract->date)));
+			$objWorksheet->setCellValue('E' . $row, PHPExcel_Shared_Date::PHPToExcel(mysql_to_unix($contract->startdate)));
+			$objWorksheet->setCellValue('F' . $row, PHPExcel_Shared_Date::PHPToExcel(mysql_to_unix($contract->enddate)));
+			
+			// Prices
+			$objWorksheet->getStyle('G' . $row.':J' . $row)
+					->getNumberFormat()
+					->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_CURRENCY_EUR_SIMPLE);
+			
+			$objWorksheet->setCellValue('G' . $row, $contract->price);
+			$objWorksheet->setCellValue('H' . $row, $contract->lme);
+			$objWorksheet->setCellValue('I' . $row, $contract->premium);
+			$objWorksheet->setCellValue('J' . $row, ($contract->price - $contract->lme - $contract->premium));
+			
+			// Tonnages
+			$objWorksheet->getStyle('K' . $row.':M' . $row)
+					->getNumberFormat()
+					->setFormatCode('# ##0.000');
+			
+			$objWorksheet->setCellValue('K' . $row, $contract->starttonnage);
+			
+			$objWorksheet->setCellValue('L' . $row, ( $contract->starttonnage - $contract->ordertonnage + $contract->lurk ));
+			$objWorksheet->setCellValue('M' . $row, ( $contract->starttonnage - $contract->deliveredtonnage + $contract->lurk ));
+			
+			// Status
+			$status = 'Toekomstig';
+			$status = ($contract->active == 1) ? 'Actief' : $status;
+			$status = ($contract->closed == 1) ? 'Gesloten' : $status;
+			
+			$objWorksheet->setCellValue('N' . $row, $status);
+			
+			// Comment
+			if (isset($contract->comment) && !empty($contract->comment)) {
+				$objWorksheet
+						->getComment('G' . $row)
+						->setAuthor('Siebel');
+				$objCommentRichText = $objPHPExcel->getActiveSheet()
+								->getComment('G' . $row)
+								->getText()->createTextRun('Comment:');
+				$objCommentRichText->getFont()->setBold(true);
+				$objWorksheet
+						->getComment('G' . $row)
+						->getText()->createTextRun("\r\n");
+				$objWorksheet
+						->getComment('G' . $row)
+						->getText()->createTextRun(strip_tags($contract->comment));
+			}
+
+			// Multicust
+			$dbDefault = $this->load->database('default', TRUE);
+			$dbDefault->select('customernumber');
+			$dbDefault->where('pricecontract_id', $contract->id);
+			$dbDefault->where('customernumber !=', $contract->customernumber);
+			$multicustomers = $dbDefault->get('pricecontract_customer')->result();
+			
+			if (!empty($multicustomers)) {
+				$objWorksheet
+						->getComment('A' . $row)
+						->setAuthor('Siebel');
+				$objCommentRichText = $objPHPExcel->getActiveSheet()
+								->getComment('A' . $row)
+								->getText()->createTextRun('Multi customers:');
+				$objCommentRichText->getFont()->setBold(true);
+				foreach($multicustomers as $multicustomer) {
+					$multicustomer = $multicustomer->customernumber;
+					$objWorksheet
+							->getComment('A' . $row)
+							->getText()->createTextRun("\r\n");
+					$objWorksheet
+							->getComment('A' . $row)
+							->getText()->createTextRun($multicustomer . ' ' . utf8_encode(trim($this->siebel->getCustomerdata($multicustomer, param('param_asw_database_column_customername')))));
 				}
-			} else {
-				$ordered_quantity = 0;
 			}
-			//$ordered_quantity =  ($original_line == 0 || $original_line == $soline) ? $this->getManufacturingQuantity($so, $soline, $product) : $this->getManufacturingQuantity($so, $backorder_line, $product); // in pieces
-			//$ordered_quantity =  ($backorder_line == 0 || $backorder_line == $soline) ? $this->getManufacturingQuantity($so, $soline, $product) : $this->getManufacturingQuantity($so, $backorder_line, $product); // in pieces
-			
-			// Convert to weight
-			$ordered_quantity *= $weight_piece;
-			$delivered_quantity = $delivered_quantity * $weight_piece;			
-			//$delivered_quantity *= ($unit == 'KG') ? 1 : $weight_piece;
-		} else {
-			$ordered_quantity = ($original_line == 0 || $original_line == $soline) ? $ordered_quantity : 0; // in $unit
-			$delivered_quantity = $delivered_quantity;
-			// Convert to weight
-			$ordered_quantity *= ($unit == 'KG') ? 1 : $weight_piece;
-			$delivered_quantity *= $weight_piece;
 		}
-		
-		
-		// final calculation: convert from kilo to ton and round the output
-		$ordered_ton = round($ordered_quantity / 1000, 3);
-		$delivered_ton = round($delivered_quantity / 1000, 3);
-		
-		// Reset very small ammounts to 0.
-		$ordered_ton = ($ordered_ton <= 0.001) ? 0 : $ordered_ton;
-		$delivered_ton = ($delivered_ton <= 0.001) ? 0 : $delivered_ton;
-		
-		// Invoice info
-		$invoiceData = $this->getInvoice($so, $soline);
-		if(!empty($invoiceData)) {
-			$invoice = $invoiceData[param('param_asw_database_column_invoice_number')];
-			$invoicedate = $invoiceData[param('param_asw_database_column_invoice_date')];
-			$invoicedate =  date('d/m/Y', mysql_to_unix($invoicedate));
-		} else {
-			$invoice = '';
-			$invoicedate = '';
-			$invoicedate =  '';
+
+
+		// Set active sheet index to the first sheet, so Excel opens this as the first sheet
+		$objPHPExcel->setActiveSheetIndex(0);
+
+		// Save Excel 2007 file
+		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+		$filename .= 'pricecontracts.xlsx';
+		$file = 'public/pricesheets/' . $filename;
+		$objWriter->save($file);
+		if (file_exists($file)) {
+			header('Content-Description: File Transfer');
+			header('Content-Type: application/octet-stream');
+			header('Content-Disposition: attachment; filename=' . basename($filename));
+			header('Content-Transfer-Encoding: binary');
+			header('Expires: 0');
+			header('Cache-Control: must-revalidate');
+			header('Pragma: public');
+			header('Content-Length: ' . filesize($file));
+			ob_clean();
+			flush();
+			readfile($file);
+			exit;
 		}
-		
-		// Transport info
-		$transport = param('param_asw_database_column_soline_transport');
-		$transport = trim($salesorder->$transport);
-		$transport = ($transport == 0) ? '' : $transport;
-		$transportdate = param('param_asw_database_column_soline_transportdate');
-		$transportdate = trim($salesorder->$transportdate);
-		$transportdate =  date('d/m/Y', mysql_to_unix($transportdate));
-		$transportdate = ($transport == 0) ? '' : $transportdate;
-		
-		// return array of quantities ant lenght
-		return array(
-			"ordered" => $ordered_ton, 
-			"delivered" => $delivered_ton,
-			"length" => $length,
-			"finish" => $color_inside . ' ' . $color_outside,
-			"invoice" => $invoice,
-			"invoicedate" => $invoicedate,
-			"transport" => $transport,
-			"transportdate" => $transportdate
-		);
-		
-	}
-	
-	public function getLengthAndColor($so, $soline) {
-		$dbAsw = $this->load->database('asw', TRUE);
-		$dbAsw->where(param('param_asw_database_column_sol_details_order'), $so);
-		$dbAsw->where(param('param_asw_database_column_sol_details_line'), $soline);
-		$results = $dbAsw->get(param('param_asw_database_table_salesorderline_details'))->result_array();
-		if(!empty($results)) {
-			$return = array(
-				"length" => trim($results[0][param('param_asw_database_column_sol_details_lenght')]),
-				"color_inside" => trim($results[0][param('param_asw_database_column_sol_details_color_inside')]),
-				"color_outside" => trim($results[0][param('param_asw_database_column_sol_details_color_outside')]),
-			);
-		} else {
-			$return = array(
-				"length" => 0,
-				"color_inside" => 0,
-				"color_outside" => 0,
-			);
-		}
-		
-		return $return;
-	}
-	
-	public function getWeight($so, $soline) {
-		
-		$dbAsw = $this->load->database('asw', TRUE);
-		$dbAsw->where(param('param_asw_database_column_orderweight_salesorder'), $so);
-		$dbAsw->where(param('param_asw_database_column_orderweight_soline'), $soline);
-		$results = $dbAsw->get(param('param_asw_database_table_orderweight'))->result_array();
-		
-		if(!empty($results)) {
-			$result = $results[0];
 
-			$totalWeight = $result[param('param_asw_database_column_orderweight_totalweight')];
-			$quantity = $result[param('param_asw_database_column_orderweight_quantity')];
-			$length = $result[param('param_asw_database_column_orderweight_length')];
-
-			$weight = ($totalWeight == 0) ? 0 : $totalWeight/$quantity/$length;
-
-			return $weight;
-		} else {
-			return 1;
-		}
-		
-	}
-
-	public function getItem($olprdc) {
-		$dbAsw = $this->load->database('asw', TRUE);
-		$dbAsw->where('PGPRDC', $olprdc);
-		$results = $dbAsw->get('SRBPRG')->result_array();
-
-		$return = $results[0];
-		return $return;
-	}
-	
-	public function getInvoice($so, $soline) {
-		$dbAsw = $this->load->database('asw', TRUE);
-		$dbAsw->where(param('param_asw_database_column_invoice_salesorder'), $so);
-		$dbAsw->where(param('param_asw_database_column_invoice_salesorder_line'), $soline);
-		$results = $dbAsw->get(param('param_asw_database_table_invoice'))->result_array();
-
-		if(!empty($results)) {
-			$return = $results[0];
-		} else {
-			$return = '';
-		}
-		return $return;
-	}
-	
-	public function getManufacturingQuantity($so, $soline, $product) {
-		$dbAsw = $this->load->database('asw', TRUE);
-		$dbAsw->where(param('param_asw_database_column_manuf_salesorder'), $so);
-		$dbAsw->where(param('param_asw_database_column_manuf_salesorderline'), $soline);
-		$dbAsw->where(param('param_asw_database_column_manuf_product'), $product);
-		$results = $dbAsw->get(param('param_asw_database_table_manufacturing'))->result_array();
-
-		if(!empty($results)) {
-			$return = $results[0][param('param_asw_database_column_manuf_quantity')];
-		} else {
-			$return = '';
-		}
-		return $return;		
+		return TRUE;
 	}
 
 }

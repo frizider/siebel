@@ -41,10 +41,15 @@ class Domain_model extends CI_Model
 		return $results;
 	}
 	
-	public function save($cuno, $id, $saveData, $extra = array()) 
+	public function save($id, $saveData, $extra = array()) 
 	{
 		$table = isset($extra['table']) ? $extra['table'] : $this->table;
+		$copy = isset($extra['copy']) ? $extra['copy'] : FALSE;
 		$db = isset($extra['db']) ? $this->load->database($extra['db'], TRUE) : $this->db;
+		
+		if($copy) {
+			$id = 'new';
+		}
 		
 		if($id == 'new')
 		{

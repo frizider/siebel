@@ -61,6 +61,7 @@ if(isset($id) && !empty($id))
 					<div class="form-actions">
 						<button type="submit" class="btn btn-primary"><?php echo ucfirst($this->siebel->getLang('save')); ?></button>
 						<button class="btn">Cancel</button>
+						<a class="btn btn-danger pull-right" href="<?php echo site_url($module.'/delete/'.$customernumber.'/'.$id) ?>"><?php echo ucfirst($this->siebel->getLang('delete')); ?></a>
 					</div>
 				</div>
 			</div>

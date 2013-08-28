@@ -29,34 +29,12 @@ class Test extends CI_Controller {
 		 */
 		
 		// load the model we will be using
-		//$this->load->model('measurements_model');
+		$this->load->model('test_model');
 	}
 	
-	public function index() 
-	{
-		$dbAsw = $this->load->database('asw', TRUE);
+	public function index() {
 		
-		/*
-		$dbAsw->where(param('param_asw_database_column_soh_customernumber'), 'MB9032');
-		$results = $dbAsw->get(param('param_asw_database_table_salesorderheader'))->result_array();
-		 * 
-		 */
-		
-		$dbAsw->where(param('param_asw_database_column_soh_salesordernumber'), '801131');
-		$data = array(param('param_asw_database_column_soh_contractnumber') => '0000000003');
-		$dbAsw->update(param('param_asw_database_table_salesorderheader'), $data);
-	
-		
-		//dev($results);
-		
-		
-		
-		// Load the general view
-		//$data['view'] = 'test';
-		//$this->load->view('DomainView', $data);
 	}
 	
-	
-
 }
 

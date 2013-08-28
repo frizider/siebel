@@ -127,6 +127,11 @@ else
 ?>
 
 <div class="container boxes">
+	<div class="row">
+		<div class="span12">
+			<a class="btn" href="<?php echo current_url() ?>/new"><i class="icon-plus"></i></a>
+		</div>
+	</div>
 
 	<div class="row">
 		<div class="span12">

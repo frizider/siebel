@@ -3,6 +3,14 @@
 
 /* Add additional stylesheets below
 -------------------------------------------------- */
+::selection {
+	background: @red; /* Safari */
+	color: @white;
+	}
+::-moz-selection {
+	background: @red; /* Firefox */
+	color: @white;
+}
 
 /* Welcome */
 .welcome {
@@ -376,6 +384,10 @@ h1 a.backbutton:hover span {
 }
 
 /* Contractlist */
+.dashboard .active {
+	border-left: 5px solid @green;
+	padding-left: 5px;
+}
 .contractlist p {
 	padding: 0 10px;
 	margin: 0;
@@ -433,4 +445,19 @@ h1 a.backbutton:hover span {
 
 }
 
+.sb-search {
+    
+	.sb-search-input, input[type="text"] {
+		width: 20px;
+		text-align: center;
+		background: @blueLight;
+		border: none;
+		.transition(all 0.3s);
 
+		&.sb-search-input-open {
+			width:160px;
+			text-align: left;
+			background: @white;
+		}
+	}
+}
