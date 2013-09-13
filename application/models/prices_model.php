@@ -14,13 +14,42 @@ class Prices_model extends CI_Model {
 	 * Other function below this section
 	 */
 
+	public function getPricecontractCustomers($id) {
+		$dbDefault = $this->load->database('default', TRUE);
+		$dbDefault->where('price_id', $id);
+		$results = $dbDefault->get('price_customer')->result();
+		$multiCust = array();
+		foreach ($results as $customer) {
+			$multiCust[] = $customer->customernumber;
+		}
+		return $multiCust;
+	}
+
 	public function getPrices($cuno, $id = FALSE, $search = FALSE) {
 		$dbDefault = $this->load->database('default', TRUE);
+		
+		// Get all contracts for this customer from the relation table
 		$dbDefault->where('customernumber', $cuno);
+		$dbDefault->order_by('price_id', 'desc');
+		$multiCustomers = $dbDefault->get('price_customer')->result();
+		
+		$multiCustomersIds = array();
+		
+		foreach($multiCustomers as $multiCustomer) {
+			$multiCustomersIds[] = $multiCustomer->price_id;
+		}
+		
+		//$dbDefault->where('customernumber', $cuno);
 		$dbDefault->where('delete', 0);
 		if ($id) {
 			$dbDefault->where('id', $id);
-		}
+		} else {
+			if(isset($multiCustomersIds) && !empty($multiCustomersIds)) {
+				$dbDefault->where_in('id', $multiCustomersIds);
+			} else {
+				$dbDefault->where('customernumber', $cuno);
+			}
+		} 
 
 		// Search
 		if ($search) {
@@ -67,6 +96,9 @@ class Prices_model extends CI_Model {
 
 
 		foreach ($results as $result) {
+			$result->multiCust = $this->getPricecontractCustomers($result->id);
+			$result->pricecontract_closed = ($result->pricecontract_id != 0) ? $this->getPricecontractClosed($result->pricecontract_id) : FALSE;
+			
 			if (isset($result->priceunit_id) && !empty($result->priceunit_id)) {
 				$result->priceunit = $this->getPriceUnit($result->priceunit_id)->short;
 				if (isset($result->prefer_priceunit_id) && !empty($result->prefer_priceunit_id)) {
@@ -82,9 +114,12 @@ class Prices_model extends CI_Model {
 					$result->perim = trim($dieMaintance[param('param_asw_database_column_dm_perimeter')]) / 1000;
 				} else {
 					$result->reference = '';
-					$result->weight = '';
-					$result->perim = '';
+					$result->weight = 1;
+					$result->perim = 1;
 				}
+			} else {
+					$result->weight = 1;
+					$result->perim = 1;
 			}
 		}
 
@@ -93,22 +128,24 @@ class Prices_model extends CI_Model {
 			if ($result->price != 0) {
 
 				$price_kg = 0;
+				$math =  $this->siebel->math($this->siebel->formula_to_plain($result->formula_data, 0));
+
 				if (isset($result->priceunit_id) && !empty($result->priceunit_id)) {
 					// if Kilo price
 					if ($result->priceunit_id == '1') {
-						$price_kg = $result->price + $result->added_value;
+						$price_kg = $math + $result->added_value;
 
 						// if Meter price
 					} elseif ($result->priceunit_id == '2') {
-						$price_kg = $result->price / $result->weight;
+						$price_kg = $math / $result->weight;
 
 						// if Piece price	
 					} elseif ($result->priceunit_id == '3' || $result->priceunit_id == '5') {
-						$price_kg = ( $result->price / $result->length ) / $result->weight;
+						$price_kg = ( $math / $result->length ) / $result->weight;
 
 						// if m2 - square meter price
 					} elseif ($result->priceunit_id == '4') {
-						$price_kg = ( $result->price * $result->perim ) / $result->weight;
+						$price_kg = ( $math * $result->perim ) / $result->weight;
 					}
 				}
 
@@ -182,6 +219,7 @@ class Prices_model extends CI_Model {
 			// Adding finish to result
 			$result->finish = '';
 			$result->finish .= (!empty($result->length)) ? number_format($result->length, 3) . ' m' : '';
+			$result->finish .= (!empty($result->zallength)) ? '('.number_format($result->zallength, 3) . ' m)' : '';
 			$result->finish .= (!empty($result->length) && !empty($result->anodtype) || !empty($result->length) && !empty($result->coatcolor)) ? ' - ' : '';
 			$result->finish .= (!empty($result->anodtype)) ? $result->anodtype : '';
 			$result->finish .= (!empty($result->coatcolor)) ? $result->coatcolor : '';
@@ -193,7 +231,7 @@ class Prices_model extends CI_Model {
 	public function save($data, $cuno, $id, $copy) {
 		$dbDefault = $this->load->database('default', TRUE);
 
-		$data['price'] = round($this->siebel->math($this->siebel->formula_to_plain($data['formula_data'], 0)), 2);
+		$data['price'] = round($this->siebel->math($this->siebel->formula_to_plain($data['formula_data'], 0)), 4);
 		$data['date'] = $this->siebel->date_to_mysql_human($data['date']);
 		if (!isset($data['prefer_priceunit_id']) || empty($data['prefer_priceunit_id']) || $data['prefer_priceunit_id'] == 0) {
 			$data['prefer_priceunit_id'] = $data['priceunit_id'];
@@ -219,6 +257,32 @@ class Prices_model extends CI_Model {
 				return $id;
 			}
 		}
+	}
+
+	public function saveMultiCust($data, $id, $customernumber) {
+		$dbDefault = $this->load->database('default', TRUE);
+
+		// Delete all old records for this ID
+		$dbDefault->where('price_id', $id);
+		$dbDefault->delete('price_customer');
+
+		// Save new records for the current customer number
+		$saveData = array(
+			'price_id' => $id,
+			'customernumber' => strtoupper($customernumber)
+		);
+		$dbDefault->insert('price_customer', $saveData);
+
+		// Save new records for each object in $data
+		foreach ($data as $customer) {
+			$saveData = array(
+				'price_id' => $id,
+				'customernumber' => strtoupper($customer)
+			);
+			$dbDefault->insert('price_customer', $saveData);
+		}
+
+		return TRUE;
 	}
 
 	public function delete($id) {
@@ -279,6 +343,19 @@ class Prices_model extends CI_Model {
 		$results = $dbDefault->get($table)->result();
 		foreach ($results as $result) {
 			$group[$result->$key] = $result->$value;
+		}
+		return $group;
+	}
+
+	public function getFromulasDropdownValues($customernumber = FALSE) {
+		$dbDefault = $this->load->database('default', TRUE);
+		$dbDefault->where('customernumber', '');
+		$dbDefault->where('delete', 0);
+		$dbDefault->or_where('customernumber', $customernumber);
+		$dbDefault->where('delete', 0);
+		$results = $dbDefault->get('formulas')->result();
+		foreach ($results as $result) {
+			$group[$result->id] = $result->formulaname;
 		}
 		return $group;
 	}
@@ -517,9 +594,12 @@ class Prices_model extends CI_Model {
 
 				// Cell styles
 				// Date
+				/*
 				$objWorksheet->getStyle('A' . $row)
 						->getNumberFormat()
 						->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_DATE_DDMMYYYY);
+				 * 
+				 */
 
 				// Length
 				$objWorksheet->getStyle('C' . $row)
@@ -568,6 +648,7 @@ class Prices_model extends CI_Model {
 
 
 				$date = mysql_to_unix($price->date);
+				$date = mdate("%d/%m/%Y", $date);				
 
 				if (!empty($price->profile)) {
 					$dieMaintance = $this->getDieMaintance($price->profile);
@@ -577,7 +658,7 @@ class Prices_model extends CI_Model {
 				}
 
 				// Cell values
-				$objWorksheet->setCellValue('A' . $row, PHPExcel_Shared_Date::PHPToExcel($date));
+				$objWorksheet->setCellValue('A' . $row, $date);
 				$objWorksheet->setCellValue('B' . $row, $price->profile);
 				$objWorksheet->setCellValue('C' . $row, $price->length ? $price->length : '');
 				$objWorksheet->setCellValue('D' . $row, $price->anodtype);
@@ -752,12 +833,22 @@ class Prices_model extends CI_Model {
 		$dbDefault->where('delete', 0);
 		$dbDefault->order_by('pricesheet_upload_time', 'desc');
 		$results = $dbDefault->get('prices')->result();
+		$times = array();
 		foreach($results as $result) {
 			$times[] = $result->pricesheet_upload_time;
 		}
 		
 		return array_values(array_unique($times));
 		
+	}
+	
+	public function getPricecontractClosed($id) {
+		$dbDefault = $this->load->database('default', TRUE);
+		$dbDefault->select('closed');
+		$dbDefault->where('id', $id);
+		$result = $dbDefault->get('pricecontract')->row();
+		
+		return $result->closed;
 	}
 
 }

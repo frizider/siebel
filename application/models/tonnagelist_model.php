@@ -10,7 +10,6 @@ class Tonnagelist_model extends CI_Model
 	}
 	
 	public function getTonnages($array, $toexcel = TRUE) {
-		//$return = 'test';
 		$return->salesorders = $this->getSalesOrders($array);
 		
 		$tonnage_ordered = 0;
@@ -36,7 +35,7 @@ class Tonnagelist_model extends CI_Model
 				'customernumber' => (isset($array['customernumber']) && !empty($array['customernumber'])) ? $array['customernumber'] : '', 
 				'lang' => $lang, 
 			);
-			$this->toExcel($toExcel);
+			$this->toExcel($toExcel, $array);
 		}
 		
 		return $return;
@@ -155,11 +154,18 @@ class Tonnagelist_model extends CI_Model
 		$item_class = trim($item['PGPRCL']);
 
 		// get weight
+			// reg ex for S, P or C products	=>	/.+\/.+\/.+/
 		if(preg_match('/.+\/.+\/.+/', $product)) {
 			$weight_piece = $this->getItemWeight($product);
-		} else {
+		} elseif(preg_match('/^PAL/', strtoupper($product))) {
 			$weight = $this->getWeight($so, $soline);
-			$weight_piece = ($item_class == 3) ? $weight*$length : $weight;
+			$weight_piece = ($item_class == 3) ? $weight['weight']*$length : $weight['weight'];
+		} else {
+			$weight = array(
+				'weight' => 1,
+				'totalweight' => 1
+			);
+			$weight_piece = 1;
 		}
 		
 		// Get quantities
@@ -188,7 +194,14 @@ class Tonnagelist_model extends CI_Model
 			$ordered_quantity = ($original_line == 0 || $original_line == $soline) ? $ordered_quantity : 0; // in $unit
 			$delivered_quantity = $delivered_quantity;
 			// Convert to weight
-			$ordered_quantity *= ($unit == 'KG') ? 1 : $weight_piece;
+			if(preg_match('/.+\/.+\/.+/', $product)) {
+				$ordered_quantity *= ($unit == 'KG') ? 1 : $weight_piece;
+				//$ordered_quantity = ($unit == 'LGT') ? $weight['totalweight'] : $ordered_quantity;
+			} else {
+				$ordered_quantity *= ($unit == 'KG') ? 1 : $weight_piece;
+				$ordered_quantity = ($unit == 'LGT') ? $weight['totalweight'] : $ordered_quantity;
+			}
+			$ordered_quantity = ($original_line == 0 || $original_line == $soline) ? $ordered_quantity : 0; // in $unit
 			$delivered_quantity *= $weight_piece;
 		}
 		
@@ -223,16 +236,29 @@ class Tonnagelist_model extends CI_Model
 		$transportdate = ($transport == 0) ? '' : $transportdate;
 		
 		// return array of quantities ant lenght
-		$return = array(
-			"ordered" => $ordered_ton, 
-			"delivered" => $delivered_ton,
-			"length" => $length,
-			"finish" => $color_inside . ' ' . $color_outside,
-			"invoice" => $invoice,
-			"invoicedate" => $invoicedate,
-			"transport" => $transport,
-			"transportdate" => $transportdate
-		);
+		if(preg_match('/.+\/.+\/.+/', $product) || preg_match('/^PAL/', strtoupper($product))) {
+			$return = array(
+				"ordered" => $ordered_ton, 
+				"delivered" => $delivered_ton,
+				"length" => $length,
+				"finish" => $color_inside . ' ' . $color_outside,
+				"invoice" => $invoice,
+				"invoicedate" => $invoicedate,
+				"transport" => $transport,
+				"transportdate" => $transportdate
+			);
+		} else {
+			$return = array(
+				"ordered" => 0, 
+				"delivered" => 0,
+				"length" => $length,
+				"finish" => $color_inside . ' ' . $color_outside,
+				"invoice" => $invoice,
+				"invoicedate" => $invoicedate,
+				"transport" => $transport,
+				"transportdate" => $transportdate
+			);
+		}
 		return $return;
 		
 	}
@@ -275,9 +301,15 @@ class Tonnagelist_model extends CI_Model
 
 			$weight = ($totalWeight == 0) ? 0 : $totalWeight/$quantity/$length;
 
-			return $weight;
+			return array(
+				'weight' => $weight,
+				'totalweight' => $totalWeight
+				);
 		} else {
-			return 1;
+			return array(
+				'weight' => 1,
+				'totalweight' => 1
+				);
 		}
 		
 	}
@@ -350,7 +382,7 @@ class Tonnagelist_model extends CI_Model
 		return $return;		
 	}
 
-	public function toExcel($array) {
+	public function toExcel($array, $post = FALSE) {
 		/*
 		 $array = array(
 			'items' => '',
@@ -471,6 +503,23 @@ class Tonnagelist_model extends CI_Model
 							->setBold(true);
 
 			$objWorksheet	->setCellValue($cell, $title);
+
+			if(isset($post) && !empty($post)) {
+				$dateFromUntil = '';
+				if( isset($post['from']) && !each($post['from']) ) {
+					$dateFromUntil .= $this->siebel->getLang('from') . ' ' . substr($post['from'], 6, 2) . '/' . substr($post['from'], 4, 2) . '/' . substr($post['from'], 0, 4) . ' ';
+				}
+				if( isset($post['until']) && !each($post['until']) ) {
+					$dateFromUntil .= $this->siebel->getLang('until') . ' ' . substr($post['until'], 6, 2) . '/' . substr($post['until'], 4, 2) . '/' . substr($post['until'], 0, 4) . ' ';
+				}
+				$cell = 'A2';
+				$objWorksheet	->getStyle($cell)
+								->getFont()
+								->getColor()
+								->setARGB($grey);
+
+				$objWorksheet	->setCellValue($cell, $dateFromUntil);
+			}
 
 			$cell = 'K1';
 			$objWorksheet	->getStyle($cell)
@@ -955,6 +1004,7 @@ class Tonnagelist_model extends CI_Model
 						$objWorksheet	->setCellValue('E'.$row, ucfirst($this->siebel->getLang('product', $lang)));
 						$objWorksheet	->setCellValue('H'.$row, ucfirst($this->siebel->getLang('length', $lang)));
 						$objWorksheet	->setCellValue('J'.$row, ucfirst($this->siebel->getLang('ordered', $lang)));
+						$objWorksheet	->setCellValue('K'.$row, ucfirst($this->siebel->getLang('delivered', $lang)));
 
 						$row += 1;
 						$cell = 'B'.$row.':K'.$row;
@@ -987,7 +1037,6 @@ class Tonnagelist_model extends CI_Model
 						$objWorksheet	->setCellValue('B'.$row, ucfirst($this->siebel->getLang('bill', $lang) . ' - ' . $this->siebel->getLang('date', $lang)));
 						$objWorksheet	->setCellValue('E'.$row, ucfirst($this->siebel->getLang('reference', $lang)));
 						$objWorksheet	->setCellValue('H'.$row, ucfirst($this->siebel->getLang('finish', $lang)));
-						$objWorksheet	->setCellValue('J'.$row, ucfirst($this->siebel->getLang('delivered', $lang)));
 
 						$row += 1;
 						$cell = 'B'.$row.':K'.$row;
@@ -1045,6 +1094,10 @@ class Tonnagelist_model extends CI_Model
 											->getNumberFormat()
 											->setFormatCode('0.000');
 							$objWorksheet	->setCellValue('J'.$row, trim($orderline->ordertonnage));
+							$objWorksheet	->getStyle('K'.$row)
+											->getNumberFormat()
+											->setFormatCode('0.000');
+							$objWorksheet	->setCellValue('K'.$row, trim($orderline->deliveredtonnage));
 							
 							$row += 1;
 							$objWorksheet	->getStyle('B'.$row)
@@ -1061,10 +1114,6 @@ class Tonnagelist_model extends CI_Model
 											->getNumberFormat()
 											->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
 							$objWorksheet	->setCellValue('H'.$row, trim($orderline->finish));
-							$objWorksheet	->getStyle('J'.$row)
-											->getNumberFormat()
-											->setFormatCode('0.000');
-							$objWorksheet	->setCellValue('J'.$row, trim($orderline->deliveredtonnage));
 
 							$row += 1;
 							$objWorksheet	->getStyle('B'.$row)

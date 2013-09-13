@@ -25,7 +25,7 @@
 
 			<?php foreach($prices_content as $price) { 
 			?>
-				<div class="row-fluid <?php echo ($price->pricecontract_id != 0) ? 'active' : '' ?>">
+				<div class="row-fluid <?php echo ($price->pricecontract_closed == 1) ? 'opacity50' : '' ?> <?php echo ($price->pricecontract_id != 0) ? 'active' : '' ?>">
 					<div class="span12">
 						<div class="row-fluid">
 							
@@ -59,9 +59,13 @@
 						</div>
 						<?php if(!empty($price->comment)) {  ?>
 						<div class="row-fluid">
-							<div class="span12">
+							<div class="span2">
 								<p>
 									<strong><?php echo ucfirst($this->siebel->getLang('comment')); ?></strong>
+								</p>
+							</div>
+							<div class="span10">
+								<p>
 									<?php echo $price->comment ?>
 								</p>
 							</div>

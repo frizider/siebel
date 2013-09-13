@@ -8,7 +8,7 @@
 	<div class="navbar-inner">
 		<div class="container<?php echo (isset($containerClassMainnav))?$containerClassMainnav:''; ?>">
 			<a class="brand" href="<?= base_url() ?>" rel="tooltip" title="Version <?= $this->config->item('appversion'); ?>"><?= param('param_pagetitle'); ?></a>
-			<div class="nav-collapse">
+			<div class="">
 				<ul class="nav">
 					<?php if(perm('View globals')) { ?>
 					<li class="dropdown">
@@ -17,7 +17,7 @@
 							<?php
 							echo $this->bootstrap->navItem('View formulas', 'formulas', '/formulas', 'formulas');
 							echo $this->bootstrap->navItem('View prices', 'prices/toexcel/', '/prices/toexcel/', 'price_excel');
-							echo $this->bootstrap->navItem('View prices', 'pricecontract/toexcel/', '/pricecontract/toexcel/', 'pricecontract');
+							echo $this->bootstrap->navItem('View prices', 'pricecontract/toexcel/', '/pricecontract/toexcel/', 'pricecontract_excel');
 							echo '<li class="divider"></li>';
 							echo $this->bootstrap->navItem('View LME', 'lme', '/lme', 'lme');
 							echo $this->bootstrap->navItem('View LME subscribers', 'lme/mail', '/lme/mail', 'lme_subscribers');
@@ -29,7 +29,8 @@
 							echo $this->bootstrap->navItem('View comments categories', 'categories', '/comments/categories', 'categories');
 							echo '<li class="divider"></li>';
 							echo $this->bootstrap->navItem('View deliverydays', 'deliverydays/filter', '/deliverydays/filter', 'filter_deliverydays');
-							echo $this->bootstrap->navItem('Export deliveryterms', 'deliveryterms/toexcel', '/deliveryterms/toexcel', 'export_deliveryterms');
+							echo $this->bootstrap->navItem('Export deliveryterms', 'holidays/toexcel', '/holidays/toexcel', 'holidays_excel');
+						//	echo $this->bootstrap->navItem('Export deliveryterms', 'deliveryterms/toexcel', '/deliveryterms/toexcel', 'export_deliveryterms');
 							echo '<li class="divider"></li>';
 							echo $this->bootstrap->navItem('messenger', 'messenger', '/messenger', 'messenger');
 							?>

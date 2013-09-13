@@ -66,10 +66,16 @@ class Prices extends CI_Controller {
 		{
 			if(isset($_POST) && !empty($_POST))
 			{
+				$saveDataMultiCust = $_POST['multiCust'];
+				unset($_POST['multiCust']);
+				
 				if($newId = $this->prices_model->save($_POST, $cuno, $id, $copy))
 				{
-					$this->session->set_flashdata('success', 'Price saved!');
-					redirect(site_url('prices/customer/'.$cuno.'/'.$newId), 'refresh');
+					$this->id = $newId;
+					if($this->prices_model->saveMultiCust($saveDataMultiCust, $newId, $this->customernumber)) {
+						$this->session->set_flashdata('success', 'Price saved!');
+						redirect(site_url('prices/customer/'.$cuno.'/'.$newId), 'refresh');
+					}
 				}
 			}
 			
@@ -81,14 +87,14 @@ class Prices extends CI_Controller {
 			$this->ckeditor->config['language'] = 'en';
 			$this->ckeditor->config['height'] = '210px';  
 
-			$data['dropdown_formulas'] = $this->prices_model->getDropdownValues('formulas', 'id', 'formulaname');
+			$data['dropdown_formulas'] = $this->prices_model->getFromulasDropdownValues($this->customernumber);
 			
 			if($id == 'new')
 			{
 				$data['price'] = $this->siebel->getColumns('prices');
 				$data['price']->date = $this->siebel->date_to_mysql(date('d/m/Y', now()));
-				$data['price']->weight = 0;
-				$data['price']->perim = 0;
+				$data['price']->weight = 1;
+				$data['price']->perim = 1;
 				$default_premium = $this->prices_model->getPremium();
 				$data['price']->premium = $default_premium->premium;
 			}
@@ -255,6 +261,8 @@ class Prices extends CI_Controller {
 
 				$priceunit = '1';
 				$prefer_priceunit = $objWorksheet->getCell('B5')->getValue();
+				$pricecontract = $objWorksheet->getCell('B6')->getValue();
+				$pricecontract = ($pricecontract === 0) ? NULL : $pricecontract;
 
 				$rows = array();
 
@@ -292,6 +300,7 @@ class Prices extends CI_Controller {
 				foreach($rows as $item) {
 
 					$item['customernumber'] = $customernumber;
+					$item['pricecontract_id'] = $pricecontract;
 					$item['priceunit_id'] = $priceunit;
 					$item['prefer_priceunit_id'] = $prefer_priceunit;
 					$item['formula_id'] = '2';
@@ -318,8 +327,21 @@ class Prices extends CI_Controller {
 	}
 
 	public function toExcel() {
-		
 		$this->prices_model->toExcel($this->customernumber);
+	}
+	
+	public function reloaddb() {
+		$dbDefault = $this->load->database('default', TRUE);
+		$prices = $dbDefault->get('prices')->result();
+		
+		foreach ($prices as $price) {
+			$savedata = array(
+				'price_id' => $price->id,
+				'customernumber' => strtoupper($price->customernumber)
+			);
+			$dbDefault->insert('price_customer', $savedata);
+		}
+		
 	}
 }
 

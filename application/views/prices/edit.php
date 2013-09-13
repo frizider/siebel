@@ -16,18 +16,18 @@ $customerName = trim($this->siebel->getCustomerdata($customernumber, param('para
 		<div class="row">
 			<div class="pull-right">
 				<?php
-				if(isset($price->prefer_priceunit)) {
-					$totalprice_append = '<span class=add-on>/'.$this->siebel->getLang('priceunit_' . $price->prefer_priceunit).'</span>';
+				if (isset($price->prefer_priceunit)) {
+					$totalprice_append = '<span class=add-on>/' . $this->siebel->getLang('priceunit_' . $price->prefer_priceunit) . '</span>';
 				} else {
 					$totalprice_append = '<span class=add-on>/</span>';
 				}
-				
-				if(isset($price->totalprice)) {
+
+				if (isset($price->totalprice)) {
 					$totalprice = $price->totalprice;
 				} else {
 					$totalprice = '';
 				}
-				
+
 				$field = 'totalprice';
 				$value = array(
 					'name' => $field,
@@ -41,7 +41,7 @@ $customerName = trim($this->siebel->getCustomerdata($customernumber, param('para
 				?>
 			</div>
 		</div>
-		
+
 		<h3><?php echo ucfirst($this->siebel->getLang('formula')); ?></h3>
 		<div class="well">
 			<div class="row">
@@ -103,7 +103,7 @@ $customerName = trim($this->siebel->getCustomerdata($customernumber, param('para
 						echo '<div class="pull-left formula-box block_' . $i . '">';
 						switch ($key) {
 							case 'value':
-								echo '<label>' . $name . '</label><input type="text" class="formuladata span1" data-value="' . $value . '" value="' . number_format(floatval($value), 2) . '" /> ';
+								echo '<label>' . $name . '</label><input type="text" class="formuladata span1" data-value="' . $value . '" value="' . number_format(floatval($value), 4) . '" /> ';
 								break;
 
 							case 'fix':
@@ -135,13 +135,13 @@ $customerName = trim($this->siebel->getCustomerdata($customernumber, param('para
 				</div>
 				<div class="pull-right">
 					<?php
-					if(isset($price->priceunit)) {
-						$price_append = '<span class=add-on>/'.$this->siebel->getLang('priceunit_' . $price->priceunit).'</span>';
+					if (isset($price->priceunit)) {
+						$price_append = '<span class=add-on>/' . $this->siebel->getLang('priceunit_' . $price->priceunit) . '</span>';
 					} else {
 						$price_append = '<span class=add-on>/</span>';
 					}
 
-					if(isset($price->totalprice)) {
+					if (isset($price->totalprice)) {
 						$totalprice = $price->totalprice;
 					} else {
 						$totalprice = '';
@@ -150,13 +150,13 @@ $customerName = trim($this->siebel->getCustomerdata($customernumber, param('para
 					<br>
 					<div class=" input-append input-prepend">
 						<span class="add-on">= €</span>
-						<input type="text" name="price" value="<?php echo number_format(floatval($price->price), 2); ?>" id="price" class="price span2 disabled" disabled="disabled">
+						<input type="text" name="price" value="<?php echo number_format(floatval($price->price), 4); ?>" id="price" class="price span2 disabled" disabled="disabled">
 						<?php echo $price_append; ?>
 					</div>
 				</div>
 			</div>
 		</div>
-		
+
 		<h3><?php echo ucfirst($this->siebel->getLang('attributes')); ?></h3>
 		<div class="well">
 			<div class="row">
@@ -174,18 +174,36 @@ $customerName = trim($this->siebel->getCustomerdata($customernumber, param('para
 					?>
 				</div>
 				<div class="span4">
-					<?php
-					$field = 'length';
-					$value = array(
-						'name' => $field,
-						'id' => $field,
-						'class' => $field . ' span1',
-						'type' => 'text',
-						'value' => number_format(floatval($price->$field), 3),
-					);
-					echo $this->bootstrap->formControlGroup(array($this->siebel->getLang($field), $field, array('class' => 'control-label')), array($value), FALSE, '<span class=add-on>m</span>');
-					?>
+					<div class="control-group">
+						<label for="anodprice" class="control-label"><?php echo ucfirst($this->siebel->getLang('length')); ?></label>
+						<div class="controls">
+							<div class=" input-append">
+								<?php
+								$field = 'length';
+								$value = array(
+									'name' => $field,
+									'id' => $field,
+									'class' => $field . ' span1',
+									'type' => 'text',
+									'value' => number_format(floatval($price->$field), 3),
+								);
+								echo form_input($value);
+								echo '<span class="add-on">m</span> ';
 
+								$field = 'zallength';
+								$value = array(
+									'name' => $field,
+									'id' => $field,
+									'class' => $field . ' span1',
+									'type' => 'text',
+									'value' => number_format(floatval($price->$field), 3),
+								);
+								echo form_input($value);
+								echo '<span class="add-on">m</span>';
+								?>
+							</div>
+						</div>
+					</div>
 				</div>
 				<div class="span4">
 					<?php
@@ -426,7 +444,7 @@ $customerName = trim($this->siebel->getCustomerdata($customernumber, param('para
 					<div class="control-group">
 						<label for="comment" class="control-label"><?php echo ucfirst($this->siebel->getLang('comment')) ?></label>
 						<div class="controls">
-							<?php 
+							<?php
 							//echo '<textarea rows="10" name="'.$description['name'].'" id="'.$description['id'].'" class="'.$description['class'].' span9">'.$description['value'].'</textarea>';
 							echo $this->ckeditor->editor('comment', $price->comment);
 							?>
@@ -435,17 +453,35 @@ $customerName = trim($this->siebel->getCustomerdata($customernumber, param('para
 				</div>
 			</div>
 		</div>
-		
+
+		<div class="well">
+			<h4><?php echo ucfirst($this->siebel->getLang('multi_customer')); ?></h4>
+			<div class="row">
+				<div class="span11">
+					<ul id="multiCustomerTags">
+
+						<?php
+						if (isset($price->multiCust) && !empty($price->multiCust)) {
+							foreach ($price->multiCust as $multiCust) {
+								echo '<li>' . $multiCust . '</li>';
+							}
+						}
+						?>
+
+					</ul>
+				</div>
+			</div>
+		</div>
 
 		<div class="row">
 			<div class="span12">
 				<div class="form-actions">
 					<button type="submit" class="btn btn-primary"><?php echo ucfirst($this->siebel->getLang('save')); ?></button>
 					<button class="btn">Cancel</button>
-					<?php if( $price->pricecontract_id == 0 || empty($price->pricecontract_id) ) { ?>
-					<a class="btn btn-danger pull-right" href="<?php echo site_url($module . '/delete/' . $customernumber . '/' . $id) ?>"><?php echo ucfirst($this->siebel->getLang('delete')); ?></a>
+					<?php if ($price->pricecontract_id == 0 || empty($price->pricecontract_id)) { ?>
+						<a class="btn btn-danger pull-right" href="<?php echo site_url($module . '/delete/' . $customernumber . '/' . $id) ?>"><?php echo ucfirst($this->siebel->getLang('delete')); ?></a>
 					<?php } ?>
-					
+
 				</div>
 			</div>
 		</div>
@@ -2281,6 +2317,8 @@ $customerName = trim($this->siebel->getCustomerdata($customernumber, param('para
 		</div>
 	</div>
 
+	<script type="text/javascript" src="<?= base_url(); ?>assets/js/tagit.js" ></script>
+
 	<script>
 
 		$(function() {
@@ -2333,6 +2371,35 @@ $customerName = trim($this->siebel->getCustomerdata($customernumber, param('para
 					$('.' + this.id).show();
 				} else if (!this.checked) {
 					$('.' + this.id).hide();
+				}
+			});
+
+			$('#multiCustomerTags').tagit({
+				fieldName: "multiCust[]",
+				removeConfirmation: true,
+				autocomplete: {
+					//define callback to format results  
+					source: function(request, response) {
+						//pass request to server  
+						$.ajax({
+							url: "<?php echo site_url('/search') ?>",
+							cache: false,
+							data: {term: encodeURI(request.term)},
+							data: "term=" + encodeURI(request.term),
+									dataType: "json",
+							success: function(data) {
+								response(data);
+							}
+						});
+					},
+					autoFocus: true,
+					minLength: 3,
+					messages: {
+						noResults: '',
+						results: function() {
+						}
+					},
+					position: {my: "right top", at: "right bottom"}
 				}
 			});
 

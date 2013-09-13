@@ -20,7 +20,7 @@ $config['base_url'] = BASE_URL;
 
 
 $config['appversion'] = 'Beta 2.0';
-$config['devmode'] = 1;
+$config['devmode'] = 0;
 
 
 /*

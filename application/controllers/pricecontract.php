@@ -30,6 +30,7 @@ class Pricecontract extends CI_Controller {
 		
 		// load the model we will be using
 		$this->load->model('pricecontract_model');
+		$this->load->model('prices_model');
 		$this->load->model('domain_model', 'model');
 	}
 	
@@ -67,9 +68,11 @@ class Pricecontract extends CI_Controller {
 					$this->id = $newId;
 					if($this->pricecontract_model->saveMultiCust($saveDataMultiCust, $newId, $this->customernumber)) {
 						$saveData['startdate'] = $priceDate;
-						if($this->pricecontract_model->savePrice($saveData, $this->customernumber, $newId)) {
-							$this->session->set_flashdata('success', 'Contract saved!');
-							//redirect(site_url($this->module.'/customer/'.$this->customernumber.'/'.$newId), 'refresh');
+						if($newPriceId = $this->pricecontract_model->savePrice($saveData, $this->customernumber, $newId)) {
+							if($this->prices_model->saveMultiCust($saveDataMultiCust, $newPriceId, $this->customernumber)) {
+								$this->session->set_flashdata('success', 'Contract saved!');
+								redirect(site_url($this->module.'/customer/'.$this->customernumber.'/'.$newId), 'refresh');
+							}
 						}
 					}
 				}
@@ -166,7 +169,7 @@ class Pricecontract extends CI_Controller {
 			
 		} else {
 			
-			$this->pricecontract_model->toExcel($post);
+			$this->pricecontract_model->toExcel();
 			
 		}
 	}

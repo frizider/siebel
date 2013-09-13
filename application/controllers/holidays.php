@@ -119,5 +119,16 @@ class holidays extends CI_Controller {
 		}
 	}
 
+	public function toExcel() {
+		if(isset($_POST) && !empty($_POST)) {
+			$this->holidays_model->toExcel();
+		}
+		
+		// Load the general view
+		$data['view'] = 'holidays/filter';
+		$this->load->view('DomainView', $data);
+		
+	}
+	
 }
 

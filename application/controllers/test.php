@@ -29,11 +29,42 @@ class Test extends CI_Controller {
 		 */
 		
 		// load the model we will be using
-		$this->load->model('test_model');
+		//$this->load->model('test_model');
 	}
 	
 	public function index() {
+
+		/*
+		$config['param_asw_database_table_diemaintance'] = 'Z2OODIEVRS';
+			$config['param_asw_database_column_dm_number'] = 'MVPRDC';
+			$config['param_asw_database_column_dm_reference'] = 'DIEITEM';
+			$config['param_asw_database_column_dm_version'] = 'MVBATC';
+			$config['param_asw_database_column_dm_customernumber'] = 'DIECUNO';
+			$config['param_asw_database_column_dm_tensile'] = 'TENSILE';
+			$config['param_asw_database_column_dm_measurement_report'] = 'MESURREP';
+			$config['param_asw_database_column_dm_weight'] = 'MVWGHT';
+			$config['param_asw_database_column_dm_perimeter'] = 'MVPERI';
+			$config['param_asw_database_column_dm_press'] = 'MVPERS';
+			$config['param_asw_database_column_dm_alloy'] = 'ALLOYCOND';
+			$config['param_asw_database_column_dm_sample'] = 'SAMPLES';
+			$config['param_asw_database_column_dm_sample_comment'] = 'SAMPLERE';
+			$config['param_asw_database_column_dm_invoice'] = 'INVOICE';
+			$config['param_asw_database_column_dm_invoice_amount'] = 'INVAMOU';
+			$config['param_asw_database_column_dm_representative'] = 'SALESMAN';
+		 */
+
 		
+		$db = $this->load->database('asw', TRUE);
+		/*
+		$db->where(param('param_asw_database_column_dm_customernumber'), 'MB'.'1443');
+		$data = array(
+			//param('param_asw_database_column_dm_customernumber') => 'MB1974',
+			param('param_asw_database_column_dm_tensile') => 'N',
+			param('param_asw_database_column_dm_measurement_report') => 'N',
+		);
+		dev($db->update(param('param_asw_database_table_diemaintance'), $data));
+		 * 
+		 */
 	}
 	
 }

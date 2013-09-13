@@ -55,7 +55,7 @@ class Pricecontract_model extends CI_Model {
 			'lme' => $saveData['lme'],
 			'premium' => $saveData['premium'],
 			'markup' => $saveData['price'] - $saveData['lme'] - $saveData['premium'],
-			'comment' => strip_tags($saveData['comment']),
+			'comment' => $saveData['comment'],
 			'priceunit_id' => 1,
 			'prefer_priceunit_id' => 1,
 			'formula_id' => '2',
@@ -77,7 +77,7 @@ class Pricecontract_model extends CI_Model {
 		}
 
 
-		return TRUE;
+		return $newPriceId;
 	}
 
 	public function getContractById($id) {
@@ -174,7 +174,7 @@ class Pricecontract_model extends CI_Model {
 		};
 	}
 
-	public function toExcel($post) {
+	public function toExcel() {
 
 		// Colors
 		$black = "FF000000";
@@ -316,6 +316,7 @@ class Pricecontract_model extends CI_Model {
 		// Get contracts
 		$dbDefault = $this->load->database('default', TRUE);
 		$dbDefault->where('delete', 0);
+		$dbDefault->order_by('customernumber', 'asc');
 		$dbDefault->order_by('id', 'desc');
 		$results = $dbDefault->get('pricecontract')->result();
 		$contracts = $this->addSalesOrders($results);
@@ -350,13 +351,24 @@ class Pricecontract_model extends CI_Model {
 			$objWorksheet->setCellValue('C' . $row, $contract->id);
 			
 			// Dates
+			/*
 			$objWorksheet->getStyle('D' . $row.':F' . $row)
 					->getNumberFormat()
 					->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_DATE_DDMMYYYY);
+			 * 
+			 */
 			
-			$objWorksheet->setCellValue('D' . $row, PHPExcel_Shared_Date::PHPToExcel(mysql_to_unix($contract->date)));
-			$objWorksheet->setCellValue('E' . $row, PHPExcel_Shared_Date::PHPToExcel(mysql_to_unix($contract->startdate)));
-			$objWorksheet->setCellValue('F' . $row, PHPExcel_Shared_Date::PHPToExcel(mysql_to_unix($contract->enddate)));
+			$contractdate = mysql_to_unix($contract->date);
+			$contractdate = mdate("%d/%m/%Y", $contractdate);				
+			$objWorksheet->setCellValue('D' . $row, $contractdate);
+			
+			$startdatedate = mysql_to_unix($contract->startdate);
+			$startdatedate = mdate("%d/%m/%Y", $startdatedate);				
+			$objWorksheet->setCellValue('E' . $row, $startdatedate);
+			
+			$enddate = mysql_to_unix($contract->enddate);
+			$enddate = mdate("%d/%m/%Y", $enddate);				
+			$objWorksheet->setCellValue('F' . $row, $enddate);
 			
 			// Prices
 			$objWorksheet->getStyle('G' . $row.':J' . $row)

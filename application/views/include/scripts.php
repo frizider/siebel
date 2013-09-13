@@ -18,7 +18,7 @@ $(document).ready(function() {
 			});
 		},
 		autoFocus: true, 
-		minLength: 3, 
+		minLength: 2, 
 		messages: {
 			noResults: '',
 			results: function() {}
@@ -31,6 +31,29 @@ $(document).ready(function() {
         .appendTo( ul );
     };
 	
+	$(".customersearch").autocomplete({  
+		//define callback to format results  
+		source: function(request, response){  
+			//pass request to server  
+			$.ajax({
+				url: "<?php echo site_url('/search')?>",
+				cache: false,
+				data: {term: encodeURI(request.term)},
+				data: "term=" + encodeURI(request.term),
+				dataType: "json",
+				success: function(data) {
+					response(data);
+				}
+			});
+		},
+		autoFocus: true, 
+		minLength: 2, 
+		messages: {
+			noResults: '',
+			results: function() {}
+		}, 
+		 position: { my : "right top", at: "right bottom" }
+	});
 	
 	/* Shortcuts
 	 * ----------------------------------------------------------------------

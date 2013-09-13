@@ -66,7 +66,7 @@
 			<div class="span12">
 				<div class="form-actions">
 					<button type="submit" class="btn btn-primary"><?php echo ucfirst($this->siebel->getLang('save')); ?></button>
-					<button class="btn">Cancel</button>
+					<a href="<?php echo site_url('lme'); ?>" class="btn">Cancel</a>
 				</div>
 			</div>
 		</div>

@@ -551,4 +551,34 @@ function saveXML($pack, $id) {
 	
 }
 
+function current_season() {
+	
+       // What is today's date - number
+       $day = date("z");
+
+       //  Days of spring
+       $spring_starts = date("z", strtotime("March 5"));
+       $spring_ends   = date("z", strtotime("June 4"));
+
+       //  Days of summer
+       $summer_starts = date("z", strtotime("June 5"));
+       $summer_ends   = date("z", strtotime("September 4"));
+
+       //  Days of autumn
+       $autumn_starts = date("z", strtotime("September 5"));
+       $autumn_ends   = date("z", strtotime("December 4"));
+
+       //  If $day is between the days of spring, summer, autumn, and winter
+       if( $day >= $spring_starts && $day <= $spring_ends ) :
+               $season = "spring";
+       elseif( $day >= $summer_starts && $day <= $summer_ends ) :
+               $season = "summer";
+       elseif( $day >= $autumn_starts && $day <= $autumn_ends ) :
+               $season = "autumn";
+       else :
+               $season = "winter";
+       endif;
+	   
+       return $season;
+}
 ?>

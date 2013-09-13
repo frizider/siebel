@@ -51,8 +51,12 @@ class Siebel {
 	 * Prices
 	 */
 	public function math($expression) {
-		eval('$math = ' . preg_replace('/[^0-9\+\-\*\/\(\)\.]/', '', $expression) . ';');
-		return $math;
+		if($expression) {
+			eval('$math = ' . preg_replace('/[^0-9\+\-\*\/\(\)\.]/', '', $expression) . ';');
+			return $math;
+		} else {
+			return FALSE;
+		}
 	}
 
 	

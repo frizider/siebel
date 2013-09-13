@@ -7,11 +7,19 @@ echo form_open(current_url(), $form_attributes);
 <div class="row">
 	<div class="span12">
 		<div class="well">
-			<div class="span11">
+			<div class="span6">
 				<div class="control-group">
-					<label class="control-label" for="formulaname"><?php echo $this->siebel->getLang('name') ?></label>
+					<label class="control-label" for="formulaname"><?php echo ucfirst($this->siebel->getLang('name')) ?></label>
 					<div class="controls">
-						<input name="formulaname" type="text" class="span6" id="formulaname" value="<?php echo $item->formulaname ?>" placeholder="Give me a name...">
+						<input name="formulaname" type="text" class="" id="formulaname" value="<?php echo $item->formulaname ?>" placeholder="Give me a name...">
+					</div>
+				</div>
+			</div>
+			<div class="span5">
+				<div class="control-group">
+					<label class="control-label" for="customernumber"><?php echo ucfirst($this->siebel->getLang('customer')) ?></label>
+					<div class="controls">
+						<input name="customernumber" type="text" class="input-small customersearch" id="customernumber" value="<?php echo $item->customernumber ?>" placeholder="">
 					</div>
 				</div>
 			</div>
@@ -26,8 +34,8 @@ echo form_open(current_url(), $form_attributes);
 			<li data-key="value" data-name="someValue" id="valuefield" class="btn"><span>Value</span> <i class="editValue icon-edit"></i></li>
 			<li data-key="fix" data-name="someValue" id="fixfield" class="btn"><span>Fix</span> <i class="editValue icon-edit"></i></li>
 			<li data-key="lme" data-name="date" id="lmefield" class="btn"><span>LME</span> <i class="editLme icon-edit"></i></li>
-			<li data-key="weight" data-name="die" id="weightfield" class="btn"><span>Weight</span></li>
-			<li data-key="perimeter" data-name="die" id="perimeterfield" class="btn"><span>Perimeter</span></li>
+			<li data-key="weight" data-name="weight" id="weightfield" class="btn"><span>Weight</span></li>
+			<li data-key="perimeter" data-name="perimeter" id="perimeterfield" class="btn"><span>Perimeter</span></li>
 			<li data-key="arithmetic" data-name="choose" id="arithmeticfield" class="btn"><span>Arithmetic</span> <i class="editArithmetic icon-edit"></i></li>
 		</ul>
 	</div>
@@ -60,11 +68,11 @@ echo form_open(current_url(), $form_attributes);
 							break;
 
 						case 'weight':
-							echo '<li data-key="weight" data-name="die" id="block'.$time.'"  class="btn"><span>Weight</span></li>';
+							echo '<li data-key="weight" data-name="weight" id="block'.$time.'"  class="btn"><span>Weight</span></li>';
 							break;
 
 						case 'perimeter':
-							echo '<li data-key="perimeter" data-name="die" id="block'.$time.'"  class="btn"><span>Perimeter</span></li>';
+							echo '<li data-key="perimeter" data-name="perimeter" id="block'.$time.'"  class="btn"><span>Perimeter</span></li>';
 							break;
 
 						case 'arithmetic':
