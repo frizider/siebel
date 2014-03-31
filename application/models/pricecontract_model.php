@@ -447,7 +447,7 @@ class Pricecontract_model extends CI_Model {
 
 		// Save Excel 2007 file
 		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
-		$filename .= 'pricecontracts.xlsx';
+		$filename = 'pricecontracts.xlsx';
 		$file = 'public/pricesheets/' . $filename;
 		$objWriter->save($file);
 		if (file_exists($file)) {
