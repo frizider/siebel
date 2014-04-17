@@ -16,6 +16,8 @@ A CRM application based on CodeIgniter PHP framework.
 6. Import the database file into your MySQL database.
 	located @ root/siebel.default.database.sql
 
+To login: go to the url locatie where you've installed the files and login with user: master and password: 12345678.
+
 ## Contributing
 
 Please submit all pull requests. 
